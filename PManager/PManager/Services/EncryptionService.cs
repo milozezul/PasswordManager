@@ -3,24 +3,24 @@ using System.Security.Cryptography;
 
 namespace PasswordManager
 {
-    public static class EncryptionService
+    public class EncryptionService
     {
         const int NONCE_SIZE = 12;
         const int TAG_SIZE = 16;
 
-        static byte[] RandomBytes(int len)
+        byte[] RandomBytes(int len)
         {
             var b = new byte[len];
             RandomNumberGenerator.Fill(b);
             return b;
         }
-        static byte[] DeriveKeyFromPassword(string password, byte[] salt, int iterations)
+        byte[] DeriveKeyFromPassword(string password, byte[] salt, int iterations)
         {
             using var kdf = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA256);
             return kdf.GetBytes(32);
         }
 
-        static byte[] EncryptInternal(byte[] plainText, byte[] key, byte[]? aad)
+        byte[] EncryptInternal(byte[] plainText, byte[] key, byte[]? aad)
         {
             var nonce = RandomBytes(NONCE_SIZE);
             var tag = new byte[TAG_SIZE];
@@ -38,7 +38,7 @@ namespace PasswordManager
             return result;
         }
 
-        static byte[] DecryptInternal(byte[] blob, byte[] key, byte[]? aad)
+        byte[] DecryptInternal(byte[] blob, byte[] key, byte[]? aad)
         {
             if (blob.Length < NONCE_SIZE + TAG_SIZE)
             {
@@ -62,7 +62,7 @@ namespace PasswordManager
 
             return plaintext;
         }
-        static byte[] AttachHeaders(byte[] payload, byte[] salt, byte[] key, int iterations, int version)
+        byte[] AttachHeaders(byte[] payload, byte[] salt, byte[] key, int iterations, int version)
         {
             List<IHeaderType> headerTypes = new List<IHeaderType>
             {
@@ -106,7 +106,7 @@ namespace PasswordManager
             return result;
         }
 
-        public static byte[] EncryptWithPassword(byte[] plaintext, string password, byte[]? aad = null, int iterations = 200_000)
+        public byte[] EncryptWithPassword(byte[] plaintext, string password, byte[]? aad = null, int iterations = 200_000)
         {
             var salt = RandomBytes(TAG_SIZE);
             var key = DeriveKeyFromPassword(password, salt, iterations);
@@ -115,7 +115,7 @@ namespace PasswordManager
             return result;
         }
 
-        public static byte[] DecryptWithPassword(byte[] blob, string password, byte[]? aad = null)
+        public byte[] DecryptWithPassword(byte[] blob, string password, byte[]? aad = null)
         {
             int p = 0;
             byte version = blob[p++];
