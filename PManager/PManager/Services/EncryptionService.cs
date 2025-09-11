@@ -1,9 +1,10 @@
-﻿using System.Buffers.Binary;
+﻿using PManager.Interfaces.Services;
+using System.Buffers.Binary;
 using System.Security.Cryptography;
 
 namespace PasswordManager
 {
-    public class EncryptionService
+    public class EncryptionService : IEncryptionService
     {
         const int NONCE_SIZE = 12;
         const int TAG_SIZE = 16;
@@ -148,9 +149,8 @@ namespace PasswordManager
                 return DecryptInternal(payload, key, aad);
             }
             catch (Exception ex)
-            {
-                Console.WriteLine("Could not decrypt");
-                return null;
+            {                
+                return new byte[0];
             }
             finally
             {

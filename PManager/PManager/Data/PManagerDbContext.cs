@@ -7,13 +7,9 @@ namespace PManager.Data
     public class PManagerDbContext: DbContext
     {
         private readonly SQLConfigs _config;
-        public PManagerDbContext(IOptions<SQLConfigs> config)
+        public PManagerDbContext(DbContextOptions<PManagerDbContext> options, IOptions<SQLConfigs> config) : base(options)
         {
             _config = config.Value;
-        }
-        public PManagerDbContext(DbContextOptions<PManagerDbContext> options): base(options)
-        {
-
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -21,63 +17,91 @@ namespace PManager.Data
             optionsBuilder.UseSqlServer(_config.ConnectionString);
         }
 
-        public DbSet<Passwords> Passwords { get; set; }
-        public DbSet<Categories> Categories { get; set; }
-        public DbSet<PasswordValues> PasswordValues { get; set; }
-        public DbSet<Values> Values { get; set; }
+        public DbSet<Password> Passwords { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<RecordPasswords> RecordPasswords { get; set; }
+        public DbSet<Record> Records { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            var passwords = modelBuilder.Entity<Passwords>();
-            passwords.HasKey(item => new { item.Id });
-            passwords.HasOne(p => p.Category);
-            passwords.Property(p => p.Name).HasMaxLength(300);
+            var passwords = modelBuilder
+                .Entity<Password>();
+            passwords
+                .HasKey(item => new { item.Id });                
+            passwords
+                .Property(p => p.Value)
+                .HasMaxLength(1000);
 
-            var categories = modelBuilder.Entity<Categories>();
-            categories.HasKey(c => c.Id);
-            categories.Property(c => c.Name).HasMaxLength(200);
+            var categories = modelBuilder
+                .Entity<Category>();
+            categories
+                .HasKey(c => c.Id);
+            categories
+                .HasIndex(c => c.Name)
+                .IsUnique();
+            categories
+                .Property(c => c.Name)
+                .HasMaxLength(200);
 
-            var passwordValues = modelBuilder.Entity<PasswordValues>();
-            passwordValues.HasKey(pv => new { pv.ValueId, pv.PasswordId });
-            passwordValues.HasOne(pv => pv.Password).WithMany().HasForeignKey(pv => pv.PasswordId);
-            passwordValues.HasOne(v => v.Value).WithMany().HasForeignKey(v => v.ValueId);
+            var recordPasswords = modelBuilder
+                .Entity<RecordPasswords>();
+            recordPasswords
+                .HasKey(pv => new { 
+                    pv.RecordId, 
+                    pv.PasswordId 
+                });
+            recordPasswords
+                .HasOne(pv => pv.Record)
+                .WithMany()
+                .HasForeignKey(pv => pv.RecordId);
+            recordPasswords
+                .HasOne(v => v.Password)
+                .WithMany()
+                .HasForeignKey(v => v.PasswordId);
             
-            var values = modelBuilder.Entity<Values>();
-            values.HasKey(v => v.Id);
-            values.Property(v => v.Value).HasMaxLength(1000);
+            var record = modelBuilder
+                .Entity<Record>();
+            record
+                .HasKey(v => v.Id);
+            record
+                .Property(v => v.Name)
+                .HasMaxLength(200);
+            record
+                .Property(v => v.Url)
+                .HasMaxLength(300);
         }
     }
 
-    public class Passwords
+    public class Password
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public Categories Category { get; set; }
+        public byte[] Value { get; set; }
 
     }
 
-    public class Categories
+    public class Category
     {
         public int Id { get; set; }
         public string Name { get; set; }
 
     }
 
-    public class PasswordValues
+    public class RecordPasswords
     {
         public int PasswordId { get; set; }
-        public int ValueId { get; set; }
+        public int RecordId { get; set; }
 
-        public Passwords Password { get; set; }
-        public Values Value { get; set; }
+        public Password Password { get; set; }
+        public Record Record { get; set; }
 
     }
-    public class Values
+    public class Record
     {
         public int Id { get; set; }
-        public int Subid { get; set; }
-        public byte[] Value { get; set; }
+        public string Name { get; set; }
+        public string Url { get; set; }
+        public Category Category { get; set; }
     }
 }

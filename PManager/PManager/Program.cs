@@ -1,4 +1,7 @@
-using PManager.Models;
+using Microsoft.EntityFrameworkCore;
+using PasswordManager;
+using PManager.Data;
+using PManager.Interfaces.Services;
 using PManager.Models.Configs;
 
 namespace PManager
@@ -9,20 +12,19 @@ namespace PManager
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-
             builder.Services.AddControllers();
 
             builder.Services.Configure<SQLConfigs>(builder.Configuration.GetSection("SQL"));
 
-            var app = builder.Build();
+            builder.Services.AddDbContext<PManagerDbContext>(options => options.UseSqlServer(builder.Configuration.GetSection("SQL").GetValue<string>("ConnectionString")));
+            builder.Services.AddScoped<IDataService, DataService>();
+            builder.Services.AddScoped<IEncryptionService, EncryptionService>();            
 
-            // Configure the HTTP request pipeline.
+            var app = builder.Build();
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

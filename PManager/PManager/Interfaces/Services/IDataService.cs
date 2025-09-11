@@ -1,0 +1,22 @@
+﻿using PManager.Data;
+using PManager.Models.DataService;
+
+namespace PManager.Interfaces.Services
+{
+    public interface IDataService
+    {
+        Task<Password> AddPassword(int recordId, string newPassword, string password);
+        Task<Category> CreateCategory(string name);
+        Task<Record> CreateRecord(string category, string name, string url);
+        Task<RecordPasswordsModel> CreateRecordWithPassword(string category, string name, string url, string newPassword, string password);
+        Task DeactivatePassword(int recordId, int passwordId, string password);
+        Task DeactivateRecord(int recordId, string password);
+        void Dispose();
+        Task<List<Category>> GetCategories();
+        Task<RecordPasswordsModel> GetPasswordsByRecordId(int recordId, string password);
+        Task<Record> GetRecordByName(string name);
+        Task<Record> GetRecordByUrl(string url);
+        Task<List<Record>> GetRecords(string category);
+        Task<DecryptedPassword> GetSpecificPassword(int recordId, int passwordId, string password);
+    }
+}
