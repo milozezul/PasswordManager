@@ -1,0 +1,13 @@
+{
+  "name": "PManagerFrontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "tailwindcss": "^4.1.13"
+  },
+  "scripts": {
+    "twrun": "tailwindcss -i ./wwwroot/css/app.css -o ./wwwroot/css/output.css --watch"
+  }
+}
