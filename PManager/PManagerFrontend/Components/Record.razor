@@ -1,0 +1,71 @@
+﻿<div class="flex flex-col border-1">
+    <div class="flex flex-row bg-gray-100 py-2">
+        <div class="basis-1/10 pl-8 font-semibold">ID</div>
+        <div class="basis-4/10 font-semibold">Name</div>
+        <div class="basis-5/10 font-semibold">Url</div>
+    </div>
+    <div class="flex flex-row py-2 font-light items-center">
+        <div class="basis-1/10 pl-8">150</div>
+        <div class="basis-4/10">Precheckin Auth String</div>
+        <div class="basis-4/10">GuestConnect</div>
+        <div class="basis-1/10 flex justify-center">
+            <button class="bg-sky-400 text-white px-5 py-1 text-sm hover:bg-sky-600" @onclick="ExpandHandler">@(isExpanded ? "COLLAPSE" : "EXPAND")</button>
+        </div>
+    </div>
+    @if (isExpanded)
+    {
+        <div class="flex flex-row py-2">
+            <div class="basis-1/10"></div>
+            <div class="flex flex-row items-end gap-x-3">
+                <div class="flex flex-col">
+                    <div>Password</div>
+                    <input type="password" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-600" />
+                </div>
+                <div>
+                    <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm font-light" @onclick="ShowResultSet">UNLOCK</button>
+                </div>
+            </div>
+        </div>
+        @if (isResultSet)
+        {
+            <div class="flex flex-col mt-2">
+                <div class="flex flex-row font-semibold py-2 border-t-gray-300 border-t-1 border-b-gray-300 border-b-1">
+                    <div class="basis-1/10 pl-8">ID</div>
+                    <div>Saved Passwords</div>
+                </div>
+                <div class="flex flex-col gap-y-1 py-1">
+                    <PasswordLine Id="10" Password="NH(*9f9*UDS" />
+                    <PasswordLine Id="20" Password="*(D*F&SIcvbcvbcvbcvbcv" />
+                    <PasswordLine Id="30" Password=")(*)AUDFO" />
+                    <div class="flex flex-row items-end">
+                        <div class="basis-1/10"></div>
+                        <div class="flex flex-row gap-x-3">
+                            <div class="flex flex-col">
+                                <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800" />
+                            </div>
+                            <div>
+                                <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm font-light">ADD</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    
+</div>
+
+@code {
+    bool isExpanded = false;
+    bool isResultSet = false;
+
+    void ExpandHandler()
+    {
+        isExpanded = !isExpanded;
+    }
+
+    void ShowResultSet()
+    {
+        isResultSet = true;
+    }
+}
