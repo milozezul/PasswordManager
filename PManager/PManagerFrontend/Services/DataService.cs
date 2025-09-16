@@ -1,8 +1,11 @@
 ﻿using PManagerFrontend.Interfaces.Services;
 using SharedModels.Database;
+using SharedModels.DataService;
 using SharedModels.InputModels;
+using System;
 using System.Text;
 using System.Text.Json;
+using System.Xml.Linq;
 
 namespace PManagerFrontend.Services
 {
@@ -107,6 +110,58 @@ namespace PManagerFrontend.Services
                     var json = JsonSerializer.Serialize(input);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
                     await client.PostAsync($"api/Data/records/{category}/password?name={name}&url={url}", content);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+        }
+
+        public async Task<RecordPasswordsModel> GetPasswordsByRecordId(int id, string lockpassword)
+        {
+            using (var client = _factory.CreateClient("api"))
+            {
+                try
+                {
+                    var input = new PasswordInputModel()
+                    {
+                        Password = lockpassword
+                    };
+                    var json = JsonSerializer.Serialize(input);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync("api/Data/records/" + id, content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var str = await response.Content.ReadAsStringAsync();
+
+                        var model = JsonSerializer.Deserialize<RecordPasswordsModel>(str);
+
+                        return model;
+                    }
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public async Task AddPassword(string lockpassword, string newpassword, int recordId)
+        {
+            using (var client = _factory.CreateClient("api"))
+            {
+                try
+                {
+                    PasswordParametersModel input = new PasswordParametersModel()
+                    {
+                        Password = lockpassword,
+                        NewPassword = newpassword
+                    };
+                    var json = JsonSerializer.Serialize(input);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    await client.PostAsync($"api/Data/records/password/{recordId}", content);
                 }
                 catch (Exception ex)
                 {

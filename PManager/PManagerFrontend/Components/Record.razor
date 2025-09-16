@@ -1,4 +1,8 @@
-﻿<div class="flex flex-col border-1 bg-white">
+﻿@using PManagerFrontend.Interfaces.Services
+@using SharedModels.DataService
+@inject IDataService _dataService;
+
+<div class="flex flex-col border-1 bg-white">
     <div class="flex flex-row bg-gray-100 py-2 border-b-gray-300 border-b-1">
         <div class="basis-1/10 pl-8 font-semibold">ID</div>
         <div class="basis-2/10 font-semibold">Name</div>
@@ -12,10 +16,10 @@
         <div class="basis-3/10 flex flex-row">
             <div class="flex flex-row items-end gap-x-3">
                 <div class="flex flex-col">
-                    <input type="password" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-600" />
+                    <input type="password" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-600" @bind-value:event="oninput" @bind-value="LockPassword" />
                 </div>
                 <div>
-                    <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm font-light">UNLOCK</button>
+                    <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm font-light" @onclick="GetPasswords">UNLOCK</button>
                 </div>
             </div>
         </div>
@@ -33,17 +37,28 @@
                 <div>Saved Passwords</div>
             </div>
             <div class="flex flex-col gap-y-1 py-1">
-                <PasswordLine Id="10" Password="NH(*9f9*UDS" />
-                <PasswordLine Id="20" Password="*(D*F&SIcvbcvbcvbcvbcv" />
-                <PasswordLine Id="30" Password=")(*)AUDFO" />
+                @if (Passwords != null && Passwords.Passwords != null)
+                {
+                    foreach (var line in Passwords.Passwords)
+                    {
+                        <PasswordLine Id="@line.Id" Password="@line.Value" />
+                    }
+                }                
                 <div class="flex flex-row items-end">
                     <div class="basis-1/10"></div>
                     <div class="flex flex-row gap-x-3 basis-2/10">
                         <div class="flex flex-col">
-                            <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" />
+                            <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" @bind-value:event="oninput" @bind-value="NewPassword" />
                         </div>
                         <div>
-                            <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm font-light">ADD</button>
+                            @if (string.IsNullOrEmpty(NewPassword))
+                            {
+                                <button class="bg-gray-400 text-white px-5 py-2 h-10 hover:bg-gray-600 text-sm font-light">ADD</button>
+                            }
+                            else
+                            {
+                                <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm font-light" @onclick="AddPassword">ADD</button>
+                            }
                         </div>
                     </div>
                 </div>
@@ -58,9 +73,27 @@
     public SharedModels.Database.Record model { get; set; }
 
     bool isExpanded = false;
+    RecordPasswordsModel Passwords { get; set; }
+    string LockPassword { get; set; }    
 
     void ExpandHandler()
     {
         isExpanded = !isExpanded;
+    }
+
+    async Task GetPasswords()
+    {
+        Passwords = await _dataService.GetPasswordsByRecordId(model.Id, LockPassword);
+    }
+
+    string NewPassword { get; set; }
+
+    async Task AddPassword()
+    {
+        if (string.IsNullOrEmpty(LockPassword) || string.IsNullOrEmpty(NewPassword))
+        {
+            return;
+        }
+        await _dataService.AddPassword(LockPassword, NewPassword, model.Id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using SharedModels.Database;
+using SharedModels.DataService;
 
 namespace PManagerFrontend.Interfaces.Services
 {
@@ -9,5 +10,7 @@ namespace PManagerFrontend.Interfaces.Services
         Task<List<Record>> GetRecordsByCategory(string category);
         Task CreateRecord(string name, string url, string category);
         Task CreateRecordWithPassword(string name, string url, string category, string lockpassword, string newpassword);
+        Task<RecordPasswordsModel> GetPasswordsByRecordId(int id, string lockpassword);
+        Task AddPassword(string lockpassword, string newpassword, int recordId);
     }
 }
