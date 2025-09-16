@@ -1,4 +1,4 @@
-﻿namespace PManager.Models.DataController
+﻿namespace SharedModels.InputModels
 {
     public class PasswordParametersModel
     {

@@ -1,6 +1,6 @@
 ﻿using SharedModels.Database;
 
-namespace PManager.Models.DataService
+namespace SharedModels.DataService
 {
     public class RecordPasswordsModel
     {

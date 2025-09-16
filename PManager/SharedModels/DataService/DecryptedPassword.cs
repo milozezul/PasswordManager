@@ -1,4 +1,4 @@
-﻿namespace PManager.Models.DataService
+﻿namespace SharedModels.DataService
 {
     public class DecryptedPassword
     {

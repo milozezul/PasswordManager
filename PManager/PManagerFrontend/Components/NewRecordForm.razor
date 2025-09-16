@@ -1,33 +1,50 @@
-﻿<div class="flex flex-col border-1 bg-white">
+﻿@using PManagerFrontend.Interfaces.Services
+@inject IDataService _dataService;
+
+<div class="flex flex-col border-1 bg-white">
     <div class="flex flex-row bg-gray-100 py-2 pl-3">        
         <div class="basis-3/10 font-semibold">Create New Record</div>
     </div>
     <div class="flex flex-row py-2 items-end gap-x-3 pl-3">      
         <div class="basis-2/10">
             <div>Name</div>
-            <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" />
+            <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" @bind-value:event="oninput" @bind-value="Name" />
         </div>
         <div class="basis-2/10">
             <div>Url</div>
-            <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" />
+            <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" @bind-value:event="oninput" @bind-value="Url" />
         </div>
         <div class="flex flex-col basis-2/10">
             <div>Lock Password</div>
-            <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" />
+            @if (isPassword)
+            {
+                <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" @bind-value:event="oninput" @bind-value="LockPassword" />
+            }
+            else
+            {
+                <input disabled type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full bg-gray-200" />
+            }            
         </div>
         <div class="flex flex-col basis-2/10">
             <div>Saved Password</div>
-            <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" />
+            @if (isPassword)
+            {
+                <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" @bind-value:event="oninput" @bind-value="NewPassword" />
+            }
+            else
+            {
+                <input disabled type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full bg-gray-200" />
+            }            
         </div>
         <div class="flex flex-col">
             <div class="flex flex-row items-end">
                 <label class="flex flex-row items-center gap-x-3 text-sm">
-                    <input type="checkbox" name="savepassword" />
+                    <input type="checkbox" name="savepassword" checked @bind-value="isPassword" />
                     Save password
                 </label>
             </div>
             <div class="flex flex-row justify-start">
-                <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm font-light">ADD RECORD</button>
+                <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm font-light" @onclick="CreateRecord">ADD RECORD</button>
             </div>            
         </div>        
     </div>
@@ -35,5 +52,33 @@
 
 
 @code {
+    [Parameter]
+    public string Category { get; set; }
 
+    bool isPassword { get; set; } = true;
+    string Name { get; set; }
+    string Url { get; set; }
+    string LockPassword { get; set; }
+    string NewPassword { get; set; }
+
+    async Task CreateRecord()
+    {
+        if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Url))
+        {
+            return;
+        }
+
+        if (isPassword)
+        {
+            if (string.IsNullOrEmpty(LockPassword) || string.IsNullOrEmpty(NewPassword))
+            {
+                return;
+            }
+            await _dataService.CreateRecordWithPassword(Name, Url, Category, LockPassword, NewPassword);
+        }
+        else
+        {
+            await _dataService.CreateRecord(Name, Url, Category);
+        }
+    }
 }

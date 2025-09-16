@@ -1,5 +1,5 @@
-﻿using PManager.Models.DataService;
-using SharedModels.Database;
+﻿using SharedModels.Database;
+using SharedModels.DataService;
 
 namespace PManager.Interfaces.Services
 {

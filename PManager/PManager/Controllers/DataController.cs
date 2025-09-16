@@ -2,6 +2,7 @@
 using PManager.Interfaces.Services;
 using PManager.Models.DataController;
 using SharedModels.Database;
+using SharedModels.InputModels;
 
 namespace PManager.Controllers
 {

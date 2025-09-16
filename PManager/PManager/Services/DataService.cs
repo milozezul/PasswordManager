@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PManager.Data;
 using PManager.Interfaces.Services;
-using PManager.Models.DataService;
 using SharedModels.Database;
+using SharedModels.DataService;
 using System.Text;
 
 namespace PManager

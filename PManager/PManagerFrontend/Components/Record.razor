@@ -6,9 +6,9 @@
         <div class="basis-2/10 font-semibold">Password</div>
     </div>
     <div class="flex flex-row py-2 font-light items-center">
-        <div class="basis-1/10 pl-8">150</div>
-        <div class="basis-2/10">Precheckin Auth String</div>
-        <div class="basis-2/10">GuestConnect</div>
+        <div class="basis-1/10 pl-8">@model.Id</div>
+        <div class="basis-2/10">@model.Name</div>
+        <div class="basis-2/10">@model.Url</div>
         <div class="basis-3/10 flex flex-row">
             <div class="flex flex-row items-end gap-x-3">
                 <div class="flex flex-col">
@@ -54,6 +54,9 @@
 </div>
 
 @code {
+    [Parameter][EditorRequired]
+    public SharedModels.Database.Record model { get; set; }
+
     bool isExpanded = false;
 
     void ExpandHandler()
