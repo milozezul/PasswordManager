@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using PManager.Models.Configs;
+using SharedModels.Database;
 
 namespace PManager.Data
 {
@@ -72,36 +73,5 @@ namespace PManager.Data
                 .Property(v => v.Url)
                 .HasMaxLength(300);
         }
-    }
-
-    public class Password
-    {
-        public int Id { get; set; }
-        public byte[] Value { get; set; }
-
-    }
-
-    public class Category
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
-    }
-
-    public class RecordPasswords
-    {
-        public int PasswordId { get; set; }
-        public int RecordId { get; set; }
-
-        public Password Password { get; set; }
-        public Record Record { get; set; }
-
-    }
-    public class Record
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Url { get; set; }
-        public Category Category { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using PManager.Data;
+﻿using SharedModels.Database;
 
 namespace PManager.Models.DataService
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PManager.Data;
 using PManager.Interfaces.Services;
 using PManager.Models.DataController;
+using SharedModels.Database;
 
 namespace PManager.Controllers
 {

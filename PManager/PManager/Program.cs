@@ -18,11 +18,20 @@ namespace PManager
 
             builder.Services.AddDbContext<PManagerDbContext>(options => options.UseSqlServer(builder.Configuration.GetSection("SQL").GetValue<string>("ConnectionString")));
             builder.Services.AddScoped<IDataService, DataService>();
-            builder.Services.AddScoped<IEncryptionService, EncryptionService>();            
+            builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CORS", policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                });
+            });
 
             var app = builder.Build();
 
             app.UseHttpsRedirection();
+
+            app.UseCors("CORS");
 
             app.UseAuthorization();
 
