@@ -22,6 +22,7 @@ namespace PManager
             //lowercase compare
             //clean string
             return await _context.Records
+                .Where(r => r.Category.Name == category)
                 .Include(r => r.Category)
                 .ToListAsync();
         }
