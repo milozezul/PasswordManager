@@ -1,50 +1,60 @@
 ﻿@using PManagerFrontend.Interfaces.Services
 @inject IDataService _dataService;
 
-<div class="flex flex-col border-1 bg-white">
-    <div class="flex flex-row bg-gray-100 py-2 pl-3">        
-        <div class="basis-3/10 font-semibold">Create New Record</div>
+<div class="flex flex-col border-1 bg-gray-700">
+    <div class="flex flex-row bg-gray-800 py-2 pl-3">        
+        <div class="basis-3/10 font-semibold text-gray-100">Create New Record</div>
     </div>
     <div class="flex flex-row py-2 items-end gap-x-3 pl-3">      
         <div class="basis-2/10">
-            <div>Name</div>
-            <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" @bind-value:event="oninput" @bind-value="Name" />
+            <div class="text-gray-100">Name</div>
+            <input type="text" class="h-10 py-2 w-50 pl-2 text-gray-900 w-full bg-gray-200" @bind-value:event="oninput" @bind-value="Name" />
         </div>
         <div class="basis-2/10">
-            <div>Url</div>
-            <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" @bind-value:event="oninput" @bind-value="Url" />
+            <div class="text-gray-100">Url</div>
+            <input type="text" class="h-10 py-2 w-50 pl-2 text-gray-900 w-full bg-gray-200" @bind-value:event="oninput" @bind-value="Url" />
         </div>
         <div class="flex flex-col basis-2/10">
-            <div>Lock Password</div>
+            <div class="text-gray-100">Lock Password</div>
             @if (isPassword)
             {
-                <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" @bind-value:event="oninput" @bind-value="LockPassword" />
+                <input type="text" class="h-10 py-2 w-50 pl-2 text-gray-900 w-full bg-gray-200" @bind-value:event="oninput" @bind-value="LockPassword" />
             }
             else
             {
-                <input disabled type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full bg-gray-200" />
+                <input disabled type="text" class="h-10 py-2 w-50 pl-2 w-full bg-gray-400" />
             }            
         </div>
         <div class="flex flex-col basis-2/10">
-            <div>Saved Password</div>
+            <div class="text-gray-100">Saved Password</div>
             @if (isPassword)
             {
-                <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full" @bind-value:event="oninput" @bind-value="NewPassword" />
+                <input type="text" class="h-10 py-2 w-50 pl-2 text-gray-900 w-full bg-gray-200" @bind-value:event="oninput" @bind-value="NewPassword" />
             }
             else
             {
-                <input disabled type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-800 w-full bg-gray-200" />
+                <input disabled type="text" class="h-10 py-2 w-50 pl-2 w-full bg-gray-400" />
             }            
         </div>
         <div class="flex flex-col">
             <div class="flex flex-row items-end">
-                <label class="flex flex-row items-center gap-x-3 text-sm">
+                <label class="flex flex-row items-center gap-x-3 text-sm text-gray-100">
                     <input type="checkbox" name="savepassword" checked @bind-value="isPassword" />
                     Save password
                 </label>
             </div>
             <div class="flex flex-row justify-start">
-                <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm font-light" @onclick="CreateRecord">ADD RECORD</button>
+                @if (
+                    ((string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Url)) && isPassword == false) ||
+                    ((string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Url) || string.IsNullOrEmpty(LockPassword) || string.IsNullOrEmpty(NewPassword)) && isPassword == true)
+                )
+                {
+                    <button class="bg-gray-400 text-white px-5 py-2 h-10 hover:bg-gray-400 text-sm font-light">ADD RECORD</button>
+                }
+                else
+                {
+                    <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm font-light" @onclick="CreateRecord">ADD RECORD</button>
+                }                
             </div>            
         </div>        
     </div>

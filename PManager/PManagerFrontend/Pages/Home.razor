@@ -7,14 +7,17 @@
 <div class="flex flex-row justify-center items-center mt-5">
     <div class="w-[80%]">
         @* Tool panel *@
-        <div class="flex flex-row justify-between bg-white py-3 px-3">           
+        <div class="flex flex-row justify-between bg-gray-700 py-3 px-3">           
             <div class="flex flex-row gap-x-3">
                 <div>
-                    <select class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-600" @bind="SearchedCategory">
-                        <option value="0">Select Category</option>
-                        @foreach (var item in Categories)
+                    <select class="bg-gray-200 h-10 py-2 w-50 pl-2 text-gray-900" @bind="SearchedCategory">
+                        <option value="0" selected>Select Category</option>
+                        @if (Categories != null)
                         {
-                            <option value="@item.Name" >@item.Name</option>
+                            foreach (var item in Categories)
+                            {
+                                <option value="@item.Name" >@item.Name</option>
+                            }
                         }
                     </select>
                 </div>
@@ -22,41 +25,54 @@
                     <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm" @onclick="RefreshCategories">REFRESH</button>
                 </div>
                 <div>
-                    <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm" @onclick="SearchRecords">SEARCH</button>
+                    @if (SearchedCategory == "0")
+                    {
+                        <button class="bg-gray-400 text-white px-5 py-2 h-10 hover:bg-gray-400 text-sm">SEARCH</button>
+                    }
+                    else
+                    {
+                        <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm" @onclick="SearchRecords">SEARCH</button>
+                    }                    
                 </div>
             </div>
 
             <div class="flex flex-row gap-x-3">
                 <div>
-                    <input type="text" class="border-1 border-gray-400 h-10 py-2 w-50 pl-2 text-gray-600" @bind-value="NewCategory" />
+                    <input type="text" class="bg-gray-200 h-10 py-2 w-50 pl-2 text-gray-900" @bind-value:event="oninput" @bind-value="NewCategory" />
                 </div>
 
                 <div>
-                    <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm" @onclick="CreateNewCategory">ADD GROUP</button>                                     
+                    @if (string.IsNullOrEmpty(NewCategory))
+                    {
+                        <button class="bg-gray-400 text-white px-5 py-2 h-10 hover:bg-gray-400 text-sm">ADD GROUP</button>
+                    }
+                    else
+                    {
+                        <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm" @onclick="CreateNewCategory">ADD GROUP</button>
+                    }
                 </div>
-            </div>
-            
+            </div>            
         </div>
 
         @* Records list *@
         <div class="flex flex-col mt-5 gap-y-5">
             <NewRecordForm Category="@SearchedCategory" />
-
-            @foreach (var record in Records)
-            {
-                <Record model="@record" />
-            }
+            @if (Records != null) {
+                foreach (var record in Records)
+                {
+                    <Record model="@record" />
+                }
+            }            
 
         </div>
     </div>
 </div>
 
 @code {
-    List<Category> Categories = new List<Category>();
-    List<SharedModels.Database.Record> Records = new List<SharedModels.Database.Record>();
-
+    List<Category> Categories { get; set; } = null;
+    List<SharedModels.Database.Record> Records { get; set; }
     string NewCategory { get; set; } = "";
-    string SearchedCategory { get; set; } = "";
+    string SearchedCategory { get; set; } = "0";
 
     protected override async Task OnInitializedAsync()
     {
