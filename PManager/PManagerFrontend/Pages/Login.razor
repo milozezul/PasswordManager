@@ -1,7 +1,12 @@
 ﻿@page "/"
+@using PManagerFrontend.Components
+@using PManagerFrontend.Interfaces.Services
+@using PManagerFrontend.Models.Components
 @inject NavigationManager Navigation;
+@inject IAuthService _auth;
 
 <div class="flex flex-row justify-center mt-5">
+    <ErrorModal Error="@Error" />
     <div class="bg-gray-700 text-white flex flex-col">
         <div class="bg-gray-600 w-full p-2 text-lg">Login</div>
         <div class="w-full flex flex-col items-center p-5">
@@ -38,16 +43,43 @@
 </div>
 
 @code {
+    ErrorState Error { get; set; } = new ErrorState();
+
     string Username { get; set; }
     string Password { get; set; }
 
     async Task OnLogin()
     {
-        Navigation.NavigateTo("/dashboard");
+        var res = await _auth.Login(new SharedModels.InputModels.LoginInput()
+        {
+            Username = Username,
+            Password = Password
+        });
+        if (!string.IsNullOrEmpty(res.Value))
+        {
+            //set state
+            Navigation.NavigateTo("/dashboard");
+        }
+        else
+        {
+            ErrorState.OpenError(Error, "Error", res.Message);            
+        }
     }
 
     async Task OnRegister()
     {
-        Navigation.NavigateTo("/dashboard");
+        var res = await _auth.Register(new SharedModels.InputModels.LoginInput()
+        {
+            Username = Username,
+            Password = Password
+        });
+        if (res.Value)
+        {
+            ErrorState.OpenError(Error, "Success", "Registered sucessfully. Please login.");            
+        }
+        else
+        {
+            ErrorState.OpenError(Error, "Error", res.Message);            
+        }
     }
 }

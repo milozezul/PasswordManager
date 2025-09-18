@@ -1,10 +1,11 @@
 ﻿using PManager.Models.Database;
+using SharedModels.InputModels;
 
 namespace PManager.Interfaces.Services
 {
     public interface IAuthService
     {
-        Task<User> CreateUser(string username, string password);
-        Task<string?> Login(string username, string password);
+        Task<User> CreateUser(LoginInput input);
+        Task<string?> Login(LoginInput input);
     }
 }

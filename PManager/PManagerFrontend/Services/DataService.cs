@@ -19,6 +19,7 @@ namespace PManagerFrontend.Services
 
         public async Task<List<Category>> GetCategories()
         {
+            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 try
@@ -44,6 +45,7 @@ namespace PManagerFrontend.Services
 
         public async Task CreateNewCategory(string category)
         {
+            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 try
@@ -59,6 +61,7 @@ namespace PManagerFrontend.Services
 
         public async Task<List<Record>> GetRecordsByCategory(string category)
         {
+            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 try
@@ -83,6 +86,7 @@ namespace PManagerFrontend.Services
 
         public async Task CreateRecord(string name, string url, string category)
         {
+            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 try
@@ -98,6 +102,7 @@ namespace PManagerFrontend.Services
 
         public async Task CreateRecordWithPassword(string name, string url, string category, string lockpassword, string newpassword)
         {
+            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 try
@@ -120,6 +125,7 @@ namespace PManagerFrontend.Services
 
         public async Task<RecordPasswordsModel> GetPasswordsByRecordId(int id, string lockpassword)
         {
+            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 try
@@ -150,6 +156,7 @@ namespace PManagerFrontend.Services
 
         public async Task AddPassword(string lockpassword, string newpassword, int recordId)
         {
+            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 try

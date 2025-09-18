@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PManager.Interfaces.Services;
 using SharedModels.Database;
 using SharedModels.InputModels;
@@ -7,6 +8,8 @@ namespace PManager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
+    //wrap in response wrappers
     public class DataController : ControllerBase
     {
         IDataService _dataService;

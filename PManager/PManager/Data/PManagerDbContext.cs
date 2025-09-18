@@ -43,7 +43,7 @@ namespace PManager.Data
                 .IsUnique();
             users
                 .Property(u => u.PasswordHash)
-                .HasMaxLength(200);
+                .HasMaxLength(300);
 
             var userrecords = modelBuilder
                 .Entity<UserRecord>();

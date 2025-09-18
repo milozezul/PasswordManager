@@ -5,6 +5,7 @@ using PManager.Data;
 using PManager.Interfaces.Services;
 using PManager.Models.Configs;
 using PManager.Models.Database;
+using SharedModels.InputModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -27,8 +28,8 @@ namespace PManager.Services
             try
             {
                 var user = await _context.Users
-                    .Where(u => u.Username == username)
-                    .FirstAsync();
+                    .FirstOrDefaultAsync(u => u.Username == username);
+
                 return user;
             }
             catch (Exception ex)
@@ -37,14 +38,15 @@ namespace PManager.Services
             }
         }
 
-        public async Task<string?> Login(string username, string password)
+        public async Task<string?> Login(LoginInput input)
         {
-            var user = await GetUser(username);
+            var user = await GetUser(input.Username);
             if (user != null)
             {
                 using (var sha = SHA256.Create())
                 {
-                    if (user.PasswordHash == Encoding.UTF8.GetString(sha.ComputeHash(Encoding.UTF8.GetBytes(password))))
+                    var passwordHash = Encoding.UTF8.GetString(sha.ComputeHash(Encoding.UTF8.GetBytes(input.Password)));
+                    if (user.PasswordHash == passwordHash)
                     {
                         return GetBearerToken(user.Id);
                     }
@@ -60,7 +62,7 @@ namespace PManager.Services
             }
         }
 
-        public async Task<User> CreateUser(string username, string password)
+        public async Task<User> CreateUser(LoginInput input)
         {
             try
             {
@@ -68,9 +70,10 @@ namespace PManager.Services
                 {
                     var user = await _context.Users.AddAsync(new User()
                     {
-                        Username = username,
-                        PasswordHash = Encoding.UTF8.GetString(sha.ComputeHash(Encoding.UTF8.GetBytes(password)))
+                        Username = input.Username,
+                        PasswordHash = Encoding.UTF8.GetString(sha.ComputeHash(Encoding.UTF8.GetBytes(input.Password)))
                     });
+                    await _context.SaveChangesAsync();
                     return user.Entity;
                 }
             }
