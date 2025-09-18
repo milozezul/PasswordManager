@@ -16,5 +16,6 @@ builder.Services.AddHttpClient("api", client =>
 
 builder.Services.AddScoped<IDataService, DataService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSingleton<IStateManager, StateManager>();
 
 await builder.Build().RunAsync();

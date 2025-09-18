@@ -84,9 +84,6 @@ namespace PManager.Data
             categories
                 .HasKey(c => c.Id);
             categories
-                .HasIndex(c => c.Name)
-                .IsUnique();
-            categories
                 .Property(c => c.Name)
                 .HasMaxLength(200);
 

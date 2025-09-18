@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PManager.Data;
 using PManager.Interfaces.Services;
+using PManager.Models.Database;
 using SharedModels.Database;
 using SharedModels.DataService;
 using System.Text;
@@ -11,45 +12,48 @@ namespace PManager
     {
         PManagerDbContext _context;
         IEncryptionService _encryptService;
-        public DataService(PManagerDbContext context, IEncryptionService encryptService)
+        IHttpContextAccessor _httpContext;
+        public DataService(PManagerDbContext context, IEncryptionService encryptService, IHttpContextAccessor httpContext)
         {
             _context = context;
             _encryptService = encryptService;
+            _httpContext = httpContext;
+        }
+
+        private int GetUserId()
+        {
+            var claim = _httpContext.HttpContext.User.Claims.FirstOrDefault(u => u.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid");
+            if (int.TryParse(claim.Value, out int res))
+            {
+                return res;
+            }
+            else
+            {
+                return -1;
+            }
         }
         //implemented
         public async Task<List<Record>> GetRecords(string category)
         {
             //lowercase compare
             //clean string
-            return await _context.Records
+            int userId = GetUserId();
+            var userrecords = await _context.UserRecords
+                .Where(u => u.UserId == userId)
+                .Select(u => u.Record)
                 .Where(r => r.Category.Name == category)
-                .Include(r => r.Category)
                 .ToListAsync();
-        }
-        //implemented
-        public async Task<Record> GetRecordByName(string name)
-        {
-            //lowercase compare
-            //clean string
-            return await _context.Records
-                .Include(r => r.Category)
-                .SingleOrDefaultAsync(r => r.Name == name);
-        }
-        //implemented
-        public async Task<Record> GetRecordByUrl(string url)
-        {
-            //lowercase compare
-            //clean string
-            return await _context.Records
-                .Include(r => r.Category)
-                .SingleOrDefaultAsync(r => r.Url == url);
+            return userrecords;
         }
         //private
         async Task<Record> GetRecordById(int id)
         {
-            return await _context.Records
-                .Include(r => r.Category)
+            int userId = GetUserId();
+            var userrecords = await _context.UserRecords
+                .Where(u => u.UserId == userId)
+                .Select(u => u.Record)
                 .SingleOrDefaultAsync(r => r.Id == id);
+            return userrecords;
         }
         //implemented
         public async Task<RecordPasswordsModel> GetPasswordsByRecordId(int recordId, string password)
@@ -96,20 +100,28 @@ namespace PManager
         //implemented
         public async Task<List<Category>> GetCategories()
         {
-            return await _context.Categories.ToListAsync();
+            int userId = GetUserId();
+            return await _context.UserCategories.Where(u => u.UserId == userId).Select(u => u.Category).ToListAsync();            
         }
         //implemented
         public async Task<Category> CreateCategory(string name)
         {
             //lowercase
             //clean string
-            //make sure its unique
-            var category = await _context.Categories.AddAsync(new Category()
+            var existedCategory = await GetCategoryByName(name);
+            if (existedCategory != null) return null;//put some message in service respone model
+
+            int userId = GetUserId();
+            var category = await _context.UserCategories.AddAsync(new UserCategory()
             {
-                Name = name
+                UserId = userId,
+                Category = new Category()
+                {
+                    Name = name
+                }
             });
             await _context.SaveChangesAsync();
-            return category.Entity;
+            return category.Entity.Category;
         }
         //private
         async Task<Category> GetCategoryByName(string name)
@@ -118,7 +130,8 @@ namespace PManager
             //clean string
             try
             {
-                var category = await _context.Categories.SingleOrDefaultAsync(c => c.Name == name);
+                int userId = GetUserId();
+                var category = await _context.UserCategories.Where(u => u.UserId == userId).Select(u => u.Category).SingleOrDefaultAsync(c => c.Name == name);
                 return category;
             }
             catch (ArgumentNullException ex)
@@ -135,14 +148,25 @@ namespace PManager
             var categoryInput = await GetCategoryByName(category);
             if (categoryInput != null)
             {
-                var record = await _context.Records.AddAsync(new Record()
+                /*var record = await _context.Records.AddAsync(new Record()
                 {
                     Category = categoryInput,
                     Name = name,
                     Url = url
+                });*/
+                int userId = GetUserId();
+                var userrecord = await _context.UserRecords.AddAsync(new UserRecord()
+                {
+                    UserId = userId,
+                    Record = new Record()
+                    {
+                        Category = categoryInput,
+                        Name = name,
+                        Url = url
+                    }
                 });
                 await _context.SaveChangesAsync();
-                return record.Entity;
+                return userrecord.Entity.Record;
             }
             else
             {

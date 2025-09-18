@@ -14,8 +14,6 @@ namespace PManager.Interfaces.Services
         void Dispose();
         Task<List<Category>> GetCategories();
         Task<RecordPasswordsModel> GetPasswordsByRecordId(int recordId, string password);
-        Task<Record> GetRecordByName(string name);
-        Task<Record> GetRecordByUrl(string url);
         Task<List<Record>> GetRecords(string category);
         Task<DecryptedPassword> GetSpecificPassword(int recordId, int passwordId, string password);
     }

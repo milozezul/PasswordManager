@@ -22,6 +22,7 @@ namespace PManager
             builder.Services.Configure<JWTConfigs>(builder.Configuration.GetSection("JWT"));
 
             builder.Services.AddDbContext<PManagerDbContext>(options => options.UseSqlServer(builder.Configuration.GetSection("SQL").GetValue<string>("ConnectionString")));
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<IDataService, DataService>();
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IAuthService, AuthService>();

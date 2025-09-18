@@ -8,9 +8,11 @@ namespace PManagerFrontend.Services
     public class AuthService : IAuthService
     {
         IHttpClientFactory _factory;
-        public AuthService(IHttpClientFactory factory)
+        IStateManager _state;
+        public AuthService(IHttpClientFactory factory, IStateManager state)
         {
             _factory = factory;
+            _state = state;
         }
 
         public async Task<ResponseWrapper<bool>> Register(LoginInput input)
@@ -59,6 +61,10 @@ namespace PManagerFrontend.Services
                     var response = await client.PostAsync("api/Auth/login", content);
                     var jsonRes = await response.Content.ReadAsStringAsync();
                     var model = JsonSerializer.Deserialize<ResponseWrapper<string>>(jsonRes);
+                    if (!string.IsNullOrEmpty(model.Value))
+                    {
+                        _state.JwtBearer = model.Value;
+                    }
                     return model;
                 }
                 catch (Exception ex)

@@ -8,7 +8,7 @@ namespace PManager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     //wrap in response wrappers
     public class DataController : ControllerBase
     {
@@ -32,31 +32,6 @@ namespace PManager.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Sever Error: {ex.Message}");
-            }
-        }
-        //questionable
-        [HttpGet("records")]
-        public async Task<IActionResult> GetRecordByName([FromQuery] string? name, [FromQuery] string? url)
-        {
-            try
-            {
-                Record record = null;
-                if (!string.IsNullOrEmpty(name))
-                {
-                    record = await _dataService.GetRecordByName(name);                    
-                }
-                if (!string.IsNullOrEmpty(url))
-                {
-                    record = await _dataService.GetRecordByUrl(url);
-                }
-                if (record == null) return StatusCode(404);
-
-                return StatusCode(200, record);
-
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Server Error: {ex.Message}");
             }
         }
 

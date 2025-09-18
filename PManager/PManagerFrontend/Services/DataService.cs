@@ -2,19 +2,19 @@
 using SharedModels.Database;
 using SharedModels.DataService;
 using SharedModels.InputModels;
-using System;
 using System.Text;
 using System.Text.Json;
-using System.Xml.Linq;
 
 namespace PManagerFrontend.Services
 {
     public class DataService : IDataService
     {
         IHttpClientFactory _factory;
-        public DataService(IHttpClientFactory factory)
+        IStateManager _state;
+        public DataService(IHttpClientFactory factory, IStateManager state)
         {
             _factory = factory;
+            _state = state;
         }
 
         public async Task<List<Category>> GetCategories()
@@ -22,6 +22,7 @@ namespace PManagerFrontend.Services
             //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
                     var response = await client.GetAsync("api/Data/categories");
@@ -48,6 +49,7 @@ namespace PManagerFrontend.Services
             //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
                     await client.PostAsync("api/Data/categories/" + category, null);                 
@@ -64,6 +66,7 @@ namespace PManagerFrontend.Services
             //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
                     var response = await client.GetAsync("api/Data/records/" + category);
@@ -89,6 +92,7 @@ namespace PManagerFrontend.Services
             //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
                     await client.PostAsync($"api/Data/records/{category}?name={name}&url={url}", null);
@@ -105,6 +109,7 @@ namespace PManagerFrontend.Services
             //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
                     PasswordParametersModel input = new PasswordParametersModel()
@@ -128,6 +133,7 @@ namespace PManagerFrontend.Services
             //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
                     var input = new PasswordInputModel()
@@ -159,6 +165,7 @@ namespace PManagerFrontend.Services
             //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
                     PasswordParametersModel input = new PasswordParametersModel()
