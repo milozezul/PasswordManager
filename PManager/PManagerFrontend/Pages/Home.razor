@@ -1,10 +1,12 @@
 ﻿@page "/dashboard"
 @using PManagerFrontend.Components
 @using PManagerFrontend.Interfaces.Services
+@using PManagerFrontend.Models.Components
 @using SharedModels.Database
 @inject IDataService _dataService;
 
 <div class="flex flex-row justify-center items-center mt-5">
+    <ErrorModal Error="@Error" />
     <div class="w-[80%]">
         @* Tool panel *@
         <div class="flex flex-row justify-between bg-gray-700 py-3 px-3">           
@@ -69,6 +71,8 @@
 </div>
 
 @code {
+    ErrorState Error { get; set; } = new ErrorState();
+
     List<Category> Categories { get; set; } = null;
     List<SharedModels.Database.Record> Records { get; set; }
     string NewCategory { get; set; } = "";
@@ -83,8 +87,8 @@
     {
         if (!string.IsNullOrEmpty(NewCategory))
         {
-            await _dataService.CreateNewCategory(NewCategory.ToLower());
-        }        
+            await _dataService.CreateNewCategory(NewCategory);
+        }
     }
 
     async Task RefreshCategories()

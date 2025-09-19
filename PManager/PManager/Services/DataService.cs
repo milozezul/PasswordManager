@@ -32,42 +32,46 @@ namespace PManager
                 return -1;
             }
         }
-        //implemented
+
         public async Task<List<Record>> GetRecords(string category)
         {
             //lowercase compare
             //clean string
             int userId = GetUserId();
-            var userrecords = await _context.UserRecords
+
+            return await _context.UserRecords
                 .Where(u => u.UserId == userId)
                 .Select(u => u.Record)
                 .Where(r => r.Category.Name == category)
-                .ToListAsync();
-            return userrecords;
+                .ToListAsync();                     
         }
-        //private
-        async Task<Record> GetRecordById(int id)
+
+        async Task<Record?> GetRecordById(int id)
         {
             int userId = GetUserId();
-            var userrecords = await _context.UserRecords
+
+            return await _context.UserRecords
                 .Where(u => u.UserId == userId)
                 .Select(u => u.Record)
-                .SingleOrDefaultAsync(r => r.Id == id);
-            return userrecords;
+                .SingleOrDefaultAsync(r => r.Id == id);            
         }
-        //implemented
-        public async Task<RecordPasswordsModel> GetPasswordsByRecordId(int recordId, string password)
+        
+        public async Task<RecordPasswordsModel?> GetPasswordsByRecordId(int recordId, string password)
         {
             var record = await GetRecordById(recordId);
 
             if (record == null) return null;
 
-            var passwords = await _context.RecordPasswords.Where(r => r.RecordId == record.Id).Select(p => p.Password).ToListAsync();
-            var decryptedPasswords = passwords.Select(c => new DecryptedPassword()
-            {
-                Id = c.Id,
-                Value = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(c.Value, password))
-            }).ToList();
+            var passwords = await _context.RecordPasswords
+                .Where(r => r.RecordId == record.Id)
+                .Select(p => p.Password)
+                .ToListAsync();
+            var decryptedPasswords = passwords
+                .Select(c => new DecryptedPassword()
+                {
+                    Id = c.Id,
+                    Value = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(c.Value, password))
+                }).ToList();
 
             var result = new RecordPasswordsModel()
             {
@@ -76,19 +80,23 @@ namespace PManager
             };
             return result;
         }
-        //private
+        
         async Task<RecordPasswordsModel> GetEncryptedPasswordsByRecordId(int recordId)
         {
             var record = await GetRecordById(recordId);
 
             if (record == null) return null;
 
-            var passwords = await _context.RecordPasswords.Where(r => r.RecordId == record.Id).Select(p => p.Password).ToListAsync();
-            var decryptedPasswords = passwords.Select(c => new DecryptedPassword()
-            {
-                Id = c.Id,
-                Value = Encoding.UTF8.GetString(c.Value)
-            }).ToList();
+            var passwords = await _context.RecordPasswords
+                .Where(r => r.RecordId == record.Id)
+                .Select(p => p.Password)
+                .ToListAsync();
+            var decryptedPasswords = passwords
+                .Select(c => new DecryptedPassword()
+                {
+                    Id = c.Id,
+                    Value = Encoding.UTF8.GetString(c.Value)
+                }).ToList();
 
             var result = new RecordPasswordsModel()
             {
@@ -97,65 +105,65 @@ namespace PManager
             };
             return result;
         }
-        //implemented
+        
         public async Task<List<Category>> GetCategories()
         {
             int userId = GetUserId();
-            return await _context.UserCategories.Where(u => u.UserId == userId).Select(u => u.Category).ToListAsync();            
+
+            return await _context.UserCategories
+                .Where(u => u.UserId == userId)
+                .Select(u => u.Category)
+                .ToListAsync();
         }
-        //implemented
-        public async Task<Category> CreateCategory(string name)
+        
+        public async Task<Category?> CreateCategory(string name)
         {
             //lowercase
             //clean string
             var existedCategory = await GetCategoryByName(name);
-            if (existedCategory != null) return null;//put some message in service respone model
+
+            if (existedCategory != null) return null;
 
             int userId = GetUserId();
-            var category = await _context.UserCategories.AddAsync(new UserCategory()
-            {
-                UserId = userId,
-                Category = new Category()
+
+            var category = await _context.UserCategories
+                .AddAsync(new UserCategory()
                 {
-                    Name = name
-                }
-            });
+                    UserId = userId,
+                    Category = new Category()
+                    {
+                        Name = name
+                    }
+                });
             await _context.SaveChangesAsync();
             return category.Entity.Category;
         }
-        //private
-        async Task<Category> GetCategoryByName(string name)
+        
+        async Task<Category?> GetCategoryByName(string name)
         {
             //lowercase
             //clean string
-            try
-            {
-                int userId = GetUserId();
-                var category = await _context.UserCategories.Where(u => u.UserId == userId).Select(u => u.Category).SingleOrDefaultAsync(c => c.Name == name);
-                return category;
-            }
-            catch (ArgumentNullException ex)
-            {
-                return null;
-            }
+            int userId = GetUserId();
+
+            return  await _context.UserCategories
+                .Where(u => u.UserId == userId)
+                .Select(u => u.Category)
+                .SingleOrDefaultAsync(c => c.Name == name);
         }
-        //implemented
-        public async Task<Record> CreateRecord(string category, string name, string url)
+        
+        public async Task<Record?> CreateRecord(string category, string name, string url)
         {
             //lowercase compare
             //clean strings
             //validate strings
             var categoryInput = await GetCategoryByName(category);
-            if (categoryInput != null)
-            {
-                /*var record = await _context.Records.AddAsync(new Record()
-                {
-                    Category = categoryInput,
-                    Name = name,
-                    Url = url
-                });*/
-                int userId = GetUserId();
-                var userrecord = await _context.UserRecords.AddAsync(new UserRecord()
+
+            if (categoryInput == null) return null;
+            
+            int userId = GetUserId();
+
+            var userrecord = await _context.UserRecords
+                .AddAsync(new UserRecord()
                 {
                     UserId = userId,
                     Record = new Record()
@@ -165,40 +173,35 @@ namespace PManager
                         Url = url
                     }
                 });
-                await _context.SaveChangesAsync();
-                return userrecord.Entity.Record;
-            }
-            else
-            {
-                throw new Exception("Category doesn't exist")
-                {
-                    Source = "Task<Record> CreateRecord(string category, string name, string url)"
-                };
-            }
+            await _context.SaveChangesAsync();
+            return userrecord.Entity.Record;
         }
-        //implemented
-        public async Task<Password> AddPassword(int recordId, string newPassword, string password)
+        
+        public async Task<Password?> AddPassword(int recordId, string newPassword, string password)
         {
             //clean password
+            //remove roundtrip
             var record = await GetRecordById(recordId);
 
             if (record == null) return null;
 
-            var createdPassword = await _context.Passwords.AddAsync(new Password()
-            {
-                Value = _encryptService.EncryptWithPassword(Encoding.UTF8.GetBytes(newPassword), password)
-            });
+            var createdPassword = await _context.Passwords
+                .AddAsync(new Password()
+                {
+                    Value = _encryptService.EncryptWithPassword(Encoding.UTF8.GetBytes(newPassword), password)
+                });
 
-            var recordPassword = await _context.RecordPasswords.AddAsync(new RecordPasswords()
-            {
-                Password = createdPassword.Entity,
-                Record = record
-            });
+            var recordPassword = await _context.RecordPasswords
+                .AddAsync(new RecordPasswords()
+                {
+                    Password = createdPassword.Entity,
+                    Record = record
+                });
             await _context.SaveChangesAsync();
             return createdPassword.Entity;
         }
-        //implemented
-        public async Task<RecordPasswordsModel> CreateRecordWithPassword(string category, string name, string url, string newPassword, string password)
+        
+        public async Task<RecordPasswordsModel?> CreateRecordWithPassword(string category, string name, string url, string newPassword, string password)
         {
             //clean strings
             //lowercase strings
@@ -210,17 +213,22 @@ namespace PManager
             var createdPassword = await AddPassword(record.Id, newPassword, password);
 
             var passwords = await GetEncryptedPasswordsByRecordId(record.Id);
+
             await _context.SaveChangesAsync();
             return passwords;
         }
-        //implemented
-        public async Task<DecryptedPassword> GetSpecificPassword(int recordId, int passwordId, string password)
+        
+        public async Task<DecryptedPassword?> GetSpecificPassword(int recordId, int passwordId, string password)
         {
             var record = await GetRecordById(recordId);
 
             if (record == null) return null;
 
-            var foundPassword = await _context.RecordPasswords.Where(r => r.RecordId == record.Id && r.PasswordId == passwordId).Select(p => p.Password).FirstAsync();
+            var foundPassword = await _context.RecordPasswords
+                .Where(r => r.RecordId == record.Id && r.PasswordId == passwordId)
+                .Select(p => p.Password)
+                .FirstAsync();
+
             var decryptedPassword = new DecryptedPassword()
             {
                 Id = foundPassword.Id,
@@ -229,6 +237,7 @@ namespace PManager
             
             return decryptedPassword;
         }
+
         //on hold
         public async Task DeactivateRecord(int recordId, string password)
         {
