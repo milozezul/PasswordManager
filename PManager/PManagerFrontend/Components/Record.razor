@@ -59,7 +59,7 @@
                             <input type="text" class="h-10 py-2 w-50 pl-2 text-gray-900 bg-gray-200 w-full" @bind-value:event="oninput" @bind-value="NewPassword" />
                         </div>
                         <div>
-                            @if (string.IsNullOrEmpty(NewPassword))
+                            @if (string.IsNullOrEmpty(NewPassword) || string.IsNullOrEmpty(LockPassword))
                             {
                                 <button class="bg-gray-400 text-white px-5 py-2 h-10 hover:bg-gray-600 text-sm font-light">ADD</button>
                             }
@@ -99,6 +99,11 @@
 
     string NewPassword { get; set; }
 
+    void ClearNewPassword()
+    {
+        NewPassword = "";
+    }
+
     async Task AddPassword()
     {
         if (string.IsNullOrEmpty(LockPassword) || string.IsNullOrEmpty(NewPassword))
@@ -115,6 +120,8 @@
                 Header = "Success",
                 Body = "Added password successfully."
             });
+            ClearNewPassword();
+            await GetPasswords();
         }
         else
         {

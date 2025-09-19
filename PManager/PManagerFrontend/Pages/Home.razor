@@ -60,12 +60,13 @@
         <div class="flex flex-col mt-5 gap-y-5">
             <NewRecordForm 
                 Category="@SearchedCategory" 
-                OpenError="OpenError" />
+                OpenError="OpenError"
+                RefreshRecords="SearchRecords"/>
 
             @if (Records != null) {
                 foreach (var record in Records)
                 {
-                    <Record 
+                    <Record @key="record.Name + record.Id"
                         model="@record" 
                         OpenError="OpenError" />
                 }
@@ -93,6 +94,11 @@
         Categories = await _dataService.GetCategories();         
     }
 
+    void ClearNewCategory()
+    {
+        NewCategory = "";
+    }
+
     async Task CreateNewCategory()
     {
         if (!string.IsNullOrEmpty(NewCategory))
@@ -101,6 +107,7 @@
             if (res != null)
             {
                 ErrorState.OpenError(Error, "Success", "Successfully created category.");
+                ClearNewCategory();
                 await RefreshCategories();
             }
             else

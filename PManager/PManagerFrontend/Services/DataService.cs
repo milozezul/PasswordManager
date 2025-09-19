@@ -26,13 +26,10 @@ namespace PManagerFrontend.Services
                 try
                 {
                     var response = await client.GetAsync("api/Data/categories");
-
+                    var responseContent = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
-                    {
-                        var str = await response.Content.ReadAsStringAsync();
-
-                        var model = JsonSerializer.Deserialize<List<Category>>(str);
-
+                    {                        
+                        var model = JsonSerializer.Deserialize<List<Category>>(responseContent);
                         return model;
                     }
                     return new List<Category>();
@@ -77,13 +74,10 @@ namespace PManagerFrontend.Services
                 try
                 {
                     var response = await client.GetAsync("api/Data/records/" + category);
-
+                    var responseContent = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
-                    {
-                        var str = await response.Content.ReadAsStringAsync();
-
-                        var model = JsonSerializer.Deserialize<List<Record>>(str);
-
+                    {                        
+                        var model = JsonSerializer.Deserialize<List<Record>>(responseContent);
                         return model;
                     }
                     return new List<Record>();
@@ -104,10 +98,10 @@ namespace PManagerFrontend.Services
                 try
                 {
                     var response = await client.PostAsync($"api/Data/records/{category}?name={name}&url={url}", null);
-                    var content = await response.Content.ReadAsStringAsync();
+                    var responseContent = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {
-                        var model = JsonSerializer.Deserialize<Record>(content);
+                        var model = JsonSerializer.Deserialize<Record>(responseContent);
                         return model;
                     }
                     return null;
@@ -165,12 +159,10 @@ namespace PManagerFrontend.Services
                     var json = JsonSerializer.Serialize(input);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("api/Data/records/" + id, content);
+                    var responseContent = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
-                    {
-                        var responseContent = await response.Content.ReadAsStringAsync();
-
+                    {                        
                         var model = JsonSerializer.Deserialize<RecordPasswordsModel>(responseContent);
-
                         return model;
                     }
                     return null;

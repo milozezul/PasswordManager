@@ -46,8 +46,8 @@
             </div>
             <div class="flex flex-row justify-start">
                 @if (
-                    ((string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Url)) && isPassword == false) ||
-                    ((string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Url) || string.IsNullOrEmpty(LockPassword) || string.IsNullOrEmpty(NewPassword)) && isPassword == true)
+                    ((string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Url) || Category == "0") && isPassword == false) ||
+                    ((string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Url) || string.IsNullOrEmpty(LockPassword) || string.IsNullOrEmpty(NewPassword) || Category == "0") && isPassword == true)
                 )
                 {
                     <button class="bg-gray-400 text-white px-5 py-2 h-10 hover:bg-gray-400 text-sm font-light">ADD RECORD</button>
@@ -55,7 +55,8 @@
                 else
                 {
                     <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm font-light" @onclick="CreateRecord">ADD RECORD</button>
-                }                
+                }
+                <button class="bg-orange-400 text-white px-5 py-2 h-10 hover:bg-orange-600 text-sm font-light" @onclick="ClearAllFields">X</button>
             </div>            
         </div>        
     </div>
@@ -69,11 +70,22 @@
     [Parameter, EditorRequired]
     public EventCallback<ErrorState> OpenError { get; set; }
 
+    [Parameter, EditorRequired]
+    public EventCallback RefreshRecords { get; set; }
+
     bool isPassword { get; set; } = true;
     string Name { get; set; }
     string Url { get; set; }
     string LockPassword { get; set; }
     string NewPassword { get; set; }
+
+    void ClearAllFields()
+    {
+        Name = "";
+        Url = "";
+        LockPassword = "";
+        NewPassword = "";
+    }
 
     async Task CreateRecord()
     {
@@ -98,6 +110,7 @@
                     Header = "Success",
                     Body = "Created Record."
                 });
+                await RefreshRecords.InvokeAsync();
             }
             else
             {
@@ -121,6 +134,7 @@
                     Header = "Success",
                     Body = "Created Record."
                 });
+                await RefreshRecords.InvokeAsync();
             }
             else
             {
