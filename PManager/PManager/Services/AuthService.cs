@@ -23,46 +23,43 @@ namespace PManager.Services
             _config = config;
         }
 
-        async Task<User> GetUser(string username)
+        async Task<User?> GetUser(string username)
         {
-            try
-            {
-                var user = await _context.Users
-                    .FirstOrDefaultAsync(u => u.Username == username);
-
-                return user;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
+            return await _context.Users
+                .SingleOrDefaultAsync(u => u.Username == username);
         }
 
-        public async Task<string?> Login(LoginInput input)
+        public async Task<LoginResponse> Login(LoginInput input)
         {
             var user = await GetUser(input.Username);
-            if (user != null)
+
+            if (user == null) return new LoginResponse() {
+                IsSuccess = false,
+                Token = "",
+                Message = "User not found."
+            };
+            
+            using (var sha = SHA256.Create())
             {
-                using (var sha = SHA256.Create())
+                var passwordHash = Encoding.UTF8.GetString(sha.ComputeHash(Encoding.UTF8.GetBytes(input.Password)));
+
+                if (user.PasswordHash != passwordHash) return new LoginResponse()
                 {
-                    var passwordHash = Encoding.UTF8.GetString(sha.ComputeHash(Encoding.UTF8.GetBytes(input.Password)));
-                    if (user.PasswordHash == passwordHash)
-                    {
-                        return GetBearerToken(user.Id);
-                    }
-                    else
-                    {
-                        return null;
-                    }
-                }
-            }
-            else
-            {
-                return null;
+                    IsSuccess = false,
+                    Token = "",
+                    Message = "Wrong password."
+                };
+
+                return new LoginResponse()
+                {
+                    IsSuccess = true,
+                    Token = GetBearerToken(user.Id),
+                    Message = "Success"
+                };
             }
         }
 
-        public async Task<User> CreateUser(LoginInput input)
+        public async Task<User?> CreateUser(LoginInput input)
         {
             try
             {

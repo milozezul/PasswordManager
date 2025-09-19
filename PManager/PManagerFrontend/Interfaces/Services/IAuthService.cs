@@ -4,7 +4,7 @@ namespace PManagerFrontend.Interfaces.Services
 {
     public interface IAuthService
     {
-        Task<ResponseWrapper<string>> Login(LoginInput input);
+        Task<LoginResponse> Login(LoginInput input);
         Task<ResponseWrapper<bool>> Register(LoginInput input);
     }
 }

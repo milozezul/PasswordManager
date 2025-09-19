@@ -6,11 +6,11 @@ namespace PManagerFrontend.Interfaces.Services
     public interface IDataService
     {
         Task<List<Category>> GetCategories();
-        Task CreateNewCategory(string category);
+        Task<Category?> CreateNewCategory(string category);
         Task<List<Record>> GetRecordsByCategory(string category);
-        Task CreateRecord(string name, string url, string category);
-        Task CreateRecordWithPassword(string name, string url, string category, string lockpassword, string newpassword);
+        Task<Record?> CreateRecord(string name, string url, string category);
+        Task<RecordPasswordsModel?> CreateRecordWithPassword(string name, string url, string category, string lockpassword, string newpassword);
         Task<RecordPasswordsModel> GetPasswordsByRecordId(int id, string lockpassword);
-        Task AddPassword(string lockpassword, string newpassword, int recordId);
+        Task<Password?> AddPassword(string lockpassword, string newpassword, int recordId);
     }
 }

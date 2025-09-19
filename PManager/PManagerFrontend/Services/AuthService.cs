@@ -25,32 +25,21 @@ namespace PManagerFrontend.Services
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("api/Auth/register", content);
                     var jsonRes = await response.Content.ReadAsStringAsync();
-                    var model = JsonSerializer.Deserialize<ResponseWrapper<string>>(jsonRes);
-                    if (!string.IsNullOrEmpty(model.Value))
-                    {
-                        return new ResponseWrapper<bool>()
-                        {
-                            Value = true,
-                            Message = model.Message
-                        };
-                    }
-                    else
-                    {
-                        return new ResponseWrapper<bool>()
-                        {
-                            Value = false,
-                            Message = model.Message
-                        };
-                    }
+                    var model = JsonSerializer.Deserialize<ResponseWrapper<bool>>(jsonRes);
+                    return model;                    
                 }
                 catch (Exception ex)
                 {
-                    return null;
+                    return new ResponseWrapper<bool>()
+                    {
+                        Value = false,
+                        Message = "Failed request."
+                    };
                 }
             }
         }
 
-        public async Task<ResponseWrapper<string>> Login(LoginInput input)
+        public async Task<LoginResponse> Login(LoginInput input)
         {
             using (var client = _factory.CreateClient("api"))
             {
@@ -60,16 +49,21 @@ namespace PManagerFrontend.Services
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
                     var response = await client.PostAsync("api/Auth/login", content);
                     var jsonRes = await response.Content.ReadAsStringAsync();
-                    var model = JsonSerializer.Deserialize<ResponseWrapper<string>>(jsonRes);
-                    if (!string.IsNullOrEmpty(model.Value))
+                    var model = JsonSerializer.Deserialize<LoginResponse>(jsonRes);
+                    if (model.IsSuccess)
                     {
-                        _state.JwtBearer = model.Value;
+                        _state.JwtBearer = model.Token;
                     }
                     return model;
                 }
                 catch (Exception ex)
                 {
-                    return null;
+                    return new LoginResponse()
+                    {
+                        IsSuccess = false,
+                        Token = "",
+                        Message = "Failed request."
+                    };
                 }
             }
         }

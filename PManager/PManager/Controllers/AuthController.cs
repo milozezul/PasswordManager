@@ -22,26 +22,24 @@ namespace PManager.Controllers
             try
             {
                 var bearer = await _auth.Login(input);
-                if (!string.IsNullOrEmpty(bearer))
+
+                if (bearer.IsSuccess)
                 {
-                    return StatusCode(200, new ResponseWrapper<string>()
-                    {
-                        Value = bearer,
-                        Message = ""
-                    });
+                    return StatusCode(200, bearer);
                 }
                 else
                 {
-                    return StatusCode(404, new ResponseWrapper<string>()
-                    {
-                        Value = "",
-                        Message = "User credentials didnt match"
-                    });
+                    return StatusCode(404, bearer);
                 }
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Server Error: {ex.Message}");
+                return StatusCode(500, new LoginResponse()
+                {
+                    IsSuccess = false,
+                    Token = "",
+                    Message = $"Server Error: {ex.Message}"
+                });
             }
         }
 
@@ -51,19 +49,20 @@ namespace PManager.Controllers
             try
             {
                 var user = await _auth.CreateUser(input);
+
                 if (user != null)
                 {
-                    return StatusCode(201, new ResponseWrapper<string>()
+                    return StatusCode(201, new ResponseWrapper<bool>()
                     {
-                        Value = user.Id.ToString(),
+                        Value = true,
                         Message = ""
                     });
                 }
                 else
                 {
-                    return StatusCode(409, new ResponseWrapper<string>() {
-                        Value = "",
-                        Message = "Failed to register user, change username"
+                    return StatusCode(409, new ResponseWrapper<bool>() {
+                        Value = false,
+                        Message = "Failed to register user, try different username."
                     });
                 }
             }

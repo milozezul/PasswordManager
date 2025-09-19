@@ -44,7 +44,7 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task CreateNewCategory(string category)
+        public async Task<Category?> CreateNewCategory(string category)
         {
             //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
@@ -52,11 +52,18 @@ namespace PManagerFrontend.Services
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
-                    await client.PostAsync("api/Data/categories/" + category, null);                 
+                    var response = await client.PostAsync("api/Data/categories/" + category, null);
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var model = JsonSerializer.Deserialize<Category>(responseContent);
+                        return model;
+                    }
+                    return null;
                 }
                 catch (Exception ex)
                 {
-                    
+                    return null;
                 }
             }
         }
@@ -70,6 +77,7 @@ namespace PManagerFrontend.Services
                 try
                 {
                     var response = await client.GetAsync("api/Data/records/" + category);
+
                     if (response.IsSuccessStatusCode)
                     {
                         var str = await response.Content.ReadAsStringAsync();
@@ -87,7 +95,7 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task CreateRecord(string name, string url, string category)
+        public async Task<Record?> CreateRecord(string name, string url, string category)
         {
             //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
@@ -95,16 +103,23 @@ namespace PManagerFrontend.Services
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
-                    await client.PostAsync($"api/Data/records/{category}?name={name}&url={url}", null);
+                    var response = await client.PostAsync($"api/Data/records/{category}?name={name}&url={url}", null);
+                    var content = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var model = JsonSerializer.Deserialize<Record>(content);
+                        return model;
+                    }
+                    return null;
                 }
                 catch (Exception ex)
                 {
-
+                    return null;
                 }
             }
         }
 
-        public async Task CreateRecordWithPassword(string name, string url, string category, string lockpassword, string newpassword)
+        public async Task<RecordPasswordsModel?> CreateRecordWithPassword(string name, string url, string category, string lockpassword, string newpassword)
         {
             //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
@@ -119,11 +134,18 @@ namespace PManagerFrontend.Services
                     };
                     var json = JsonSerializer.Serialize(input);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    await client.PostAsync($"api/Data/records/{category}/password?name={name}&url={url}", content);
+                    var response = await client.PostAsync($"api/Data/records/{category}/password?name={name}&url={url}", content);
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var model = JsonSerializer.Deserialize<RecordPasswordsModel>(responseContent);
+                        return model;
+                    }
+                    return null;
                 }
                 catch (Exception ex)
                 {
-
+                    return null;
                 }
             }
         }
@@ -145,9 +167,9 @@ namespace PManagerFrontend.Services
                     var response = await client.PostAsync("api/Data/records/" + id, content);
                     if (response.IsSuccessStatusCode)
                     {
-                        var str = await response.Content.ReadAsStringAsync();
+                        var responseContent = await response.Content.ReadAsStringAsync();
 
-                        var model = JsonSerializer.Deserialize<RecordPasswordsModel>(str);
+                        var model = JsonSerializer.Deserialize<RecordPasswordsModel>(responseContent);
 
                         return model;
                     }
@@ -160,7 +182,7 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task AddPassword(string lockpassword, string newpassword, int recordId)
+        public async Task<Password?> AddPassword(string lockpassword, string newpassword, int recordId)
         {
             //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
@@ -175,11 +197,18 @@ namespace PManagerFrontend.Services
                     };
                     var json = JsonSerializer.Serialize(input);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    await client.PostAsync($"api/Data/records/password/{recordId}", content);
+                    var response = await client.PostAsync($"api/Data/records/password/{recordId}", content);
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var model = JsonSerializer.Deserialize<Password>(responseContent);
+                        return model;
+                    }
+                    return null;
                 }
                 catch (Exception ex)
                 {
-
+                    return null;
                 }
             }
         }

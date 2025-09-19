@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PManager.Interfaces.Services;
-using SharedModels.Database;
 using SharedModels.InputModels;
 
 namespace PManager.Controllers
@@ -24,9 +23,6 @@ namespace PManager.Controllers
             try
             {
                 var records = await _dataService.GetRecords(category);
-
-                if (records == null) return StatusCode(404);
-
                 return StatusCode(200, records);
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
 ﻿@using PManagerFrontend.Interfaces.Services
+@using PManagerFrontend.Models.Components
 @using SharedModels.DataService
 @inject IDataService _dataService;
 
@@ -79,6 +80,9 @@
     [Parameter][EditorRequired]
     public SharedModels.Database.Record model { get; set; }
 
+    [Parameter, EditorRequired]
+    public EventCallback<ErrorState> OpenError { get; set; }
+
     bool isExpanded = false;
     RecordPasswordsModel Passwords { get; set; }
     string LockPassword { get; set; }    
@@ -101,6 +105,25 @@
         {
             return;
         }
-        await _dataService.AddPassword(LockPassword, NewPassword, model.Id);
+        var password = await _dataService.AddPassword(LockPassword, NewPassword, model.Id);
+
+        if (password != null)
+        {
+            await OpenError.InvokeAsync(new ErrorState()
+            {
+                IsOpen = true,
+                Header = "Success",
+                Body = "Added password successfully."
+            });
+        }
+        else
+        {
+            await OpenError.InvokeAsync(new ErrorState()
+            {
+                IsOpen = true,
+                Header = "Error",
+                Body = "Failed to add password."
+            });
+        }
     }
 }

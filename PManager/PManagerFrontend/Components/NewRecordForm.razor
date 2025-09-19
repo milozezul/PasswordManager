@@ -1,4 +1,5 @@
 ﻿@using PManagerFrontend.Interfaces.Services
+@using PManagerFrontend.Models.Components
 @inject IDataService _dataService;
 
 <div class="flex flex-col border-1 bg-gray-700">
@@ -62,8 +63,11 @@
 
 
 @code {
-    [Parameter]
+    [Parameter, EditorRequired]
     public string Category { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<ErrorState> OpenError { get; set; }
 
     bool isPassword { get; set; } = true;
     string Name { get; set; }
@@ -84,11 +88,49 @@
             {
                 return;
             }
-            await _dataService.CreateRecordWithPassword(Name, Url, Category, LockPassword, NewPassword);
+            var record = await _dataService.CreateRecordWithPassword(Name, Url, Category, LockPassword, NewPassword);
+
+            if (record != null)
+            {
+                await OpenError.InvokeAsync(new ErrorState()
+                {
+                    IsOpen = true,
+                    Header = "Success",
+                    Body = "Created Record."
+                });
+            }
+            else
+            {
+                await OpenError.InvokeAsync(new ErrorState()
+                {
+                    IsOpen = true,
+                    Header = "Error",
+                    Body = "Failed to create Record."
+                });
+            }
         }
         else
         {
-            await _dataService.CreateRecord(Name, Url, Category);
+            var record = await _dataService.CreateRecord(Name, Url, Category);
+
+            if(record != null)
+            {
+                await OpenError.InvokeAsync(new ErrorState()
+                {
+                    IsOpen = true,
+                    Header = "Success",
+                    Body = "Created Record."
+                });
+            }
+            else
+            {
+                await OpenError.InvokeAsync(new ErrorState()
+                {
+                    IsOpen = true,
+                    Header = "Error",
+                    Body = "Failed to create Record."
+                });
+            }
         }
     }
 }

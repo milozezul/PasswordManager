@@ -50,35 +50,35 @@
 
     async Task OnLogin()
     {
-        var res = await _auth.Login(new SharedModels.InputModels.LoginInput()
+        var response = await _auth.Login(new SharedModels.InputModels.LoginInput()
         {
             Username = Username,
             Password = Password
         });
-        if (!string.IsNullOrEmpty(res.Value))
+        if (response.IsSuccess)
         {            
             Navigation.NavigateTo("/dashboard");
         }
         else
         {
-            ErrorState.OpenError(Error, "Error", res.Message);            
+            ErrorState.OpenError(Error, "Error", response.Message);            
         }
     }
 
     async Task OnRegister()
     {
-        var res = await _auth.Register(new SharedModels.InputModels.LoginInput()
+        var response = await _auth.Register(new SharedModels.InputModels.LoginInput()
         {
             Username = Username,
             Password = Password
         });
-        if (res.Value)
+        if (response.Value)
         {
             ErrorState.OpenError(Error, "Success", "Registered sucessfully. Please login.");            
         }
         else
         {
-            ErrorState.OpenError(Error, "Error", res.Message);            
+            ErrorState.OpenError(Error, "Error", response.Message);
         }
     }
 }

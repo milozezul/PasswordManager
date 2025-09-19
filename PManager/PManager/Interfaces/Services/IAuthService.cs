@@ -5,7 +5,7 @@ namespace PManager.Interfaces.Services
 {
     public interface IAuthService
     {
-        Task<User> CreateUser(LoginInput input);
-        Task<string?> Login(LoginInput input);
+        Task<User?> CreateUser(LoginInput input);
+        Task<LoginResponse> Login(LoginInput input);
     }
 }
