@@ -20,9 +20,9 @@ namespace PManager
             _httpContext = httpContext;
         }
 
-        private int GetUserId()
+        public int GetUserId()
         {
-            var claim = _httpContext.HttpContext.User.Claims.FirstOrDefault(u => u.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid");
+            var claim = _httpContext.HttpContext.User.Claims.SingleOrDefault(u => u.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid");
             if (int.TryParse(claim.Value, out int res))
             {
                 return res;
@@ -31,6 +31,38 @@ namespace PManager
             {
                 return -1;
             }
+        }
+
+        public int GetRecordId()
+        {
+            var claim = _httpContext.HttpContext.User.Claims.SingleOrDefault(u => u.Type == "rid");
+            if (int.TryParse(claim.Value, out int res))
+            {
+                return res;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public int GetPasswordId()
+        {
+            var claim = _httpContext.HttpContext.User.Claims.SingleOrDefault(u => u.Type == "pid");
+            if (int.TryParse(claim.Value, out int res))
+            {
+                return res;
+            }
+            else
+            {
+                return -1;
+            }
+        }
+
+        public string GetFallback()
+        {
+            var claim = _httpContext.HttpContext.User.Claims.SingleOrDefault(u => u.Type == "fallback");
+            return claim.Value;
         }
 
         public async Task<List<Record>> GetRecords(string category)
@@ -46,7 +78,7 @@ namespace PManager
                 .ToListAsync();                     
         }
 
-        async Task<Record?> GetRecordById(int id)
+        public async Task<Record?> GetRecordById(int id)
         {
             int userId = GetUserId();
 
@@ -216,33 +248,8 @@ namespace PManager
 
             await _context.SaveChangesAsync();
             return passwords;
-        }
-        
-        public async Task<DecryptedPassword?> GetSpecificPassword(int recordId, int passwordId, string password)
-        {
-            var record = await GetRecordById(recordId);
+        }       
 
-            if (record == null) return null;
-
-            var foundPassword = await _context.RecordPasswords
-                .Where(r => r.RecordId == record.Id && r.PasswordId == passwordId)
-                .Select(p => p.Password)
-                .FirstAsync();
-
-            var decryptedPassword = new DecryptedPassword()
-            {
-                Id = foundPassword.Id,
-                Value = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(foundPassword.Value, password))
-            };
-            
-            return decryptedPassword;
-        }
-
-        //on hold
-        public async Task DeactivateRecord(int recordId, string password)
-        {
-
-        }
         //on hold
         public async Task DeactivatePassword(int recordId, int passwordId, string password)
         {

@@ -10,11 +10,14 @@ namespace PManager.Interfaces.Services
         Task<Record?> CreateRecord(string category, string name, string url);
         Task<RecordPasswordsModel?> CreateRecordWithPassword(string category, string name, string url, string newPassword, string password);
         Task DeactivatePassword(int recordId, int passwordId, string password);
-        Task DeactivateRecord(int recordId, string password);
         void Dispose();
         Task<List<Category>> GetCategories();
         Task<RecordPasswordsModel?> GetPasswordsByRecordId(int recordId, string password);
         Task<List<Record>> GetRecords(string category);
-        Task<DecryptedPassword?> GetSpecificPassword(int recordId, int passwordId, string password);
+        public int GetUserId();
+        Task<Record?> GetRecordById(int id);
+        int GetRecordId();
+        int GetPasswordId();
+        string GetFallback();
     }
 }

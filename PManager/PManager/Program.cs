@@ -26,6 +26,7 @@ namespace PManager
             builder.Services.AddScoped<IDataService, DataService>();
             builder.Services.AddScoped<IEncryptionService, EncryptionService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IDirectAccessService, DirectAccessService>();
 
             builder.Services.AddCors(options =>
             {

@@ -7,7 +7,7 @@ namespace PManager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "User")]
     //wrap in response wrappers
     public class DataController : ControllerBase
     {
@@ -92,23 +92,6 @@ namespace PManager.Controllers
                 if (passwords == null) return StatusCode(404);
 
                 return StatusCode(200, passwords);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Server Error: {ex.Message}");
-            }
-        }
-
-        [HttpPost("records/{recordId:int}/password/{passwordId:int}")]
-        public async Task<IActionResult> GetSpecificPassword(int recordId, int passwordId, PasswordInputModel model)
-        {
-            try
-            {
-                var password = await _dataService.GetSpecificPassword(recordId, passwordId, model.Password);
-
-                if (password == null) return StatusCode(404);
-
-                return StatusCode(200, password);
             }
             catch (Exception ex)
             {

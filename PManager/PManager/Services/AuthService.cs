@@ -84,7 +84,8 @@ namespace PManager.Services
         {
             var claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.Sid, id.ToString())
+                new Claim(ClaimTypes.Sid, id.ToString()),
+                new Claim(ClaimTypes.Role, "User")
             };
 
             string strKey = _config.Value.Secret;
