@@ -10,6 +10,7 @@ namespace PManager.Interfaces.Services
         Task<Record?> CreateRecord(string category, string name, string url);
         Task<RecordPasswordsModel?> CreateRecordWithPassword(string category, string name, string url, string newPassword, string password);
         Task DeactivatePassword(int recordId, int passwordId, string password);
+        Task ActivatePassword(int recordId, int passwordId, string password);
         void Dispose();
         Task<List<Category>> GetCategories();
         Task<RecordPasswordsModel?> GetPasswordsByRecordId(int recordId, string password);

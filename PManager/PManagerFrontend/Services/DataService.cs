@@ -19,7 +19,6 @@ namespace PManagerFrontend.Services
 
         public async Task<List<Category>> GetCategories()
         {
-            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
@@ -43,7 +42,6 @@ namespace PManagerFrontend.Services
 
         public async Task<Category?> CreateNewCategory(string category)
         {
-            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
@@ -67,7 +65,6 @@ namespace PManagerFrontend.Services
 
         public async Task<List<Record>> GetRecordsByCategory(string category)
         {
-            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
@@ -91,7 +88,6 @@ namespace PManagerFrontend.Services
 
         public async Task<Record?> CreateRecord(string name, string url, string category)
         {
-            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
@@ -115,7 +111,6 @@ namespace PManagerFrontend.Services
 
         public async Task<RecordPasswordsModel?> CreateRecordWithPassword(string name, string url, string category, string lockpassword, string newpassword)
         {
-            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
@@ -146,7 +141,6 @@ namespace PManagerFrontend.Services
 
         public async Task<RecordPasswordsModel> GetPasswordsByRecordId(int id, string lockpassword)
         {
-            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
@@ -176,7 +170,6 @@ namespace PManagerFrontend.Services
 
         public async Task<Password?> AddPassword(string lockpassword, string newpassword, int recordId)
         {
-            //replace emty returns with nulls and theows to next catch
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
@@ -201,6 +194,52 @@ namespace PManagerFrontend.Services
                 catch (Exception ex)
                 {
                     return null;
+                }
+            }
+        }
+
+        public async Task<bool> DiactivatePassword(int recordId, int passwordId, string password)
+        {
+            using (var client = _factory.CreateClient("api"))
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
+                try
+                {
+                    PasswordInputModel input = new PasswordInputModel()
+                    {
+                        Password = password
+                    };
+                    string json = JsonSerializer.Serialize(input);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"api/Data/password/diactivate?recordId={recordId}&passwordId={passwordId}", content);
+                    return response.IsSuccessStatusCode;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+
+        public async Task<bool> ActivatePassword(int recordId, int passwordId, string password)
+        {
+            using (var client = _factory.CreateClient("api"))
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
+                try
+                {
+                    PasswordInputModel input = new PasswordInputModel()
+                    {
+                        Password = password
+                    };
+                    string json = JsonSerializer.Serialize(input);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"api/Data/password/activate?recordId={recordId}&passwordId={passwordId}", content);
+                    return response.IsSuccessStatusCode;
+                }
+                catch (Exception ex)
+                {
+                    return false;
                 }
             }
         }

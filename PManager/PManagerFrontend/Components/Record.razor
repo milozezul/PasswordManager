@@ -49,9 +49,9 @@
                 {
                     foreach (var line in Passwords.Passwords)
                     {
-                        <PasswordLine Id="@line.Id" Password="@line.Value" RecordId="@model.Id" />
+                        <PasswordLine Password="@line" RecordId="@model.Id" LockPassword="@LockPassword" />
                     }
-                }                
+                }
                 <div class="flex flex-row items-end">
                     <div class="basis-1/10"></div>
                     <div class="flex flex-row gap-x-3 basis-2/10">

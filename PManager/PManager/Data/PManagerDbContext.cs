@@ -74,10 +74,9 @@ namespace PManager.Data
             var passwords = modelBuilder
                 .Entity<Password>();
             passwords
-                .HasKey(item => new { item.Id });                
+                .HasKey(item => new { item.Id });
             passwords
-                .Property(p => p.Value)
-                .HasMaxLength(1000);
+                .Property(p => p.Value);
 
             var categories = modelBuilder
                 .Entity<Category>();

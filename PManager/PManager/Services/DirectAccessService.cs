@@ -40,7 +40,7 @@ namespace PManager.Services
             var decryptedPassword = new DecryptedPassword()
             {
                 Id = foundPassword.Id,
-                Value = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(foundPassword.Value, password))
+                Value = foundPassword.IsActive == true ? Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(foundPassword.Value, password)) : "DIACTIVATED"
             };
 
             if (string.IsNullOrEmpty(decryptedPassword.Value))

@@ -132,5 +132,33 @@ namespace PManager.Controllers
                 return StatusCode(500, $"Server Error: {ex.Message}");
             }
         }
+
+        [HttpPost("password/diactivate")]
+        public async Task<IActionResult> DiactivatePassword([FromQuery] int recordId, [FromQuery] int passwordId, PasswordInputModel input)
+        {
+            try
+            {
+                await _dataService.DeactivatePassword(recordId, passwordId, input.Password);
+                return StatusCode(200);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server Error {ex.Message}");
+            }
+        }
+
+        [HttpPost("password/activate")]
+        public async Task<IActionResult> ActivatePassword([FromQuery] int recordId, [FromQuery] int passwordId, PasswordInputModel input)
+        {
+            try
+            {
+                await _dataService.ActivatePassword(recordId, passwordId, input.Password);
+                return StatusCode(200);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server Error {ex.Message}");
+            }
+        }
     }
 }

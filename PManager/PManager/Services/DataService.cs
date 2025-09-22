@@ -102,7 +102,8 @@ namespace PManager
                 .Select(c => new DecryptedPassword()
                 {
                     Id = c.Id,
-                    Value = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(c.Value, password))
+                    Value = c.IsActive == true ? Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(c.Value, password)) : "DIACTIVATED",
+                    IsActive = c.IsActive
                 }).ToList();
 
             var result = new RecordPasswordsModel()
@@ -127,7 +128,8 @@ namespace PManager
                 .Select(c => new DecryptedPassword()
                 {
                     Id = c.Id,
-                    Value = Encoding.UTF8.GetString(c.Value)
+                    Value = c.IsActive == true ? Encoding.UTF8.GetString(c.Value) : "DIACTIVATED",
+                    IsActive = c.IsActive
                 }).ToList();
 
             var result = new RecordPasswordsModel()
@@ -220,7 +222,8 @@ namespace PManager
             var createdPassword = await _context.Passwords
                 .AddAsync(new Password()
                 {
-                    Value = _encryptService.EncryptWithPassword(Encoding.UTF8.GetBytes(newPassword), password)
+                    Value = _encryptService.EncryptWithPassword(Encoding.UTF8.GetBytes(newPassword), password),
+                    IsActive = true
                 });
 
             var recordPassword = await _context.RecordPasswords
@@ -249,11 +252,51 @@ namespace PManager
             await _context.SaveChangesAsync();
             return passwords;
         }       
-
-        //on hold
+        
         public async Task DeactivatePassword(int recordId, int passwordId, string password)
         {
+            var record = await GetRecordById(recordId);
 
+            if (record == null) return;
+
+            var foundPassword = await _context.RecordPasswords
+                .Where(r => r.RecordId == record.Id && r.PasswordId == passwordId)
+                .Select(p => p.Password)
+                .SingleOrDefaultAsync();
+
+            if (foundPassword != null)
+            {
+                var passwordValue = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(foundPassword.Value, password));
+                if (!string.IsNullOrEmpty(passwordValue))
+                {
+                    foundPassword.IsActive = false;
+
+                    await _context.SaveChangesAsync();
+                }
+            }
+        }
+
+        public async Task ActivatePassword(int recordId, int passwordId, string password)
+        {
+            var record = await GetRecordById(recordId);
+
+            if (record == null) return;
+
+            var foundPassword = await _context.RecordPasswords
+                .Where(r => r.RecordId == record.Id && r.PasswordId == passwordId)
+                .Select(p => p.Password)
+                .SingleOrDefaultAsync();
+
+            if (foundPassword != null)
+            {
+                var passwordValue = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(foundPassword.Value, password));
+                if (!string.IsNullOrEmpty(passwordValue))
+                {
+                    foundPassword.IsActive = true;
+
+                    await _context.SaveChangesAsync();
+                }
+            }
         }
 
         public void Dispose()
