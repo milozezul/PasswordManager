@@ -49,7 +49,7 @@
                 {
                     foreach (var line in Passwords.Passwords)
                     {
-                        <PasswordLine Id="@line.Id" Password="@line.Value" />
+                        <PasswordLine Id="@line.Id" Password="@line.Value" RecordId="@model.Id" />
                     }
                 }                
                 <div class="flex flex-row items-end">
