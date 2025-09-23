@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="1.055916mm"
+   height="1.3647045mm"
+   viewBox="0 0 1.055916 1.3647045"
+   version="1.1"
+   id="svg1"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-8.7563173,-8.3890646)">
+    <rect
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.046;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect19"
+       width="1.0559164"
+       height="0.93313962"
+       x="8.7563171"
+       y="8.8206291"
+       ry="0.1421648"
+       inkscape:export-filename="locked.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       id="path20"
+       style="fill:none;stroke:#ffffff;stroke-width:0.129;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="m 9.6583619,8.9024804 c 0,0.2027241 -0.1577975,0.2852133 -0.3740868,0.2852133 -0.2162894,0 -0.3916265,-0.1643404 -0.3916265,-0.3670646 0,-0.2027241 0.1753372,-0.3670645 0.3916265,-0.3670645 0.093664,0 0.1796476,0.030819 0.2470383,0.082228"
+       sodipodi:nodetypes="csssc" />
+  </g>
+</svg>
