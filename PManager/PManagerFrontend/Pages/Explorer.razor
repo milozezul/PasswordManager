@@ -1,25 +1,26 @@
 ﻿@page "/explorer"
 @using PManagerFrontend.Components.Explorer
+@using PManagerFrontend.Components.MainWindow
 
 <div class="flex flex-row">
-    <div class="basis-3/10 bg-neutral-700 h-[100vh] flex flex-col">
+    <div class="basis-1/4 bg-neutral-700 h-[100vh] flex flex-col">
         <UserAvatar />
         <ToolPanel />
         <GroupFolder />
         <GroupFolder />
         <RecordFolder />
         <RecordFolder />
-        <PasswordFolder IsUnlocked="true" Status="unlocked" />
-        <PasswordFolder IsUnlocked="false" Status="locked" />
-        <PasswordFolder IsUnlocked="true" Status="unlocked" />
-        <PasswordFolder IsUnlocked="false" Status="diactivated" />
+        <PasswordFolder IsUnlocked="true" Status="UNLOCKED" />
+        <PasswordFolder IsUnlocked="false" Status="LOCKED" />
+        <PasswordFolder IsUnlocked="true" Status="UNLOCKED" />
+        <PasswordFolder IsUnlocked="false" Status="DEACTIVATED" />
         <RecordFolder />
         <GroupFolder />
         <GroupFolder />
         <NewGroup />
     </div>
-    <div class="basis-7/10 bg-neutral-500 h-[100vh]">
-
+    <div class="basis-3/4 bg-neutral-500 h-[100vh] px-10">
+        <BreadCrumb />
     </div>
 </div>
 

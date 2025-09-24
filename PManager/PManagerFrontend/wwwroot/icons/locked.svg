@@ -2,11 +2,15 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="1.055916mm"
-   height="1.364488mm"
-   viewBox="0 0 1.055916 1.364488"
+   width="1.0559158mm"
+   height="1.3644881mm"
+   viewBox="0 0 1.0559159 1.3644881"
    version="1.1"
    id="svg1"
+   sodipodi:docname="locked.svg"
+   inkscape:export-filename="locked.svg"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +33,7 @@
      id="layer1"
      transform="translate(-8.7563173,-8.389281)">
     <rect
-       style="fill:#f2b3b3;fill-opacity:1;stroke:none;stroke-width:0.046;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#e35656;fill-opacity:1;stroke:none;stroke-width:0.046;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        id="rect19"
        width="1.0559164"
        height="0.93313962"
@@ -40,7 +44,7 @@
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <ellipse
-       style="fill:none;fill-opacity:1;stroke:#f2b3b3;stroke-width:0.128567;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-opacity:1;stroke:#e35656;stroke-width:0.128567;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        id="path20"
        cx="9.2842751"
        cy="8.8206291"

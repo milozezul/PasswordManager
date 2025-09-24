@@ -1,9 +1,23 @@
-﻿<div class="flex flex-row items-center gap-x-5 px-5 py-2 hover:bg-neutral-600">
-    <img src="icons/expand-closed.svg" class="w-4 h-4" />
-    <img src="icons/group.svg" class="w-9 h-9" />
-    <div class="text-white">Test</div>
+﻿@using PManagerFrontend.Components.Utility
+
+<div class="flex flex-row items-center gap-x-3 px-5 py-2 hover:bg-neutral-600">
+    <Expand OnExpand="OnExpandFolder" OnCollapse="OnCollapseFolder" />
+    <div class="flex flex-row gap-x-3 items-center cursor-pointer">
+        <img src="icons/group.svg" class="w-6 h-6" />
+        <div class="text-white text-sm">Test</div>
+    </div>    
 </div>
 
 @code {
+
+    void OnExpandFolder()
+    {
+
+    }
+
+    void OnCollapseFolder()
+    {
+        
+    }
 
 }
