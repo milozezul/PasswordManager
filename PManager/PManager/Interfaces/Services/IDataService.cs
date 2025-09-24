@@ -20,5 +20,6 @@ namespace PManager.Interfaces.Services
         int GetRecordId();
         int GetPasswordId();
         string GetFallback();
+        Task<List<CategoryRecords>> GetAllRecords();
     }
 }

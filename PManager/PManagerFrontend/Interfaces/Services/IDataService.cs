@@ -14,5 +14,6 @@ namespace PManagerFrontend.Interfaces.Services
         Task<Password?> AddPassword(string lockpassword, string newpassword, int recordId);
         Task<bool> DiactivatePassword(int recordId, int passwordId, string password);
         Task<bool> ActivatePassword(int recordId, int passwordId, string password);
+        Task<List<CategoryRecords>> GetAllRecords();
     }
 }

@@ -299,6 +299,37 @@ namespace PManager
             }
         }
 
+        public async Task<List<CategoryRecords>> GetAllRecords()
+        {
+            int userId = GetUserId();
+
+            var categories = await _context.UserCategories
+                .Where(c => c.UserId == userId)
+                .Select(c => new CategoryRecords()
+                {
+                    Category = c.Category,
+                    Records = new List<Record>()
+                })
+                .ToListAsync();
+
+            var records = await _context.UserRecords
+                .Where(r => r.UserId == userId)
+                .Select(r => r.Record)
+                .ToListAsync();
+
+            categories.ForEach((c) =>
+            {
+                records.ForEach((r) => {
+                    if (r.Category.Id == c.Category.Id)
+                    {
+                        c.Records.Add(r);
+                    }
+                });
+            });
+
+            return categories;
+        }
+
         public void Dispose()
         {
             _context.Dispose();

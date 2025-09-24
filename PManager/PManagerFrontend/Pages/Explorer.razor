@@ -1,12 +1,25 @@
 ﻿@page "/explorer"
 @using PManagerFrontend.Components.Explorer
 @using PManagerFrontend.Components.MainWindow
+@using PManagerFrontend.Interfaces.Services
+@using SharedModels.DataService
+@inject IDataService _data
 
 <div class="flex flex-row">
     <div class="basis-1/4 bg-neutral-700 h-[100vh] flex flex-col">
         <UserAvatar />
         <ToolPanel />
-        <GroupFolder />
+
+        @if (ExplorerData != null)
+        {
+            foreach (var category in ExplorerData)
+            {
+                <GroupFolder FolderData="@category.Category" />            
+            }
+        }
+        
+
+        @* <GroupFolder />
         <GroupFolder />
         <RecordFolder />
         <RecordFolder />
@@ -17,7 +30,7 @@
         <RecordFolder />
         <GroupFolder />
         <GroupFolder />
-        <NewGroup />
+        <NewGroup /> *@
     </div>
     <div class="basis-3/4 bg-neutral-500 h-[100vh] px-10">
         <BreadCrumb />
@@ -29,5 +42,10 @@
 </div>
 
 @code {
+    List<CategoryRecords> ExplorerData { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        ExplorerData = await _data.GetAllRecords();
+    }
 }

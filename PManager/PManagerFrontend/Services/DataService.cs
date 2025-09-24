@@ -243,5 +243,28 @@ namespace PManagerFrontend.Services
                 }
             }
         }
+
+        public async Task<List<CategoryRecords>> GetAllRecords()
+        {
+            using (var client = _factory.CreateClient("api"))
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
+                try
+                {
+                    var response = await client.GetAsync("api/Explorer/records");
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var model = JsonSerializer.Deserialize<List<CategoryRecords>>(responseContent);
+                        return model;
+                    }
+                    return new List<CategoryRecords>();
+                }
+                catch (Exception ex)
+                {
+                    return new List<CategoryRecords>();
+                }
+            }
+        }
     }
 }

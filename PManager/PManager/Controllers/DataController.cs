@@ -8,7 +8,6 @@ namespace PManager.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = "User")]
-    //wrap in response wrappers
     public class DataController : ControllerBase
     {
         IDataService _dataService;
