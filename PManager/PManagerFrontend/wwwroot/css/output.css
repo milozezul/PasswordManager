@@ -7,21 +7,23 @@
       "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
       "Courier New", monospace;
-    --color-red-100: oklch(93.6% 0.032 17.717);
-    --color-red-200: oklch(88.5% 0.062 18.334);
     --color-red-300: oklch(80.8% 0.114 19.571);
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-orange-400: oklch(75% 0.183 55.934);
     --color-orange-600: oklch(64.6% 0.222 41.116);
     --color-green-400: oklch(79.2% 0.209 151.711);
     --color-green-600: oklch(62.7% 0.194 149.214);
+    --color-cyan-400: oklch(78.9% 0.154 211.53);
+    --color-cyan-500: oklch(71.5% 0.143 215.221);
     --color-sky-100: oklch(95.1% 0.026 236.824);
     --color-sky-200: oklch(90.1% 0.058 230.902);
+    --color-sky-300: oklch(82.8% 0.111 230.318);
     --color-sky-400: oklch(74.6% 0.16 232.661);
-    --color-sky-500: oklch(68.5% 0.169 237.323);
     --color-sky-600: oklch(58.8% 0.158 241.966);
+    --color-blue-300: oklch(80.9% 0.105 251.813);
+    --color-blue-400: oklch(70.7% 0.165 254.624);
+    --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-slate-500: oklch(55.4% 0.046 257.417);
-    --color-gray-50: oklch(98.5% 0.002 247.839);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
     --color-gray-300: oklch(87.2% 0.01 258.338);
@@ -32,17 +34,11 @@
     --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-gray-900: oklch(21% 0.034 264.665);
     --color-zinc-300: oklch(87.1% 0.006 286.286);
-    --color-zinc-400: oklch(70.5% 0.015 286.067);
-    --color-zinc-500: oklch(55.2% 0.016 285.938);
-    --color-zinc-700: oklch(37% 0.013 285.805);
-    --color-zinc-800: oklch(27.4% 0.006 286.033);
+    --color-zinc-900: oklch(21% 0.006 285.885);
     --color-neutral-400: oklch(70.8% 0 0);
     --color-neutral-500: oklch(55.6% 0 0);
     --color-neutral-600: oklch(43.9% 0 0);
     --color-neutral-700: oklch(37.1% 0 0);
-    --color-neutral-800: oklch(26.9% 0 0);
-    --color-stone-500: oklch(55.3% 0.013 58.071);
-    --color-stone-800: oklch(26.8% 0.007 34.298);
     --color-stone-900: oklch(21.6% 0.006 56.043);
     --color-black: #000;
     --color-white: #fff;
@@ -56,11 +52,9 @@
     --font-weight-light: 300;
     --font-weight-semibold: 600;
     --font-weight-bold: 700;
-    --radius-xs: 0.125rem;
     --radius-sm: 0.25rem;
     --radius-md: 0.375rem;
     --radius-lg: 0.5rem;
-    --radius-xl: 0.75rem;
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
   }
@@ -232,6 +226,9 @@
   .bottom-\[-13px\] {
     bottom: -13px;
   }
+  .bottom-\[-15px\] {
+    bottom: -15px;
+  }
   .left-0 {
     left: calc(var(--spacing) * 0);
   }
@@ -259,20 +256,23 @@
   .mt-8 {
     margin-top: calc(var(--spacing) * 8);
   }
+  .mt-10 {
+    margin-top: calc(var(--spacing) * 10);
+  }
+  .mt-12 {
+    margin-top: calc(var(--spacing) * 12);
+  }
+  .mb-1 {
+    margin-bottom: calc(var(--spacing) * 1);
+  }
   .mb-3 {
     margin-bottom: calc(var(--spacing) * 3);
-  }
-  .ml-3 {
-    margin-left: calc(var(--spacing) * 3);
   }
   .ml-4 {
     margin-left: calc(var(--spacing) * 4);
   }
   .ml-6 {
     margin-left: calc(var(--spacing) * 6);
-  }
-  .ml-15 {
-    margin-left: calc(var(--spacing) * 15);
   }
   .flex {
     display: flex;
@@ -289,6 +289,9 @@
   .h-6 {
     height: calc(var(--spacing) * 6);
   }
+  .h-8 {
+    height: calc(var(--spacing) * 8);
+  }
   .h-9 {
     height: calc(var(--spacing) * 9);
   }
@@ -298,11 +301,17 @@
   .h-14 {
     height: calc(var(--spacing) * 14);
   }
+  .h-50 {
+    height: calc(var(--spacing) * 50);
+  }
   .h-\[100vh\] {
     height: 100vh;
   }
   .h-full {
     height: 100%;
+  }
+  .w-1 {
+    width: calc(var(--spacing) * 1);
   }
   .w-3 {
     width: calc(var(--spacing) * 3);
@@ -319,9 +328,6 @@
   .w-9 {
     width: calc(var(--spacing) * 9);
   }
-  .w-10 {
-    width: calc(var(--spacing) * 10);
-  }
   .w-14 {
     width: calc(var(--spacing) * 14);
   }
@@ -334,8 +340,17 @@
   .w-80 {
     width: calc(var(--spacing) * 80);
   }
+  .w-130 {
+    width: calc(var(--spacing) * 130);
+  }
   .w-150 {
     width: calc(var(--spacing) * 150);
+  }
+  .w-200 {
+    width: calc(var(--spacing) * 200);
+  }
+  .w-300 {
+    width: calc(var(--spacing) * 300);
   }
   .w-\[80\%\] {
     width: 80%;
@@ -345,6 +360,15 @@
   }
   .w-full {
     width: 100%;
+  }
+  .max-w-300 {
+    max-width: calc(var(--spacing) * 300);
+  }
+  .max-w-\[100\%\] {
+    max-width: 100%;
+  }
+  .min-w-130 {
+    min-width: calc(var(--spacing) * 130);
   }
   .grow-1 {
     flex-grow: 1;
@@ -373,23 +397,8 @@
   .basis-3\/10 {
     flex-basis: calc(3/10 * 100%);
   }
-  .basis-4\/20 {
-    flex-basis: calc(4/20 * 100%);
-  }
-  .basis-5\/20 {
-    flex-basis: calc(5/20 * 100%);
-  }
   .basis-7\/10 {
     flex-basis: calc(7/10 * 100%);
-  }
-  .basis-8\/10 {
-    flex-basis: calc(8/10 * 100%);
-  }
-  .basis-15\/20 {
-    flex-basis: calc(15/20 * 100%);
-  }
-  .basis-16\/20 {
-    flex-basis: calc(16/20 * 100%);
   }
   .transform {
     transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
@@ -408,9 +417,6 @@
   }
   .items-end {
     align-items: flex-end;
-  }
-  .items-start {
-    align-items: flex-start;
   }
   .justify-between {
     justify-content: space-between;
@@ -436,6 +442,9 @@
   .gap-x-5 {
     column-gap: calc(var(--spacing) * 5);
   }
+  .gap-x-8 {
+    column-gap: calc(var(--spacing) * 8);
+  }
   .gap-y-1 {
     row-gap: calc(var(--spacing) * 1);
   }
@@ -445,6 +454,12 @@
   .rounded-\[50\%\] {
     border-radius: 50%;
   }
+  .rounded-lg {
+    border-radius: var(--radius-lg);
+  }
+  .rounded-md {
+    border-radius: var(--radius-md);
+  }
   .rounded-sm {
     border-radius: var(--radius-sm);
   }
@@ -452,16 +467,12 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
-  .border-b-1 {
-    border-bottom-style: var(--tw-border-style);
-    border-bottom-width: 1px;
-  }
   .border-b-2 {
     border-bottom-style: var(--tw-border-style);
     border-bottom-width: 2px;
   }
-  .border-b-gray-400 {
-    border-bottom-color: var(--color-gray-400);
+  .border-gray-400 {
+    border-color: var(--color-gray-400);
   }
   .border-b-zinc-300 {
     border-bottom-color: var(--color-zinc-300);
@@ -502,9 +513,6 @@
   .bg-neutral-500 {
     background-color: var(--color-neutral-500);
   }
-  .bg-neutral-600 {
-    background-color: var(--color-neutral-600);
-  }
   .bg-neutral-700 {
     background-color: var(--color-neutral-700);
   }
@@ -513,18 +521,6 @@
   }
   .bg-red-300 {
     background-color: var(--color-red-300);
-  }
-  .bg-red-500\/10 {
-    background-color: color-mix(in srgb, oklch(63.7% 0.237 25.331) 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-red-500) 10%, transparent);
-    }
-  }
-  .bg-red-500\/20 {
-    background-color: color-mix(in srgb, oklch(63.7% 0.237 25.331) 20%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, var(--color-red-500) 20%, transparent);
-    }
   }
   .bg-red-500\/30 {
     background-color: color-mix(in srgb, oklch(63.7% 0.237 25.331) 30%, transparent);
@@ -547,6 +543,12 @@
       background-color: color-mix(in oklab, var(--color-white) 10%, transparent);
     }
   }
+  .bg-zinc-900 {
+    background-color: var(--color-zinc-900);
+  }
+  .p-1 {
+    padding: calc(var(--spacing) * 1);
+  }
   .p-2 {
     padding: calc(var(--spacing) * 2);
   }
@@ -561,9 +563,6 @@
   }
   .px-5 {
     padding-inline: calc(var(--spacing) * 5);
-  }
-  .px-8 {
-    padding-inline: calc(var(--spacing) * 8);
   }
   .px-10 {
     padding-inline: calc(var(--spacing) * 10);
@@ -580,9 +579,6 @@
   .pr-3 {
     padding-right: calc(var(--spacing) * 3);
   }
-  .pb-2 {
-    padding-bottom: calc(var(--spacing) * 2);
-  }
   .pb-3 {
     padding-bottom: calc(var(--spacing) * 3);
   }
@@ -595,26 +591,23 @@
   .pl-8 {
     padding-left: calc(var(--spacing) * 8);
   }
-  .pl-12 {
-    padding-left: calc(var(--spacing) * 12);
-  }
   .pl-15 {
     padding-left: calc(var(--spacing) * 15);
   }
-  .pl-20 {
-    padding-left: calc(var(--spacing) * 20);
-  }
   .pl-30 {
     padding-left: calc(var(--spacing) * 30);
-  }
-  .pl-40 {
-    padding-left: calc(var(--spacing) * 40);
   }
   .text-center {
     text-align: center;
   }
   .text-left {
     text-align: left;
+  }
+  .font-\[Source\+Code\+Pro\] {
+    font-family: Source+Code+Pro;
+  }
+  .font-\[Source_Code_Pro\] {
+    font-family: Source Code Pro;
   }
   .text-lg {
     font-size: var(--text-lg);
@@ -643,11 +636,14 @@
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
   }
+  .break-all {
+    word-break: break-all;
+  }
+  .whitespace-normal {
+    white-space: normal;
+  }
   .text-gray-100 {
     color: var(--color-gray-100);
-  }
-  .text-gray-200 {
-    color: var(--color-gray-200);
   }
   .text-gray-400 {
     color: var(--color-gray-400);
@@ -661,14 +657,25 @@
   .text-red-300 {
     color: var(--color-red-300);
   }
-  .text-sky-100 {
-    color: var(--color-sky-100);
-  }
   .text-sky-200 {
     color: var(--color-sky-200);
   }
+  .text-sky-300 {
+    color: var(--color-sky-300);
+  }
   .text-white {
     color: var(--color-white);
+  }
+  .select-none {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .hover\:bg-blue-500 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-blue-500);
+      }
+    }
   }
   .hover\:bg-gray-400 {
     &:hover {
@@ -698,20 +705,6 @@
       }
     }
   }
-  .hover\:bg-neutral-400 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-neutral-400);
-      }
-    }
-  }
-  .hover\:bg-neutral-500 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-neutral-500);
-      }
-    }
-  }
   .hover\:bg-neutral-600 {
     &:hover {
       @media (hover: hover) {
@@ -734,7 +727,7 @@
     }
   }
 }
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 html, body {
   font-family: Inter, Helvetica, Arial, sans-serif;
 }

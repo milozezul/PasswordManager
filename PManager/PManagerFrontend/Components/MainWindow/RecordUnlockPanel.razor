@@ -1,0 +1,38 @@
+﻿<div class="mt-10">
+    <div class="flex flex-col">
+        <div class="text-white text-sm mb-1">Lock Password</div>
+        <div class="flex flex-row items-center gap-x-2">
+            <div class="relative">
+                <InputText type="password" class="bg-gray-300 text-gray-700 rounded-sm pl-2 h-8 w-50" @bind-Value="LockPassword" />
+                <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be within 100 characters</div>
+                <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                    <img src="icons/cancel.svg" class="w-4 h-4" />
+                </div>
+            </div>
+            <button class="bg-sky-400 text-white text-xs font-semibold border-gray-400 border-1 rounded-md flex flex-row items-center h-8 px-3 gap-x-1 cursor-pointer hover:bg-blue-500 select-none">
+                <img src="icons/unlocked.svg" class="w-4 h-4" />
+                <div>UNLOCK</div>
+            </button>
+        </div>
+    </div>
+    <div class="flex flex-col mt-5">
+        <div class="text-white text-sm mb-1">New Password</div>
+        <div class="flex flex-row items-center gap-x-2">
+            <div class="relative">
+                <InputText type="password" class="bg-gray-300 text-gray-700 rounded-sm pl-2 h-8 w-50" @bind-Value="NewPassword" />
+                <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be within 100 characters</div>
+                <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                    <img src="icons/cancel.svg" class="w-4 h-4" />
+                </div>
+            </div>            
+            <button class="bg-sky-400 text-white text-xs font-semibold border-gray-400 border-1 rounded-md flex flex-row items-center h-8 px-3 gap-x-1 cursor-pointer hover:bg-blue-500 select-none">
+                <img src="icons/locked-white.svg" class="w-4 h-4" />
+                <div>ADD NEW PASSWORD</div>
+            </button>
+        </div>
+    </div>
+</div>
+@code {
+    string LockPassword { get; set; }
+    string NewPassword { get; set; }
+}
