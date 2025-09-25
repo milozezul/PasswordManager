@@ -1,16 +1,20 @@
 ﻿@using PManagerFrontend.Components.Utility
 
 <div class="flex flex-row hover:bg-neutral-600 items-center py-2 pl-15">
-    <Expand OnExpand="OnExpandFolder" OnCollapse="OnCollapseFolder" />
-    <div class="flex flex-col ml-4">
-        <div class="flex flex-row items-center gap-x-3 cursor-pointer">
-            <img src="icons/record.svg" class="w-5 h-5" />
-            <div class="text-white text-sm">SQL Connection strings</div>
-        </div>
+    <Expand OnExpand="OnExpandFolder" OnCollapse="OnCollapseFolder" IsExpand="false" />
+
+    <div class="ml-4 flex flex-row items-center gap-x-3 cursor-pointer" @onclick="OpenRecord">
+        <img src="icons/record.svg" class="w-5 h-5" />
+        <div class="text-white text-sm">@Folder.Record.Name</div>
     </div>
 </div>
 
 @code {
+    [Parameter, EditorRequired]
+    public Models.Components.RecordFolder Folder { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback<Models.Components.RecordFolder> OpenRecordHandler { get; set; }
 
     void OnExpandFolder()
     {
@@ -22,4 +26,8 @@
 
     }
 
+    async Task OpenRecord()
+    {
+        await OpenRecordHandler.InvokeAsync(Folder);
+    }
 }

@@ -2,7 +2,9 @@
 @using PManagerFrontend.Components.Explorer
 @using PManagerFrontend.Components.MainWindow
 @using PManagerFrontend.Interfaces.Services
+@using PManagerFrontend.Models.Components
 @using SharedModels.DataService
+@using SharedModels.Database
 @inject IDataService _data
 
 <div class="flex flex-row">
@@ -10,42 +12,50 @@
         <UserAvatar />
         <ToolPanel />
 
-        @if (ExplorerData != null)
+        @foreach (var category in ExplorerData ?? Enumerable.Empty<Models.Components.GroupFolder>())
         {
-            foreach (var category in ExplorerData)
+            <GroupFolder Folder="@category" RefreshState="RefreshState" />
+            if (category.IsExpand)
             {
-                <GroupFolder FolderData="@category.Category" />            
+                foreach (var record in category.Records ?? Enumerable.Empty<Models.Components.RecordFolder>())
+                {
+                    <RecordFolder Folder="@record" OpenRecordHandler="OpenRecordHandler" />
+                }
             }
         }
-        
 
-        @* <GroupFolder />
-        <GroupFolder />
-        <RecordFolder />
-        <RecordFolder />
-        <PasswordFolder IsUnlocked="true" Status="UNLOCKED" />
-        <PasswordFolder IsUnlocked="false" Status="LOCKED" />
-        <PasswordFolder IsUnlocked="true" Status="UNLOCKED" />
+        @* 
         <PasswordFolder IsUnlocked="false" Status="DEACTIVATED" />
-        <RecordFolder />
-        <GroupFolder />
-        <GroupFolder />
         <NewGroup /> *@
     </div>
     <div class="basis-3/4 bg-neutral-500 h-[100vh] px-10">
         <BreadCrumb />
-        <RecordData />
-        <RecordUnlockPanel />
-        <PasswordHeader />
-        <PasswordData />
+        @if (CurrentRecord != null)
+        {
+            <RecordData Folder="@CurrentRecord" />
+            <RecordUnlockPanel Folder="@CurrentRecord" />
+        }
+        @* <PasswordHeader />
+        <PasswordData /> *@
     </div>
 </div>
 
 @code {
-    List<CategoryRecords> ExplorerData { get; set; }
+    List<Models.Components.GroupFolder> ExplorerData { get; set; }
+    Models.Components.RecordFolder CurrentRecord { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         ExplorerData = await _data.GetAllRecords();
+    }
+
+    void OpenRecordHandler(Models.Components.RecordFolder record)
+    {
+        CurrentRecord = record;
+    }
+
+    void RefreshState()
+    {
+        StateHasChanged();
     }
 }

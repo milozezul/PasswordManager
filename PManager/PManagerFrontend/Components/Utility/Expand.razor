@@ -8,8 +8,8 @@ else
 }
 
 @code {
-    bool IsExpand { get; set; } = false;
-
+    [Parameter, EditorRequired]
+    public bool IsExpand { get; set; }
     [Parameter, EditorRequired]
     public EventCallback OnExpand { get; set; }
     [Parameter, EditorRequired]

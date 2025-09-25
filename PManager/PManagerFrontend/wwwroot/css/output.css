@@ -13,15 +13,10 @@
     --color-orange-600: oklch(64.6% 0.222 41.116);
     --color-green-400: oklch(79.2% 0.209 151.711);
     --color-green-600: oklch(62.7% 0.194 149.214);
-    --color-cyan-400: oklch(78.9% 0.154 211.53);
-    --color-cyan-500: oklch(71.5% 0.143 215.221);
-    --color-sky-100: oklch(95.1% 0.026 236.824);
     --color-sky-200: oklch(90.1% 0.058 230.902);
     --color-sky-300: oklch(82.8% 0.111 230.318);
     --color-sky-400: oklch(74.6% 0.16 232.661);
     --color-sky-600: oklch(58.8% 0.158 241.966);
-    --color-blue-300: oklch(80.9% 0.105 251.813);
-    --color-blue-400: oklch(70.7% 0.165 254.624);
     --color-blue-500: oklch(62.3% 0.214 259.815);
     --color-slate-500: oklch(55.4% 0.046 257.417);
     --color-gray-100: oklch(96.7% 0.003 264.542);
@@ -35,7 +30,6 @@
     --color-gray-900: oklch(21% 0.034 264.665);
     --color-zinc-300: oklch(87.1% 0.006 286.286);
     --color-zinc-900: oklch(21% 0.006 285.885);
-    --color-neutral-400: oklch(70.8% 0 0);
     --color-neutral-500: oklch(55.6% 0 0);
     --color-neutral-600: oklch(43.9% 0 0);
     --color-neutral-700: oklch(37.1% 0 0);
@@ -301,9 +295,6 @@
   .h-14 {
     height: calc(var(--spacing) * 14);
   }
-  .h-50 {
-    height: calc(var(--spacing) * 50);
-  }
   .h-\[100vh\] {
     height: 100vh;
   }
@@ -340,17 +331,11 @@
   .w-80 {
     width: calc(var(--spacing) * 80);
   }
-  .w-130 {
-    width: calc(var(--spacing) * 130);
-  }
   .w-150 {
     width: calc(var(--spacing) * 150);
   }
   .w-200 {
     width: calc(var(--spacing) * 200);
-  }
-  .w-300 {
-    width: calc(var(--spacing) * 300);
   }
   .w-\[80\%\] {
     width: 80%;
@@ -360,15 +345,6 @@
   }
   .w-full {
     width: 100%;
-  }
-  .max-w-300 {
-    max-width: calc(var(--spacing) * 300);
-  }
-  .max-w-\[100\%\] {
-    max-width: 100%;
-  }
-  .min-w-130 {
-    min-width: calc(var(--spacing) * 130);
   }
   .grow-1 {
     flex-grow: 1;
@@ -603,9 +579,6 @@
   .text-left {
     text-align: left;
   }
-  .font-\[Source\+Code\+Pro\] {
-    font-family: Source+Code+Pro;
-  }
   .font-\[Source_Code_Pro\] {
     font-family: Source Code Pro;
   }
@@ -638,9 +611,6 @@
   }
   .break-all {
     word-break: break-all;
-  }
-  .whitespace-normal {
-    white-space: normal;
   }
   .text-gray-100 {
     color: var(--color-gray-100);

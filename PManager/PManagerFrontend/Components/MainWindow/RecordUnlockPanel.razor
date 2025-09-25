@@ -33,6 +33,8 @@
     </div>
 </div>
 @code {
+    [Parameter, EditorRequired]
+    public Models.Components.RecordFolder Folder { get; set; }
     string LockPassword { get; set; }
     string NewPassword { get; set; }
 }
