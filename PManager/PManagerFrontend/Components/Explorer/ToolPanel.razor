@@ -1,9 +1,35 @@
-﻿<div class="mt-6 mb-3">
-    <div class="mx-4 border-b-zinc-300 border-b-2">
-        <img src="icons/new-group.svg" class="ml-6 mb-3 w-9 h-9 cursor-pointer" />
+﻿<div class="mt-6">
+    <div class="mx-4 mb-3 border-b-zinc-300 border-b-2">
+        <img src="icons/new-group.svg" class="ml-6 mb-3 w-9 h-9 cursor-pointer" @onclick="OpenNewGroup"/>
     </div>
+    @if (IsNewGroup)
+    {
+        <div class="flex flex-row items-center">
+            <NewGroup CloseNewGroup="CloseAndRefresh" />
+            <img src="icons/close.svg" class="w-4 h-4" @onclick="CloseNewGroup" />
+        </div>
+    }
 </div>
 
 @code {
+    [Parameter, EditorRequired]
+    public EventCallback RefreshExplorerPanel { get; set; }
 
+    bool IsNewGroup { get; set; }
+
+    void OpenNewGroup()
+    {
+        IsNewGroup = true;
+    }
+
+    void CloseNewGroup()
+    {
+        IsNewGroup = false;
+    }
+
+    async Task CloseAndRefresh()
+    {
+        CloseNewGroup();
+        await RefreshExplorerPanel.InvokeAsync();
+    }
 }
