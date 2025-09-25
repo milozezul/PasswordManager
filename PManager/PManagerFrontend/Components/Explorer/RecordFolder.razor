@@ -1,7 +1,8 @@
 ﻿@using PManagerFrontend.Components.Utility
+@using PManagerFrontend.Models.Components
 
 <div class="flex flex-row hover:bg-neutral-600 items-center py-2 pl-15">
-    <Expand OnExpand="OnExpandFolder" OnCollapse="OnCollapseFolder" IsExpand="false" />
+    <Expand OnExpand="OnExpandFolder" OnCollapse="OnCollapseFolder" IsExpand="@Folder.IsExpand" />
 
     <div class="ml-4 flex flex-row items-center gap-x-3 cursor-pointer" @onclick="OpenRecord">
         <img src="icons/record.svg" class="w-5 h-5" />
@@ -11,23 +12,31 @@
 
 @code {
     [Parameter, EditorRequired]
-    public Models.Components.RecordFolder Folder { get; set; }
+    public RecordFolderModel Folder { get; set; }
 
     [Parameter, EditorRequired]
-    public EventCallback<Models.Components.RecordFolder> OpenRecordHandler { get; set; }
+    public GroupFolderModel Group { get; set; }
 
-    void OnExpandFolder()
+    [Parameter, EditorRequired]
+    public EventCallback<(RecordFolderModel record, GroupFolderModel group)> OpenRecordHandler { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback RefreshState { get; set; }
+
+    async Task OnExpandFolder()
     {
-
+        Folder.IsExpand = true;
+        await RefreshState.InvokeAsync();
     }
 
-    void OnCollapseFolder()
+    async Task OnCollapseFolder()
     {
-
+        Folder.IsExpand = false;
+        await RefreshState.InvokeAsync();
     }
 
     async Task OpenRecord()
     {
-        await OpenRecordHandler.InvokeAsync(Folder);
+        await OpenRecordHandler.InvokeAsync((Folder, Group));
     }
 }

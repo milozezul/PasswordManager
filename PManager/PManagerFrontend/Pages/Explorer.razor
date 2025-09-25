@@ -8,50 +8,103 @@
 @inject IDataService _data
 
 <div class="flex flex-row">
-    <div class="basis-1/4 bg-neutral-700 h-[100vh] flex flex-col">
+    <div class="basis-1/4 bg-neutral-700 h-[100vh] flex flex-col overflow-y-scroll overflow-x-hidden">
         <UserAvatar />
         <ToolPanel />
 
-        @foreach (var category in ExplorerData ?? Enumerable.Empty<Models.Components.GroupFolder>())
+        @foreach (var group in ExplorerData ?? Enumerable.Empty<GroupFolderModel>())
         {
-            <GroupFolder Folder="@category" RefreshState="RefreshState" />
-            if (category.IsExpand)
+            <GroupFolder
+                Folder="@group"
+                OpenGroupHandler="OpenGroupHandler"
+                RefreshState="RefreshState" />
+
+            if (group.IsExpand)
             {
-                foreach (var record in category.Records ?? Enumerable.Empty<Models.Components.RecordFolder>())
+                foreach (var record in group.Records ?? Enumerable.Empty<RecordFolderModel>())
                 {
-                    <RecordFolder Folder="@record" OpenRecordHandler="OpenRecordHandler" />
+                    <RecordFolder
+                        Folder="@record"
+                        Group="@group"
+                        OpenRecordHandler="OpenRecordHandler"
+                        RefreshState="RefreshState" />
+
+                    if (record.IsExpand)
+                    {
+                        foreach (var password in record.Passwords ?? Enumerable.Empty<DecryptedPassword>())
+                        {
+                            <PasswordFolder
+                                @key="@("pwd" + password.Id)"
+                                Folder="password"
+                                Record="@record"
+                                Group="@group"
+                                OpenPasswordHandler="OpenPasswordHandler" />
+                        }
+                    }
                 }
             }
         }
 
-        @* 
-        <PasswordFolder IsUnlocked="false" Status="DEACTIVATED" />
-        <NewGroup /> *@
+        @* <NewGroup /> *@
     </div>
-    <div class="basis-3/4 bg-neutral-500 h-[100vh] px-10">
-        <BreadCrumb />
+    <div class="basis-3/4 bg-neutral-500 h-[100vh] px-10 overflow-y-scroll overflow-x-hidden">
+        @if (CurrentGroup != null)
+        {
+            <GroupHeader 
+                GroupName="@CurrentGroup.Category.Name" />
+        }
         @if (CurrentRecord != null)
         {
-            <RecordData Folder="@CurrentRecord" />
-            <RecordUnlockPanel Folder="@CurrentRecord" />
+            <RecordHeader 
+                RecordName="@CurrentRecord.Record.Name" />
+
+            <RecordData 
+                Folder="@CurrentRecord" />
+
+            <RecordUnlockPanel 
+                Folder="@CurrentRecord" 
+                RefreshState="RefreshState" />
         }
-        @* <PasswordHeader />
-        <PasswordData /> *@
+        @if (CurrentPassword != null) {
+            <PasswordHeader />
+
+            <PasswordData 
+                @key="@("pwdview" + CurrentPassword.Id)" 
+                Password="@CurrentPassword" />
+        }
     </div>
 </div>
 
 @code {
-    List<Models.Components.GroupFolder> ExplorerData { get; set; }
-    Models.Components.RecordFolder CurrentRecord { get; set; }
+    List<GroupFolderModel>? ExplorerData { get; set; }
+    GroupFolderModel? CurrentGroup { get; set; }
+    RecordFolderModel? CurrentRecord { get; set; }
+    DecryptedPassword? CurrentPassword { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         ExplorerData = await _data.GetAllRecords();
     }
 
-    void OpenRecordHandler(Models.Components.RecordFolder record)
+    void OpenGroupHandler(GroupFolderModel group)
     {
-        CurrentRecord = record;
+        CurrentGroup = group;
+        CurrentPassword = null;
+        CurrentRecord = null;
+    }
+
+    void OpenRecordHandler((RecordFolderModel record, GroupFolderModel group) data)
+    {
+        CurrentRecord = data.record;
+        CurrentGroup = data.group;
+        CurrentPassword = null;
+    }
+
+    void OpenPasswordHandler((DecryptedPassword password, RecordFolderModel record, GroupFolderModel group) data)
+    {
+        CurrentPassword = data.password;
+        CurrentRecord = data.record;
+        CurrentGroup = data.group;
     }
 
     void RefreshState()

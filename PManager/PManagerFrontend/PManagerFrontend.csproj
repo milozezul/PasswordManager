@@ -20,4 +20,8 @@
     <Folder Include="wwwroot\icons\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\modules\clipboardService.js" />
+  </ItemGroup>
+
 </Project>

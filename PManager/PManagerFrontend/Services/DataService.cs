@@ -245,7 +245,7 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<List<GroupFolder>> GetAllRecords()
+        public async Task<List<GroupFolderModel>> GetAllRecords()
         {
             using (var client = _factory.CreateClient("api"))
             {
@@ -257,20 +257,20 @@ namespace PManagerFrontend.Services
                     if (response.IsSuccessStatusCode)
                     {
                         var model = JsonSerializer.Deserialize<List<CategoryRecords>>(responseContent);
-                        var result = new List<GroupFolder>();
+                        var result = new List<GroupFolderModel>();
                         foreach (var group in model ?? Enumerable.Empty<CategoryRecords>())
                         {
-                            var records = new List<RecordFolder>();
+                            var records = new List<RecordFolderModel>();
                             foreach (var record in group.Records ?? Enumerable.Empty<Record>())
                             {
-                                records.Add(new RecordFolder()
+                                records.Add(new RecordFolderModel()
                                 {
                                     Record = record,
                                     IsExpand = false,
                                     Passwords = null
                                 });
                             }
-                            result.Add(new GroupFolder()
+                            result.Add(new GroupFolderModel()
                             {
                                 Category = group.Category,
                                 IsExpand = false,
@@ -279,11 +279,11 @@ namespace PManagerFrontend.Services
                         }
                         return result;
                     }
-                    return new List<GroupFolder>();
+                    return new List<GroupFolderModel>();
                 }
                 catch (Exception ex)
                 {
-                    return new List<GroupFolder>();
+                    return new List<GroupFolderModel>();
                 }
             }
         }

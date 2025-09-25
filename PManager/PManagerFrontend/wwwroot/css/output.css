@@ -427,6 +427,12 @@
   .gap-y-5 {
     row-gap: calc(var(--spacing) * 5);
   }
+  .overflow-x-hidden {
+    overflow-x: hidden;
+  }
+  .overflow-y-scroll {
+    overflow-y: scroll;
+  }
   .rounded-\[50\%\] {
     border-radius: 50%;
   }
