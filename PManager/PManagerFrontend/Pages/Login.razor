@@ -6,7 +6,6 @@
 @inject IAuthService _auth;
 
 <div class="flex flex-row justify-center mt-5">
-    <ErrorModal Error="@Error" />
     <div class="bg-gray-700 text-white flex flex-col">
         <div class="bg-gray-600 w-full p-2 text-lg">Login</div>
         <div class="w-full flex flex-col items-center p-5">
@@ -43,8 +42,6 @@
 </div>
 
 @code {
-    ErrorState Error { get; set; } = new ErrorState();
-
     string Username { get; set; }
     string Password { get; set; }
 
@@ -61,7 +58,7 @@
         }
         else
         {
-            ErrorState.OpenError(Error, "Error", response.Message);            
+            //Error           
         }
     }
 
@@ -74,11 +71,11 @@
         });
         if (response.Value)
         {
-            ErrorState.OpenError(Error, "Success", "Registered sucessfully. Please login.");            
+            //register success            
         }
         else
         {
-            ErrorState.OpenError(Error, "Error", response.Message);
+            //register error
         }
     }
 }

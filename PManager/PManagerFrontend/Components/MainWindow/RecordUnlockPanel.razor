@@ -1,5 +1,6 @@
 ﻿@using PManagerFrontend.Interfaces.Services
 @using PManagerFrontend.Models.Components
+@using SharedModels.DataService
 @inject IDataService _data
 
 <div class="mt-10">
@@ -38,11 +39,25 @@
         </div>
     </div>
 </div>
+@if (Password != null)
+{
+    <PasswordHeader />
+
+    <PasswordData
+        @key="@("password" + Password.Id)"
+        Record="@Folder" 
+        Password="@Password" 
+        LockPassword="@LockPassword" 
+        RefreshPassswords="GetPasswords" />
+}
+
 @code {
     [Parameter, EditorRequired]
     public RecordFolderModel Folder { get; set; }
     [Parameter, EditorRequired]
     public EventCallback RefreshState { get; set; }
+    [Parameter, EditorRequired]
+    public DecryptedPassword? Password { get; set; }
 
     string LockPassword { get; set; }
     string NewPassword { get; set; }
@@ -63,10 +78,7 @@
         if (password != null)
         {
             ClearNewPassword();
-            var recordPassword = await _data.GetPasswordsByRecordId(Folder.Record.Id, LockPassword);
-            Folder.Passwords = recordPassword.Passwords;
-            Folder.IsExpand = true;
-            await RefreshState.InvokeAsync();
+            await GetPasswords();
         }
         else
         {

@@ -58,7 +58,10 @@
             <GroupHeader 
                 GroupName="@CurrentGroup.Category.Name" />
 
-                <NewRecord @key="@("newrecord" + CurrentGroup.Category.Id)" Group="@CurrentGroup" RefreshData="LoadData" />
+                <NewRecord 
+                    @key="@("newrecord" + CurrentGroup.Category.Id)" 
+                    Group="@CurrentGroup" 
+                    RefreshData="LoadData" />
         }
         @if (CurrentRecord != null)
         {
@@ -70,13 +73,7 @@
 
             <RecordUnlockPanel 
                 Folder="@CurrentRecord" 
-                RefreshState="RefreshState" />
-        }
-        @if (CurrentPassword != null) {
-            <PasswordHeader />
-
-            <PasswordData 
-                @key="@("pwdview" + CurrentPassword.Id)" 
+                RefreshState="RefreshState" 
                 Password="@CurrentPassword" />
         }
     </div>

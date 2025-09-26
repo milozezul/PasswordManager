@@ -18,29 +18,6 @@ namespace PManagerFrontend.Services
             _state = state;
         }
 
-        public async Task<List<Category>> GetCategories()
-        {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    var response = await client.GetAsync("api/Data/categories");
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
-                    {                        
-                        var model = JsonSerializer.Deserialize<List<Category>>(responseContent);
-                        return model;
-                    }
-                    return new List<Category>();
-                }
-                catch (Exception ex)
-                {
-                    return new List<Category>();
-                }
-            }
-        }
-
         public async Task<Category?> CreateNewCategory(string category)
         {
             using (var client = _factory.CreateClient("api"))
@@ -60,29 +37,6 @@ namespace PManagerFrontend.Services
                 catch (Exception ex)
                 {
                     return null;
-                }
-            }
-        }
-
-        public async Task<List<Record>> GetRecordsByCategory(string category)
-        {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    var response = await client.GetAsync("api/Data/records/" + category);
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
-                    {                        
-                        var model = JsonSerializer.Deserialize<List<Record>>(responseContent);
-                        return model;
-                    }
-                    return new List<Record>();
-                }
-                catch (Exception ex)
-                {
-                    return new List<Record>();
                 }
             }
         }

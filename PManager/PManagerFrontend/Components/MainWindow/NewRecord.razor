@@ -2,72 +2,74 @@
 @using PManagerFrontend.Models.Components
 @inject IDataService _data
 
-<div class="text-white mt-3 mb-1">Create New Record</div>
-<div class="flex flex-row gap-x-3 items-end">
-    <div class="flex flex-col">
-        <div class="text-white text-sm mb-1">Name</div>
-        <div class="flex flex-row items-center gap-x-2">
-            <div class="relative">
-                <input type="text" class="bg-gray-300 text-gray-700 rounded-sm pl-2 h-8 w-50" @bind-value:event="oninput" @bind-value="RecordName" />
-                @if(RecordName.Length == 0)
-                {
-                    <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
-                }
-                @if (RecordName.Length > 200)
-                {
-                    <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be within 200 characters</div>
-                }
-                <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
-                    <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearName" />
+<button class="my-2 bg-sky-400 text-white text-xs font-semibold border-gray-400 border-1 rounded-md flex flex-row items-center h-8 px-3 gap-x-1 cursor-pointer hover:bg-blue-500 select-none" @onclick="OpenCreatePanel">Create New Record</button>
+@if (IsCreateOpen) {
+    <div class="flex flex-row gap-x-3 items-end">
+        <div class="flex flex-col">
+            <div class="text-white text-sm mb-1">Name</div>
+            <div class="flex flex-row items-center gap-x-2">
+                <div class="relative">
+                    <input type="text" class="bg-gray-300 text-gray-700 rounded-sm pl-2 h-8 w-50" @bind-value:event="oninput" @bind-value="RecordName" />
+                    @if(RecordName.Length == 0)
+                    {
+                        <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
+                    }
+                    @if (RecordName.Length > 200)
+                    {
+                        <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be within 200 characters</div>
+                    }
+                    <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                        <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearName" />
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="flex flex-col">
-        <div class="text-white text-sm mb-1">URL</div>
-        <div class="flex flex-row items-center gap-x-2">
-            <div class="relative">
-                <input type="text" class="bg-gray-300 text-gray-700 rounded-sm pl-2 h-8 w-50" @bind-value:event="oninput" @bind-value="RecordUrl" />
-                @if (RecordUrl.Length == 0)
-                {
-                    <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
-                }
-                @if (RecordUrl.Length > 300)
-                {
-                    <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be within 300 characters</div>
-                }
-                <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
-                    <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearUrl" />
+        <div class="flex flex-col">
+            <div class="text-white text-sm mb-1">URL</div>
+            <div class="flex flex-row items-center gap-x-2">
+                <div class="relative">
+                    <input type="text" class="bg-gray-300 text-gray-700 rounded-sm pl-2 h-8 w-50" @bind-value:event="oninput" @bind-value="RecordUrl" />
+                    @if (RecordUrl.Length == 0)
+                    {
+                        <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
+                    }
+                    @if (RecordUrl.Length > 300)
+                    {
+                        <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be within 300 characters</div>
+                    }
+                    <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                        <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearUrl" />
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="flex flex-col">
-        <div class="text-white text-sm mb-1">Username</div>
-        <div class="flex flex-row items-center gap-x-2">
-            <div class="relative">
-                <input type="text" class="bg-gray-300 text-gray-700 rounded-sm pl-2 h-8 w-50" @bind-value:event="oninput" @bind-value="RecordUsername" />
-                @if (RecordUsername.Length == 0)
-                {
-                    <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
-                }
-                @if (RecordUsername.Length > 300)
-                {
-                    <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be within 300 characters</div>
-                }
-                <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
-                    <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearUsername" />
+        <div class="flex flex-col">
+            <div class="text-white text-sm mb-1">Username</div>
+            <div class="flex flex-row items-center gap-x-2">
+                <div class="relative">
+                    <input type="text" class="bg-gray-300 text-gray-700 rounded-sm pl-2 h-8 w-50" @bind-value:event="oninput" @bind-value="RecordUsername" />
+                    @if (RecordUsername.Length == 0)
+                    {
+                        <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
+                    }
+                    @if (RecordUsername.Length > 300)
+                    {
+                        <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be within 300 characters</div>
+                    }
+                    <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                        <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearUsername" />
+                    </div>
                 </div>
             </div>
         </div>
+        <button class="bg-sky-400 text-white text-xs font-semibold border-gray-400 border-1 rounded-md flex flex-row items-center h-8 px-3 gap-x-1 cursor-pointer hover:bg-blue-500 select-none" @onclick="CreateRecord">
+            <img src="icons/add.svg" class="w-3 h-3" />
+            <div>CREATE</div>
+        </button>
     </div>
-    <button class="bg-sky-400 text-white text-xs font-semibold border-gray-400 border-1 rounded-md flex flex-row items-center h-8 px-3 gap-x-1 cursor-pointer hover:bg-blue-500 select-none" @onclick="CreateRecord">
-        <img src="icons/add.svg" class="w-3 h-3" />
-        <div>CREATE</div>
-    </button>
-</div>
-<div class="text-red-300 mt-4">@ErrorMessage</div>
-<div class="text-green-300 mt-4">@SuccessMessage</div>
+    <div class="text-red-300 mt-4">@ErrorMessage</div>
+    <div class="text-green-300 mt-4">@SuccessMessage</div>
+}
 
 @code {
     [Parameter, EditorRequired]
@@ -82,6 +84,8 @@
 
     string ErrorMessage { get; set; } = "";
     string SuccessMessage { get; set; } = "";
+
+    bool IsCreateOpen { get; set; }
 
     async Task CreateRecord()
     {
@@ -116,5 +120,10 @@
     void ClearUsername()
     {
         RecordUsername = string.Empty;
+    }
+
+    void OpenCreatePanel()
+    {
+        IsCreateOpen = !IsCreateOpen;
     }
 }
