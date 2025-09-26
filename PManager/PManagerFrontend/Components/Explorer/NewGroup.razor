@@ -5,19 +5,39 @@
     <div class="w-1"></div>
     <img src="icons/group.svg" class="w-6 h-6" />
     <div class="flex flex-col relative">
-        <InputText type="text" class="bg-gray-300 text-gray-700 rounded-sm pl-2" @onkeydown="OnEnter" @bind-Value="GroupName" />
-        <div class="absolute text-red-300 text-[10px] bottom-[-13px]">Must be within 100 characters</div>
+        <InputText type="text" class="bg-gray-300 text-gray-700 rounded-sm pl-2" Value="@GroupName" ValueChanged="OnChange" ValueExpression="() => GroupName" @onkeydown="OnEnter" @oninput="OnInput" />
+        @if(GroupName.Length == 0)
+        {
+            <div class="absolute text-red-300 text-[10px] bottom-[-13px]">Must be at least 1 character</div>
+        }
+        @if (GroupName.Length > 200)
+        {
+            <div class="absolute text-red-300 text-[10px] bottom-[-13px]">Must be less than 200 characters</div>
+        }
         <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
-            <img src="icons/cancel.svg" class="w-4 h-4" />
+            <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearGroupName" />
         </div>
     </div>
 </div>
 
 @code {
     [Parameter, EditorRequired]
-    public EventCallback CloseNewGroup { get; set; }
+    public EventCallback CloseNewGroupTool { get; set; }
 
-    string GroupName { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback RefreshData { get; set; }
+
+    string GroupName { get; set; } = "";
+
+    void OnInput(ChangeEventArgs e)
+    {
+        OnChange(e.Value?.ToString() ?? string.Empty);
+    }
+
+    void OnChange(string value)
+    {
+        GroupName = value;
+    }
 
     async Task OnEnter(KeyboardEventArgs e)
     {
@@ -31,6 +51,12 @@
     {
         await _data.CreateNewCategory(GroupName);
         GroupName = "";
-        await CloseNewGroup.InvokeAsync();
+        await CloseNewGroupTool.InvokeAsync();
+        await RefreshData.InvokeAsync();
+    }
+
+    void ClearGroupName()
+    {
+        GroupName = string.Empty;
     }
 }

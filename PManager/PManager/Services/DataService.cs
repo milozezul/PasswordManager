@@ -184,13 +184,23 @@ namespace PManager
                 .Select(u => u.Category)
                 .SingleOrDefaultAsync(c => c.Name == name);
         }
+
+        async Task<Category?> GetCategoryById(int id)
+        {
+            int userId = GetUserId();
+
+            return await _context.UserCategories
+                .Where(u => u.UserId == userId)
+                .Select(u => u.Category)
+                .SingleOrDefaultAsync(c => c.Id == id);
+        }
         
-        public async Task<Record?> CreateRecord(string category, string name, string url)
+        public async Task<Record?> CreateRecord(int categoryId, string name, string url, string username)
         {
             //lowercase compare
             //clean strings
             //validate strings
-            var categoryInput = await GetCategoryByName(category);
+            var categoryInput = await GetCategoryById(categoryId);
 
             if (categoryInput == null) return null;
             
@@ -204,7 +214,8 @@ namespace PManager
                     {
                         Category = categoryInput,
                         Name = name,
-                        Url = url
+                        Url = url,
+                        Username = username
                     }
                 });
             await _context.SaveChangesAsync();
@@ -234,24 +245,7 @@ namespace PManager
                 });
             await _context.SaveChangesAsync();
             return createdPassword.Entity;
-        }
-        
-        public async Task<RecordPasswordsModel?> CreateRecordWithPassword(string category, string name, string url, string newPassword, string password)
-        {
-            //clean strings
-            //lowercase strings
-            //reduce number of save changes per query 2 operations
-            var record = await CreateRecord(category, name, url);
-
-            if (record == null) return null;
-
-            var createdPassword = await AddPassword(record.Id, newPassword, password);
-
-            var passwords = await GetEncryptedPasswordsByRecordId(record.Id);
-
-            await _context.SaveChangesAsync();
-            return passwords;
-        }       
+        }      
         
         public async Task DeactivatePassword(int recordId, int passwordId, string password)
         {

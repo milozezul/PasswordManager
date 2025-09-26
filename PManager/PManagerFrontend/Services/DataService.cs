@@ -87,48 +87,18 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<Record?> CreateRecord(string name, string url, string category)
+        public async Task<Record?> CreateRecord(string name, string url, string username, int category)
         {
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
-                    var response = await client.PostAsync($"api/Data/records/{category}?name={name}&url={url}", null);
+                    var response = await client.PostAsync($"api/Data/records/create/{category}?name={name}&url={url}&username={username}", null);
                     var responseContent = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {
                         var model = JsonSerializer.Deserialize<Record>(responseContent);
-                        return model;
-                    }
-                    return null;
-                }
-                catch (Exception ex)
-                {
-                    return null;
-                }
-            }
-        }
-
-        public async Task<RecordPasswordsModel?> CreateRecordWithPassword(string name, string url, string category, string lockpassword, string newpassword)
-        {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    PasswordParametersModel input = new PasswordParametersModel()
-                    {
-                        Password = lockpassword,
-                        NewPassword = newpassword
-                    };
-                    var json = JsonSerializer.Serialize(input);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/records/{category}/password?name={name}&url={url}", content);
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var model = JsonSerializer.Deserialize<RecordPasswordsModel>(responseContent);
                         return model;
                     }
                     return null;

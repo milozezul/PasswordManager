@@ -112,6 +112,9 @@ namespace PManager.Data
             record
                 .Property(v => v.Url)
                 .HasMaxLength(300);
+            record
+                .Property(v => v.Username)
+                .HasMaxLength(300);
         }
     }
 }

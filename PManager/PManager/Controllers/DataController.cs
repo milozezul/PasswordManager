@@ -30,12 +30,12 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("records/{category}")]
-        public async Task<IActionResult> CreateRecord(string category, [FromQuery] string name, [FromQuery] string url)
+        [HttpPost("records/create/{category:int}")]
+        public async Task<IActionResult> CreateRecord(int category, [FromQuery] string name, [FromQuery] string url, [FromQuery] string username)
         {
             try
             {
-                var record = await _dataService.CreateRecord(category, name, url);
+                var record = await _dataService.CreateRecord(category, name, url, username);
 
                 if (record == null) return StatusCode(409);
 
@@ -57,23 +57,6 @@ namespace PManager.Controllers
                 if (createdPassword == null) return StatusCode(409);
 
                 return StatusCode(201, createdPassword);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Server Error: {ex.Message}");
-            }
-        }
-
-        [HttpPost("records/{category}/password")]
-        public async Task<IActionResult> CreateRecordWithPassword(string category, [FromQuery] string name, [FromQuery] string url, PasswordParametersModel model)
-        {
-            try
-            {
-                var record = await _dataService.CreateRecordWithPassword(category, name, url, model.NewPassword, model.Password);
-
-                if (record == null) return StatusCode(409);
-
-                return StatusCode(201, record);
             }
             catch (Exception ex)
             {

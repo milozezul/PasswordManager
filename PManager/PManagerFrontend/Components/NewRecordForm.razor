@@ -96,55 +96,55 @@
 
         if (isPassword)
         {
-            if (string.IsNullOrEmpty(LockPassword) || string.IsNullOrEmpty(NewPassword))
-            {
-                return;
-            }
-            var record = await _dataService.CreateRecordWithPassword(Name, Url, Category, LockPassword, NewPassword);
+            // if (string.IsNullOrEmpty(LockPassword) || string.IsNullOrEmpty(NewPassword))
+            // {
+            //     return;
+            // }
+            // var record = await _dataService.CreateRecordWithPassword(Name, Url, Category, LockPassword, NewPassword);
 
-            if (record != null)
-            {
-                await OpenError.InvokeAsync(new ErrorState()
-                {
-                    IsOpen = true,
-                    Header = "Success",
-                    Body = "Created Record."
-                });
-                await RefreshRecords.InvokeAsync();
-            }
-            else
-            {
-                await OpenError.InvokeAsync(new ErrorState()
-                {
-                    IsOpen = true,
-                    Header = "Error",
-                    Body = "Failed to create Record."
-                });
-            }
+            // if (record != null)
+            // {
+            //     await OpenError.InvokeAsync(new ErrorState()
+            //     {
+            //         IsOpen = true,
+            //         Header = "Success",
+            //         Body = "Created Record."
+            //     });
+            //     await RefreshRecords.InvokeAsync();
+            // }
+            // else
+            // {
+            //     await OpenError.InvokeAsync(new ErrorState()
+            //     {
+            //         IsOpen = true,
+            //         Header = "Error",
+            //         Body = "Failed to create Record."
+            //     });
+            // }
         }
         else
         {
-            var record = await _dataService.CreateRecord(Name, Url, Category);
+            // var record = await _dataService.CreateRecord(Name, Url, Category);
 
-            if(record != null)
-            {
-                await OpenError.InvokeAsync(new ErrorState()
-                {
-                    IsOpen = true,
-                    Header = "Success",
-                    Body = "Created Record."
-                });
-                await RefreshRecords.InvokeAsync();
-            }
-            else
-            {
-                await OpenError.InvokeAsync(new ErrorState()
-                {
-                    IsOpen = true,
-                    Header = "Error",
-                    Body = "Failed to create Record."
-                });
-            }
+            // if(record != null)
+            // {
+            //     await OpenError.InvokeAsync(new ErrorState()
+            //     {
+            //         IsOpen = true,
+            //         Header = "Success",
+            //         Body = "Created Record."
+            //     });
+            //     await RefreshRecords.InvokeAsync();
+            // }
+            // else
+            // {
+            //     await OpenError.InvokeAsync(new ErrorState()
+            //     {
+            //         IsOpen = true,
+            //         Header = "Error",
+            //         Body = "Failed to create Record."
+            //     });
+            // }
         }
     }
 }

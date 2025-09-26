@@ -8,9 +8,9 @@
         <div class="flex flex-row items-center gap-x-2">
             <div class="relative">
                 <InputText type="password" class="bg-gray-300 text-gray-700 rounded-sm pl-2 h-8 w-50" @bind-Value="LockPassword" />
-                <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be within 100 characters</div>
+                @* <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be within 100 characters</div> *@
                 <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
-                    <img src="icons/cancel.svg" class="w-4 h-4" />
+                    <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearLockPassword" />
                 </div>
             </div>
             <button class="bg-sky-400 text-white text-xs font-semibold border-gray-400 border-1 rounded-md flex flex-row items-center h-8 px-3 gap-x-1 cursor-pointer hover:bg-blue-500 select-none" @onclick="GetPasswords">
@@ -24,12 +24,14 @@
         <div class="flex flex-row items-center gap-x-2">
             <div class="relative">
                 <InputText type="password" class="bg-gray-300 text-gray-700 rounded-sm pl-2 h-8 w-50" @bind-Value="NewPassword" />
-                <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Must be within 100 characters</div>
+                @if (IsError) {
+                    <div class="absolute text-red-300 text-[10px] bottom-[-15px]">Failed to add password</div>
+                }
                 <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
-                    <img src="icons/cancel.svg" class="w-4 h-4" />
+                    <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearNewPassword" />
                 </div>
             </div>            
-            <button class="bg-sky-400 text-white text-xs font-semibold border-gray-400 border-1 rounded-md flex flex-row items-center h-8 px-3 gap-x-1 cursor-pointer hover:bg-blue-500 select-none">
+            <button class="bg-sky-400 text-white text-xs font-semibold border-gray-400 border-1 rounded-md flex flex-row items-center h-8 px-3 gap-x-1 cursor-pointer hover:bg-blue-500 select-none" @onclick="AddPassword">
                 <img src="icons/locked-white.svg" class="w-4 h-4" />
                 <div>ADD NEW PASSWORD</div>
             </button>
@@ -45,11 +47,40 @@
     string LockPassword { get; set; }
     string NewPassword { get; set; }
 
+    bool IsError { get; set; }
+
     async Task GetPasswords()
     {
         var recordPassword = await _data.GetPasswordsByRecordId(Folder.Record.Id, LockPassword);
         Folder.Passwords = recordPassword.Passwords;
         Folder.IsExpand = true;
         await RefreshState.InvokeAsync();
+    }
+
+    async Task AddPassword()
+    {
+        var password = await _data.AddPassword(LockPassword, NewPassword, Folder.Record.Id);
+        if (password != null)
+        {
+            ClearNewPassword();
+            var recordPassword = await _data.GetPasswordsByRecordId(Folder.Record.Id, LockPassword);
+            Folder.Passwords = recordPassword.Passwords;
+            Folder.IsExpand = true;
+            await RefreshState.InvokeAsync();
+        }
+        else
+        {
+            IsError = true;
+        }
+    }
+
+    void ClearLockPassword()
+    {
+        LockPassword = string.Empty;
+    }
+
+    void ClearNewPassword()
+    {
+        NewPassword = string.Empty;
     }
 }

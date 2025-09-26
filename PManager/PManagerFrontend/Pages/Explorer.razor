@@ -10,8 +10,15 @@
 <div class="flex flex-row">
     <div class="basis-1/4 bg-neutral-700 h-[100vh] flex flex-col overflow-y-scroll overflow-x-hidden">
         <UserAvatar />
-        <ToolPanel RefreshExplorerPanel="LoadData" />
+        <ToolPanel OpenNewGroupTool="OpenNewGroupTool" />
 
+        @if (IsNewGroup)
+        {
+            <div class="flex flex-row items-center">
+                <NewGroup CloseNewGroupTool="CloseNewGroupTool" RefreshData="LoadData" />
+                <img src="icons/close.svg" class="w-4 h-4" @onclick="CloseNewGroupTool" />
+            </div>
+        }
         @foreach (var group in ExplorerData ?? Enumerable.Empty<GroupFolderModel>())
         {
             <GroupFolder
@@ -51,7 +58,7 @@
             <GroupHeader 
                 GroupName="@CurrentGroup.Category.Name" />
 
-                <div>ADD RECORD</div>
+                <NewRecord @key="@("newrecord" + CurrentGroup.Category.Id)" Group="@CurrentGroup" RefreshData="LoadData" />
         }
         @if (CurrentRecord != null)
         {
@@ -115,5 +122,17 @@
     void RefreshState()
     {
         StateHasChanged();
+    }
+
+    bool IsNewGroup { get; set; }
+
+    void OpenNewGroupTool()
+    {
+        IsNewGroup = true;
+    }
+
+    void CloseNewGroupTool()
+    {
+        IsNewGroup = false;
     }
 }

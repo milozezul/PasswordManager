@@ -7,8 +7,7 @@ namespace PManager.Interfaces.Services
     {
         Task<Password?> AddPassword(int recordId, string newPassword, string password);
         Task<Category?> CreateCategory(string name);
-        Task<Record?> CreateRecord(string category, string name, string url);
-        Task<RecordPasswordsModel?> CreateRecordWithPassword(string category, string name, string url, string newPassword, string password);
+        Task<Record?> CreateRecord(int categoryId, string name, string url, string username);
         Task DeactivatePassword(int recordId, int passwordId, string password);
         Task ActivatePassword(int recordId, int passwordId, string password);
         void Dispose();
