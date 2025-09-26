@@ -11,9 +11,7 @@ namespace PManager.Interfaces.Services
         Task DeactivatePassword(int recordId, int passwordId, string password);
         Task ActivatePassword(int recordId, int passwordId, string password);
         void Dispose();
-        Task<List<Category>> GetCategories();
         Task<RecordPasswordsModel?> GetPasswordsByRecordId(int recordId, string password);
-        Task<List<Record>> GetRecords(string category);
         public int GetUserId();
         Task<Record?> GetRecordById(int id);
         int GetRecordId();

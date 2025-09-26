@@ -16,20 +16,6 @@ namespace PManager.Controllers
             _dataService = dataService;
         }
 
-        [HttpGet("records/{category}")]
-        public async Task<IActionResult> GetRecords(string category)
-        {
-            try
-            {
-                var records = await _dataService.GetRecords(category);
-                return StatusCode(200, records);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Sever Error: {ex.Message}");
-            }
-        }
-
         [HttpPost("records/create/{category:int}")]
         public async Task<IActionResult> CreateRecord(int category, [FromQuery] string name, [FromQuery] string url, [FromQuery] string username)
         {
@@ -91,23 +77,6 @@ namespace PManager.Controllers
                 if (createdCategory == null) return StatusCode(409);
 
                 return StatusCode(201, createdCategory);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Server Error: {ex.Message}");
-            }
-        }
-        
-        [HttpGet("categories")]
-        public async Task<IActionResult> GetCategories()
-        {
-            try
-            {
-                var categories = await _dataService.GetCategories();
-
-                if (categories == null) return StatusCode(404);
-
-                return StatusCode(200, categories);
             }
             catch (Exception ex)
             {

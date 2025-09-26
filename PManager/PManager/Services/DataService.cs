@@ -65,19 +65,6 @@ namespace PManager
             return claim.Value;
         }
 
-        public async Task<List<Record>> GetRecords(string category)
-        {
-            //lowercase compare
-            //clean string
-            int userId = GetUserId();
-
-            return await _context.UserRecords
-                .Where(u => u.UserId == userId)
-                .Select(u => u.Record)
-                .Where(r => r.Category.Name == category)
-                .ToListAsync();                     
-        }
-
         public async Task<Record?> GetRecordById(int id)
         {
             int userId = GetUserId();
@@ -138,16 +125,6 @@ namespace PManager
                 Passwords = decryptedPasswords
             };
             return result;
-        }
-        
-        public async Task<List<Category>> GetCategories()
-        {
-            int userId = GetUserId();
-
-            return await _context.UserCategories
-                .Where(u => u.UserId == userId)
-                .Select(u => u.Category)
-                .ToListAsync();
         }
         
         public async Task<Category?> CreateCategory(string name)
