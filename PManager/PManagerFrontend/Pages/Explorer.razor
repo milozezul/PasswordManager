@@ -53,15 +53,12 @@
         }
     </div>
     <div class="basis-3/4 bg-neutral-100 overflow-y-scroll overflow-x-hidden">
-        <div class="flex flex-col bg-[#001926] px-15 pt-10 pb-3 font-[Outfit]">
-            <div class="text-4xl font-extralight text-white">Overview</div>
-            <div class="border-b-[#637D94] border-b-2 my-3"></div>
-            <div class="flex flex-row font-[Outfit] gap-x-15">
-                <div class="text-white cursor-pointer">Folder</div>
-                <div class="text-[#8F8F8F] cursor-pointer">Record</div>
-                <div class="text-[#8F8F8F] cursor-pointer">Password</div>
-            </div>
-        </div>
+        <MainMenu 
+            GroupFolder="@(CurrentGroup != null)"
+            RecordFolder="@(CurrentRecord != null)"
+            PasswordFolder="@(CurrentPassword != null)"
+            OnSelectMenu="SelectMainMenuItem"
+            MainMenuSelection="@MainMenuSelection"/>
     </div>
 </div>
 
@@ -70,6 +67,8 @@
     GroupFolderModel? CurrentGroup { get; set; }
     RecordFolderModel? CurrentRecord { get; set; }
     DecryptedPassword? CurrentPassword { get; set; }
+
+    int MainMenuSelection { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -86,6 +85,7 @@
         CurrentGroup = group;
         CurrentPassword = null;
         CurrentRecord = null;
+        SelectMainMenuItem(1);
     }
 
     void OpenRecordHandler((RecordFolderModel record, GroupFolderModel group) data)
@@ -93,6 +93,7 @@
         CurrentRecord = data.record;
         CurrentGroup = data.group;
         CurrentPassword = null;
+        SelectMainMenuItem(2);
     }
 
     void OpenPasswordHandler((DecryptedPassword password, RecordFolderModel record, GroupFolderModel group) data)
@@ -100,6 +101,12 @@
         CurrentPassword = data.password;
         CurrentRecord = data.record;
         CurrentGroup = data.group;
+        SelectMainMenuItem(3);
+    }
+
+    void SelectMainMenuItem(int selection)
+    {
+        MainMenuSelection = selection;
     }
 
     void RefreshState()
