@@ -41,7 +41,8 @@
 </div>
 @if (Password != null)
 {
-    <PasswordHeader />
+    <Header 
+        Name="PASSWORD"/>
 
     <PasswordData
         @key="@("password" + Password.Id)"

@@ -52,30 +52,16 @@
             }
         }
     </div>
-    <div class="basis-3/4 bg-neutral-500 h-[100vh] px-10 overflow-y-scroll overflow-x-hidden">
-        @if (CurrentGroup != null)
-        {
-            <GroupHeader 
-                GroupName="@CurrentGroup.Category.Name" />
-
-                <NewRecord 
-                    @key="@("newrecord" + CurrentGroup.Category.Id)" 
-                    Group="@CurrentGroup" 
-                    RefreshData="LoadData" />
-        }
-        @if (CurrentRecord != null)
-        {
-            <RecordHeader 
-                RecordName="@CurrentRecord.Record.Name" />
-
-            <RecordData 
-                Folder="@CurrentRecord" />
-
-            <RecordUnlockPanel 
-                Folder="@CurrentRecord" 
-                RefreshState="RefreshState" 
-                Password="@CurrentPassword" />
-        }
+    <div class="basis-3/4 bg-neutral-100 overflow-y-scroll overflow-x-hidden">
+        <div class="flex flex-col bg-[#001926] px-15 pt-10 pb-3 font-[Outfit]">
+            <div class="text-4xl font-extralight text-white">Overview</div>
+            <div class="border-b-[#637D94] border-b-2 my-3"></div>
+            <div class="flex flex-row font-[Outfit] gap-x-15">
+                <div class="text-white cursor-pointer">Folder</div>
+                <div class="text-[#8F8F8F] cursor-pointer">Record</div>
+                <div class="text-[#8F8F8F] cursor-pointer">Password</div>
+            </div>
+        </div>
     </div>
 </div>
 

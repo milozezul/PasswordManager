@@ -86,11 +86,15 @@ namespace PManager
                 .Select(p => p.Password)
                 .ToListAsync();
             var decryptedPasswords = passwords
-                .Select(c => new DecryptedPassword()
-                {
-                    Id = c.Id,
-                    Value = c.IsActive == true ? Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(c.Value, password)) : "DIACTIVATED",
-                    IsActive = c.IsActive
+                .Select(c => {
+                    var passwordValue = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(c.Value, password));
+                    string passwordValueStatus = c.IsActive ? passwordValue : (!string.IsNullOrEmpty(passwordValue) ? "Inactive" : "");
+                    return new DecryptedPassword()
+                    {
+                        Id = c.Id,
+                        Value = passwordValueStatus,
+                        IsActive = c.IsActive
+                    };
                 }).ToList();
 
             var result = new RecordPasswordsModel()

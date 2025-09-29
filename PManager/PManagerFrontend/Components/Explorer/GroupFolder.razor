@@ -3,8 +3,8 @@
 @using SharedModels.DataService
 @using SharedModels.Database
 
-<div class="flex flex-row items-center gap-x-3 px-5 py-2 hover:bg-neutral-600">
-    <Expand OnExpand="OnExpandFolder" OnCollapse="OnCollapseFolder" IsExpand="@Folder.IsExpand" />
+<div class="flex flex-row items-center gap-x-3 px-5 py-2 hover:bg-neutral-600 font-[Outfit]">
+    <Expand OnExpand="OnExpandFolder" OnCollapse="OnCollapseFolder" IsExpand="@Folder.IsExpand" ItemsCount="@(Folder.Records?.Count ?? 0)" />
     <div class="flex flex-row gap-x-3 items-center cursor-pointer" @onclick="OpenGroup">
         <img src="icons/group.svg" class="w-6 h-6" />
         <div class="text-white text-sm">@Folder.Category.Name</div>
