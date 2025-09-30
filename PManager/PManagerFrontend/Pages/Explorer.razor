@@ -59,6 +59,23 @@
             PasswordFolder="@(CurrentPassword != null)"
             OnSelectMenu="SelectMainMenuItem"
             MainMenuSelection="@MainMenuSelection"/>
+
+        @if (MainMenuSelection == 0)
+        {
+            <div></div>
+        }
+        @if (MainMenuSelection == 1)
+        {
+            <GroupWindow />
+        }
+        @if (MainMenuSelection == 2)
+        {
+            <RecordWindow />
+        }
+        @if (MainMenuSelection == 3)
+        {
+            <PasswordWindow />
+        }
     </div>
 </div>
 
