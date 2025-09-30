@@ -1,0 +1,24 @@
+﻿@using PManagerFrontend.Models
+
+@if (Modal.IsOpen)
+{
+    <div class="absolute top-0 left-0 w-[100vw] h-[100vh] flex flex-row justify-center items-center bg-black/60 z-100" @onclick="OnClose">
+        <div class="w-150 bg-white rounded-md shadow-lg font-[Outfit]">
+            <div class="text-lg text-gray-900 py-3 pl-5 bg-indigo-100 font-semibold rounded-t-md">@Modal.Header</div>
+            <div class="text-lg pl-5 py-3 text-gray-800">@Modal.Body</div>
+            <div class="flex flex-row justify-center my-2">
+                <button class="bg-sky-400 text-white px-5 py-2 h-10 hover:bg-sky-600 text-sm font-light rounded-md" @onclick="OnClose">OK</button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public ModalWindowState Modal { get; set; }
+
+    void OnClose()
+    {
+        ModalWindowState.CloseModal(Modal);
+    }
+}

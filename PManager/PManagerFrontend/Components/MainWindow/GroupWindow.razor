@@ -1,11 +1,19 @@
-﻿<div class="px-15 py-5">
+﻿@using PManagerFrontend.Components.Utility
+@using PManagerFrontend.Interfaces.Services
+@using PManagerFrontend.Models
+@using PManagerFrontend.Models.Components
+
+@inject IDataService _data
+
+<ModalWindow Modal="@ModalWindow" />
+<div class="px-15 py-5">
     <div class="flex flex-row gap-x-5">
         <div class="bg-white rounded-md px-10 py-5 shadow-md basis-3/10">
             <div class="flex flex-row gap-x-5">
                 <div class="font-semibold font-[Outfit]">Name</div>
                 <img src="icons/edit.svg" class="cursor-pointer" />
             </div>
-            <div class="font-[Outfit] font-light mt-2">Main Passwords</div>
+            <div class="font-[Outfit] font-light mt-2">@Folder.Category.Name</div>
         </div>
         <div class="bg-white rounded-md px-10 py-5 shadow-md basis-7/10">
             <div class="flex flex-row gap-x-5">
@@ -23,63 +31,70 @@
             <div class="font-semibold font-[Outfit] text-sm mb-1">Name</div>
             <div class="relative">
                 <input type="text" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="Name" />
-
-                @if (Name.Length == 0)
+                @if (IsSubmit == true)
                 {
-                    <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
+                    if (Name.Length == 0)
+                    {
+                        <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
+                    }
+                    if (Name.Length > 200)
+                    {
+                        <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be within 200 characters</div>
+                    }
                 }
-                @if (Name.Length > 200)
+                @if (Name.Length > 0)
                 {
-                    <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be within 200 characters</div>
-                }
-                @if (Name.Length > 0) {
-                    <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
-                        <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearName" />
-                    </div>
+                <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                    <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearName" />
+                </div>
                 }
             </div>
             
             <div class="font-semibold font-[Outfit] text-sm mb-1 mt-4">Url</div>
             <div class="relative">
                 <input type="text" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="Url" />
-
-                @if (Url.Length == 0)
+                @if (IsSubmit == true)
                 {
-                    <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
-                }
-                @if (Url.Length > 200)
-                {
-                    <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be within 200 characters</div>
+                    if (Url.Length == 0)
+                    {
+                        <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
+                    }
+                    if (Url.Length > 200)
+                    {
+                        <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be within 200 characters</div>
+                    }
                 }
                 @if (Url.Length > 0)
                 {
-                    <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
-                        <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearUrl" />
-                    </div>
+                <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                    <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearUrl" />
+                </div>
                 }
             </div>
             
             <div class="font-semibold font-[Outfit] text-sm mb-1 mt-4">Username</div>
             <div class="relative">
                 <input type="text" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="Username" />
-
-                @if (Username.Length == 0)
+                @if (IsSubmit == true)
                 {
-                    <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
-                }
-                @if (Username.Length > 200)
-                {
-                    <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be within 200 characters</div>
+                    if (Username.Length == 0)
+                    {
+                        <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
+                    }
+                    if (Username.Length > 300)
+                    {
+                        <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be within 200 characters</div>
+                    }
                 }
                 @if (Username.Length > 0)
                 {
-                    <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
-                        <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearUsername" />
-                    </div>
+                <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                    <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearUsername" />
+                </div>
                 }
             </div>
             
-            <button class="flex flex-row bg-white items-center w-full mt-8 text-sm font-bold font-[Outfit] justify-center gap-x-3 shadow-[2px_2px_5px_rgba(0.0,0.0,0.0,0.3)] rounded-md py-2 hover:bg-orange-100 cursor-pointer">
+            <button class="flex flex-row bg-white items-center w-full mt-8 text-sm font-bold font-[Outfit] justify-center gap-x-3 shadow-[2px_2px_5px_rgba(0.0,0.0,0.0,0.3)] rounded-md py-2 hover:bg-orange-100 cursor-pointer" @onclick="Submit">
                 <img src="icons/add.svg?v=1" class="w-4 h-4" />
                 <div>CREATE NEW RECORD</div>
             </button>
@@ -88,9 +103,18 @@
 </div>
 
 @code {
+    [Parameter, EditorRequired]
+    public GroupFolderModel Folder { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback RefreshData { get; set; }
+
     string Name { get; set; } = string.Empty;
     string Url { get; set; } = string.Empty;
     string Username { get; set; } = string.Empty;
+
+    bool IsSubmit { get; set; } = false;
+
+    ModalWindowState ModalWindow = new ModalWindowState();
 
     void ClearName()
     {
@@ -105,5 +129,40 @@
     void ClearUsername()
     {
         Username = string.Empty;
+    }
+
+    async Task Submit()
+    {
+        IsSubmit = true;
+
+        if (Name.Length == 0 || Name.Length > 200)
+        {
+            return;
+        }
+        if (Url.Length == 0 || Url.Length > 200)
+        {
+            return;
+        }
+        if (Username.Length == 0 || Username.Length > 300)
+        {
+            return;
+        }
+
+        var record = await _data.CreateRecord(Name, Url, Username, Folder.Category.Id);
+
+        if (record != null)
+        {
+            ModalWindowState.OpenModal(ModalWindow, "Success", "Successfully created new record");
+            ClearName();
+            ClearUrl();
+            ClearUsername();
+            await RefreshData.InvokeAsync();
+            IsSubmit = false;
+        }
+        else
+        {
+            ModalWindowState.OpenModal(ModalWindow, "Fail", "Failed to create record");
+            IsSubmit = false;
+        }
     }
 }
