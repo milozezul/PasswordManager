@@ -2,11 +2,12 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="3.1532955mm"
-   height="1.7084233mm"
-   viewBox="0 0 3.1532955 1.7084233"
+   width="3.153296mm"
+   height="1.7084228mm"
+   viewBox="0 0 3.153296 1.7084228"
    version="1.1"
    id="svg1"
+   sodipodi:docname="eye.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -27,13 +28,13 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-3.1067425,-3.8018187)">
+     transform="translate(-3.1067424,-3.8018188)">
     <path
        id="path4"
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linejoin:round"
+       style="fill:#434343;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linejoin:round"
        d="M 4.6823568,3.8018188 A 1.890625,1.890625 0 0 0 3.1067424,4.6560303 1.890625,1.890625 0 0 0 4.6823568,5.5102417 1.890625,1.890625 0 0 0 6.2600382,4.6524129 1.890625,1.890625 0 0 0 4.6823568,3.8018188 Z m 0.00103,0.1147217 A 0.73958337,0.73958337 0 0 1 5.42288,4.6560303 0.73958337,0.73958337 0 0 1 4.6833903,5.39552 0.73958337,0.73958337 0 0 1 3.9433838,4.6560303 0.73958337,0.73958337 0 0 1 4.6833903,3.9165405 Z" />
     <circle
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linejoin:round;stroke-dasharray:none"
+       style="fill:#434343;fill-opacity:1;stroke:none;stroke-width:0.1;stroke-linejoin:round;stroke-dasharray:none"
        id="path5"
        cx="4.6833901"
        cy="4.6560302"

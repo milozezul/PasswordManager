@@ -2,11 +2,12 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="0.66777557mm"
-   height="0.669227mm"
-   viewBox="0 0 0.66777557 0.669227"
+   width="0.69758713mm"
+   height="0.69903862mm"
+   viewBox="0 0 0.69758713 0.69903862"
    version="1.1"
    id="svg1"
+   sodipodi:docname="link.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -27,19 +28,19 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-4.1097136,-9.0300748)">
+     transform="translate(-4.0948077,-9.0151692)">
     <path
        d="M 4.3100895,9.3344978 4.1683088,9.4777351 c -0.045003,0.045003 -0.045003,0.1179683 1e-7,0.1629718 0.045003,0.045003 0.1179683,0.045003 0.1629713,-5e-7 l 2.9e-6,2.9e-6 0.1425089,-0.1425089"
-       style="fill:none;stroke:#ffffff;stroke-width:0.05;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:none;stroke:#000000;stroke-width:0.08;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        id="path16"
        sodipodi:nodetypes="ccsccc" />
     <path
        d="M 4.5771131,9.3948793 4.7188938,9.251642 c 0.045003,-0.045003 0.045003,-0.1179683 -1e-7,-0.1629718 -0.045003,-0.045003 -0.1179683,-0.045003 -0.1629713,5e-7 l -2.9e-6,-2.9e-6 -0.1425089,0.1425089"
-       style="fill:none;stroke:#ffffff;stroke-width:0.05;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:none;stroke:#000000;stroke-width:0.08;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        id="path16-8"
        sodipodi:nodetypes="ccsccc" />
     <path
-       style="fill:none;fill-opacity:0.959866;stroke:#ffffff;stroke-width:0.05;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-opacity:0.959866;stroke:#000000;stroke-width:0.08;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        d="M 4.6072592,9.2010305 4.2799433,9.5283464"
        id="path17" />
   </g>

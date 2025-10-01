@@ -72,11 +72,15 @@
         }
         @if (MainMenuSelection == 2)
         {
-            <RecordWindow />
+            <RecordWindow 
+                Folder="@CurrentRecord"
+                RefreshState="RefreshState"/>
         }
         @if (MainMenuSelection == 3)
         {
-            <PasswordWindow />
+            <PasswordWindow 
+                @key=@("pwd" + CurrentPassword.Id)
+                Folder="@CurrentPassword"/>
         }
     </div>
 </div>

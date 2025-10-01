@@ -1,5 +1,182 @@
-﻿<h3>RecordWindow</h3>
+﻿@using PManagerFrontend.Components.Utility
+@using PManagerFrontend.Interfaces.Services
+@using PManagerFrontend.Models
+@using PManagerFrontend.Models.Components
+
+@inject IDataService _data
+@inject IJSRuntime _js
+
+<ModalWindow Modal="@ModalWindow" />
+<div class="px-15 py-5">
+    <div class="flex flex-row gap-x-5">
+        <div class="bg-white rounded-md px-10 py-5 shadow-md basis-3/10">
+            <div class="flex flex-row gap-x-5">
+                <div class="font-semibold font-[Outfit]">Name</div>
+                <img src="icons/edit.svg" class="cursor-pointer" />
+            </div>
+            <div class="font-[Outfit] font-light mt-2">@Folder.Record.Name</div>
+        </div>
+        <div class="bg-white rounded-md px-10 py-5 shadow-md basis-4/10">
+            <div class="font-semibold font-[Outfit]">Record Properties</div>
+            <div class="font-[Outfit] flex flex-col">
+                <div class="flex flex-row justify-between mt-2">
+                    <div class="flex flex-row gap-x-2 items-center">
+                        <img src="icons/link.svg" class="w-4 h-4" />
+                        <div class="text-sm font-semibold">Url</div>
+                    </div>
+                    <div class="flex flex-row gap-x-2 items-center">
+                        <div class="font-light text-gray-600 max-w-80 overflow-hidden text-ellipsis text-sm">@Folder.Record.Url</div>
+                        <img src="icons/copy.svg?v=1" class="w-4 h-4 cursor-pointer" @onclick="CopyUrl" />
+                    </div>
+                </div>
+                <div class="flex flex-row justify-between mt-2">
+                    <div class="flex flex-row gap-x-2 items-center">
+                        <img src="icons/username.svg?v=1" class="w-4 h-4" />
+                        <div class="text-sm font-semibold">Username</div>
+                    </div>
+                    <div class="flex flex-row gap-x-2 items-center">
+                        <div class="font-light text-gray-600 max-w-80 overflow-hidden text-ellipsis text-sm">@Folder.Record.Username</div>
+                        <img src="icons/copy.svg?v=1" class="w-4 h-4 cursor-pointer" @onclick="CopyUsername" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-row gap-x-5 mt-8">
+        <div class="bg-white rounded-md px-10 py-5 shadow-md basis-3/10">
+            <div class="font-semibold font-[Outfit] mb-4">Unlock Passwords</div>
+
+            <div class="font-semibold font-[Outfit] text-sm mb-1">Key</div>
+            <div class="relative">
+                <input type="password" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="LockPassword" />
+                @if (LockPassword.Length == 0 && IsSubmit)
+                {
+                <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
+                }
+                @if (LockPassword.Length > 0)
+                {
+                    <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                        <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearLockPassword" />
+                    </div>
+                }
+            </div>
+
+            <button class="flex flex-row bg-white w-full mt-8 text-sm font-bold font-[Outfit] justify-center gap-x-3 shadow-[2px_2px_5px_rgba(0.0,0.0,0.0,0.3)] rounded-md py-2 hover:bg-orange-100 cursor-pointer" @onclick="Unlock">
+                <img src="icons/unlock.svg" class="w-4 h-4" />
+                <div>UNLOCK</div>
+            </button>
+        </div>
+
+        <div class="bg-white rounded-md px-10 py-5 shadow-md basis-3/10">
+            <div class="font-semibold font-[Outfit] mb-4">Add New Password</div>
+
+            <div class="font-semibold font-[Outfit] text-sm mb-1">Password</div>
+            <div class="relative">
+                <input type="password" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="NewPassword" />
+                @if (LockPassword.Length == 0 && NewPassword.Length != 0 && IsAdd)
+                {
+                    <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Key must be at least 1 character long</div>
+                }
+                @if (LockPassword.Length == 0 && NewPassword.Length == 0 && IsAdd)
+                {
+                    <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Key and New Password must be at least 1 character long</div>
+                }
+                @if (LockPassword.Length != 0 && NewPassword.Length == 0 && IsAdd)
+                {
+                    <div class="absolute text-red-500 text-[10px] bottom-[-15px]">New Password must be at least 1 character long</div>
+                }
+                @if (NewPassword.Length > 0)
+                {
+                    <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                        <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearNewPassword" />
+                    </div>
+                }
+            </div>
+
+            <button class="flex flex-row items-center bg-white w-full mt-8 text-sm font-bold font-[Outfit] justify-center gap-x-3 shadow-[2px_2px_5px_rgba(0.0,0.0,0.0,0.3)] rounded-md py-2 hover:bg-orange-100 cursor-pointer" @onclick="AddPassword">
+                <img src="icons/add.svg" class="w-4 h-4" />
+                <div>ADD</div>
+            </button>
+        </div>
+    </div>
+</div>
 
 @code {
+    [Parameter, EditorRequired]
+    public RecordFolderModel Folder { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback RefreshState { get; set; }
 
+    ModalWindowState ModalWindow = new ModalWindowState();
+    bool IsSubmit { get; set; } = false;
+    bool IsAdd { get; set; } = false;
+    string LockPassword { get; set; } = string.Empty;
+    string NewPassword { get; set; } = string.Empty;
+
+    void ClearLockPassword()
+    {
+        LockPassword = string.Empty;
+    }
+
+    void ClearNewPassword()
+    {
+        NewPassword = string.Empty;
+    }
+
+    async Task Unlock()
+    {
+        IsSubmit = true;
+
+        if (LockPassword.Length == 0)
+        {
+            return;
+        }
+
+        var passwords = await _data.GetPasswordsByRecordId(Folder.Record.Id, LockPassword);
+
+        Folder.Passwords = passwords.Passwords;
+        Folder.IsExpand = true;
+        await RefreshState.InvokeAsync();
+        IsSubmit = false;
+    }
+
+    async Task AddPassword()
+    {
+        IsAdd = true;
+
+        if (LockPassword.Length == 0 && NewPassword.Length != 0)
+        {
+            return;
+        }
+        if (LockPassword.Length == 0 && NewPassword.Length == 0)
+        {
+            return;
+        }
+        if (LockPassword.Length != 0 && NewPassword.Length == 0)
+        {
+            return;
+        }
+
+        var password = await _data.AddPassword(LockPassword, NewPassword, Folder.Record.Id);
+
+        if (password != null)
+        {
+            ClearNewPassword();
+            await Unlock();
+        }
+        else
+        {
+            ModalWindowState.OpenModal(ModalWindow, "Error", "Failed to add New Password");
+        }
+    }
+
+    async Task CopyUrl()
+    {
+        await _js.InvokeVoidAsync("copyToClipboard", Folder.Record.Url);
+    }
+
+    async Task CopyUsername()
+    {
+        await _js.InvokeVoidAsync("copyToClipboard", Folder.Record.Username);
+    }
 }
