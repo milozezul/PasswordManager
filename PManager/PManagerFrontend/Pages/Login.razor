@@ -1,10 +1,14 @@
 ﻿@page "/"
 @using PManagerFrontend.Components
+@using PManagerFrontend.Components.Utility
 @using PManagerFrontend.Interfaces.Services
+@using PManagerFrontend.Models
 @using PManagerFrontend.Models.Components
+
 @inject NavigationManager Navigation;
 @inject IAuthService _auth;
 
+<ModalWindow Modal="@Modal" />
 <div class="flex flex-row justify-center mt-5">
     <div class="bg-gray-700 text-white flex flex-col">
         <div class="bg-gray-600 w-full p-2 text-lg">Login</div>
@@ -42,6 +46,8 @@
 </div>
 
 @code {
+    ModalWindowState Modal = new ModalWindowState();
+
     string Username { get; set; }
     string Password { get; set; }
 
@@ -58,7 +64,7 @@
         }
         else
         {
-            //Error           
+            ModalWindowState.OpenModal(Modal, "Error", "Failed to login");
         }
     }
 
@@ -71,11 +77,11 @@
         });
         if (response.Value)
         {
-            //register success            
+            ModalWindowState.OpenModal(Modal, "Success", "Succesfully registered");
         }
         else
         {
-            //register error
+            ModalWindowState.OpenModal(Modal, "Error", "Failed to register");
         }
     }
 }

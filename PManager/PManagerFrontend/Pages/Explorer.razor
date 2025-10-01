@@ -5,7 +5,10 @@
 @using PManagerFrontend.Models.Components
 @using SharedModels.DataService
 @using SharedModels.Database
+
 @inject IDataService _data
+@inject IStateManager _state
+@inject NavigationManager _nav
 
 <div class="flex flex-row">
     <div class="basis-1/4 bg-neutral-700 h-[100vh] flex flex-col overflow-y-scroll overflow-x-hidden">
@@ -70,6 +73,7 @@
         @if (MainMenuSelection == 1)
         {
             <GroupWindow 
+                @key=@("fldr" + CurrentGroup.Category.Id)
                 Folder="@CurrentGroup"
                 RefreshData="LoadData"/>
         }
@@ -100,6 +104,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        if (string.IsNullOrEmpty(_state.JwtBearer))
+        {
+            _nav.NavigateTo("/");
+        }
         await LoadData();
     }
 

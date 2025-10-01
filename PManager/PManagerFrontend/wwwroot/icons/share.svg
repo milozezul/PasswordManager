@@ -7,6 +7,7 @@
    viewBox="0 0 2.4694717 2.5347493"
    version="1.1"
    id="svg1"
+   sodipodi:docname="share.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -27,27 +28,27 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-6.7229168,-5.1265243)">
+     transform="translate(-6.7229165,-5.1265244)">
     <circle
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       style="fill:#292929;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
        id="path1"
        cx="8.8388348"
        cy="5.4800777"
        r="0.35355338" />
     <circle
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       style="fill:#292929;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
        id="path1-7"
        cx="7.0764699"
        cy="6.4014702"
        r="0.35355338" />
     <circle
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       style="fill:#292929;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
        id="path1-8"
        cx="8.8388348"
        cy="7.3077202"
        r="0.35355338" />
     <path
-       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-opacity:1;stroke:#292929;stroke-width:0.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        d="m 8.8388348,5.5416666 -1.762365,0.8598035 1.762365,0.90625"
        id="path2" />
   </g>

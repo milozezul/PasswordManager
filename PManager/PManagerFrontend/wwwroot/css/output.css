@@ -37,6 +37,7 @@
     --color-neutral-100: oklch(97% 0 0);
     --color-neutral-600: oklch(43.9% 0 0);
     --color-neutral-700: oklch(37.1% 0 0);
+    --color-neutral-800: oklch(26.9% 0 0);
     --color-stone-900: oklch(21.6% 0.006 56.043);
     --color-black: #000;
     --color-white: #fff;
@@ -280,6 +281,9 @@
   .ml-4 {
     margin-left: calc(var(--spacing) * 4);
   }
+  .ml-5 {
+    margin-left: calc(var(--spacing) * 5);
+  }
   .ml-6 {
     margin-left: calc(var(--spacing) * 6);
   }
@@ -364,6 +368,9 @@
   .max-w-80 {
     max-width: calc(var(--spacing) * 80);
   }
+  .basis-1\/2 {
+    flex-basis: calc(1/2 * 100%);
+  }
   .basis-1\/4 {
     flex-basis: calc(1/4 * 100%);
   }
@@ -375,6 +382,9 @@
   }
   .basis-4\/10 {
     flex-basis: calc(4/10 * 100%);
+  }
+  .basis-6\/10 {
+    flex-basis: calc(6/10 * 100%);
   }
   .basis-7\/10 {
     flex-basis: calc(7/10 * 100%);
@@ -483,6 +493,9 @@
   .bg-neutral-700 {
     background-color: var(--color-neutral-700);
   }
+  .bg-neutral-800 {
+    background-color: var(--color-neutral-800);
+  }
   .bg-red-400 {
     background-color: var(--color-red-400);
   }
@@ -555,6 +568,9 @@
   .font-\[Outfit\] {
     font-family: Outfit;
   }
+  .font-\[Source_Code_Pro\] {
+    font-family: Source Code Pro;
+  }
   .text-4xl {
     font-size: var(--text-4xl);
     line-height: var(--tw-leading, var(--text-4xl--line-height));
@@ -589,6 +605,9 @@
   .font-semibold {
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
+  }
+  .break-all {
+    word-break: break-all;
   }
   .text-ellipsis {
     text-overflow: ellipsis;
