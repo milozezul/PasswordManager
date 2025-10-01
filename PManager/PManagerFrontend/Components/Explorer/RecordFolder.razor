@@ -1,7 +1,7 @@
 ﻿@using PManagerFrontend.Components.Utility
 @using PManagerFrontend.Models.Components
 
-<div class="flex flex-row hover:bg-neutral-600 items-center py-2 pl-12 font-[Outfit]">
+<div class="flex flex-row hover:bg-neutral-600 items-center py-2 pl-12 font-[Outfit]" style="@(IsSelected ? "background-color: #666666" : "")">
     <Expand OnExpand="OnExpandFolder" OnCollapse="OnCollapseFolder" IsExpand="@Folder.IsExpand" ItemsCount="@(Folder.Passwords?.Count ?? 0)" />
 
     <div class="ml-4 flex flex-row items-center gap-x-3 cursor-pointer" @onclick="OpenRecord">
@@ -22,6 +22,9 @@
 
     [Parameter, EditorRequired]
     public EventCallback RefreshState { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool IsSelected { get; set; }
 
     async Task OnExpandFolder()
     {

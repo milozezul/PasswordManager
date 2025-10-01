@@ -8,5 +8,6 @@ namespace PManagerFrontend.Models.Components
         public Record Record { get; set; }
         public List<DecryptedPassword> Passwords { get; set; }
         public bool IsExpand { get; set; }
+        public string? Key { get; set; }
     }
 }

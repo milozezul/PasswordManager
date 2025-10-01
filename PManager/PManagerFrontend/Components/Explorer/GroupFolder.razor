@@ -3,7 +3,7 @@
 @using SharedModels.DataService
 @using SharedModels.Database
 
-<div class="flex flex-row items-center gap-x-3 px-5 py-2 hover:bg-neutral-600 font-[Outfit]">
+<div class="flex flex-row items-center gap-x-3 px-5 py-2 hover:bg-neutral-600 font-[Outfit]" style="@(IsSelected ? "background-color: #666666" : "")">
     <Expand OnExpand="OnExpandFolder" OnCollapse="OnCollapseFolder" IsExpand="@Folder.IsExpand" ItemsCount="@(Folder.Records?.Count ?? 0)" />
     <div class="flex flex-row gap-x-3 items-center cursor-pointer" @onclick="OpenGroup">
         <img src="icons/group.svg" class="w-6 h-6" />
@@ -20,6 +20,9 @@
 
     [Parameter, EditorRequired]
     public EventCallback RefreshState { get; set; }
+
+    [Parameter, EditorRequired]
+    public bool IsSelected { get; set; }
 
     async Task OnExpandFolder()
     {

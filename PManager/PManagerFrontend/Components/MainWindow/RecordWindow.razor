@@ -136,6 +136,7 @@
 
         Folder.Passwords = passwords.Passwords;
         Folder.IsExpand = true;
+        Folder.Key = LockPassword;
         await RefreshState.InvokeAsync();
         IsSubmit = false;
     }

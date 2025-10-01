@@ -24,7 +24,8 @@
             <GroupFolder
                 Folder="@group"
                 OpenGroupHandler="OpenGroupHandler"
-                RefreshState="RefreshState" />
+                RefreshState="RefreshState" 
+                IsSelected="@(CurrentGroup != null && CurrentGroup.Category.Id == group.Category.Id)"/>
 
             if (group.IsExpand)
             {
@@ -34,7 +35,8 @@
                         Folder="@record"
                         Group="@group"
                         OpenRecordHandler="OpenRecordHandler"
-                        RefreshState="RefreshState" />
+                        RefreshState="RefreshState" 
+                        IsSelected="@(CurrentRecord != null && CurrentRecord.Record.Id == record.Record.Id)"/>
 
                     if (record.IsExpand)
                     {
@@ -45,7 +47,8 @@
                                 Folder="password"
                                 Record="@record"
                                 Group="@group"
-                                OpenPasswordHandler="OpenPasswordHandler" />
+                                OpenPasswordHandler="OpenPasswordHandler" 
+                                IsSelected="@(CurrentPassword != null && CurrentPassword.Id == password.Id)"/>
                         }
                     }
                 }
@@ -80,7 +83,9 @@
         {
             <PasswordWindow 
                 @key=@("pwd" + CurrentPassword.Id)
-                Folder="@CurrentPassword"/>
+                Folder="@CurrentPassword"
+                Record="@CurrentRecord"
+                RefreshState="RefreshState"/>
         }
     </div>
 </div>
