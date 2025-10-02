@@ -180,6 +180,7 @@ namespace PManager
             int userId = GetUserId();
 
             var category = await _context.UserCategories
+                .Include(u => u.Category)
                 .SingleOrDefaultAsync(u => u.UserId == userId && u.Category.Id == categoryId);
 
             if (category == null)
@@ -187,7 +188,7 @@ namespace PManager
                 return false;
             }
 
-            category.Category.Name = description;
+            category.Category.Description = description;
 
             await _context.SaveChangesAsync();
 

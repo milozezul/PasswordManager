@@ -271,6 +271,12 @@
   .ml-6 {
     margin-left: calc(var(--spacing) * 6);
   }
+  .box-border {
+    box-sizing: border-box;
+  }
+  .box-content {
+    box-sizing: content-box;
+  }
   .flex {
     display: flex;
   }

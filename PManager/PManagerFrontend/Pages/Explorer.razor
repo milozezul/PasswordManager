@@ -114,6 +114,21 @@
     async Task LoadData()
     {
         ExplorerData = await _data.GetAllRecords();
+
+        if (CurrentGroup != null) {
+            CurrentGroup = ExplorerData
+            .FirstOrDefault(g => g.Category.Id == CurrentGroup.Category.Id);
+        }
+        if (CurrentRecord != null)
+        {
+            CurrentRecord = CurrentGroup?.Records
+            .FirstOrDefault(r => r.Record.Id == CurrentRecord.Record.Id);
+        }
+        if (CurrentPassword != null)
+        {
+            CurrentPassword = CurrentRecord?.Passwords
+            .FirstOrDefault(p => p.Id == CurrentPassword.Id);
+        }
     }
 
     void OpenGroupHandler(GroupFolderModel group)
