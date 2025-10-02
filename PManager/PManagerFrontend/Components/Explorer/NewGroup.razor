@@ -1,6 +1,9 @@
-﻿@using PManagerFrontend.Interfaces.Services
+﻿@using PManagerFrontend.Components.Utility
+@using PManagerFrontend.Interfaces.Services
+@using PManagerFrontend.Models
 @inject IDataService _data
 
+<ModalWindow Modal="@Modal" />
 <div class="flex flex-row items-center gap-x-5 px-5 py-2">
     <div class="w-1"></div>
     <img src="icons/group.svg" class="w-6 h-6" />
@@ -29,6 +32,8 @@
 
     string GroupName { get; set; } = "";
 
+    ModalWindowState Modal = new ModalWindowState();
+
     void OnInput(ChangeEventArgs e)
     {
         OnChange(e.Value?.ToString() ?? string.Empty);
@@ -49,7 +54,14 @@
 
     async Task CreateNewGroup()
     {
-        await _data.CreateNewCategory(GroupName);
+        var result = await _data.CreateNewCategory(GroupName);
+        
+        if (result == null)
+        {
+            ModalWindowState.OpenModal(Modal, "Error", "Failed to create Folder. Verify if name is unique.");
+            return;
+        }
+
         GroupName = "";
         await CloseNewGroupTool.InvokeAsync();
         await RefreshData.InvokeAsync();

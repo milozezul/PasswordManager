@@ -84,6 +84,48 @@ namespace PManager.Controllers
             }
         }
 
+        [HttpPost("categories/edit/name/{id:int}")]
+        public async Task<IActionResult> EditCategoryName(int id, [FromQuery] string name)
+        {
+            try
+            {
+                var isSuccess = await _dataService.EditCategoryName(id, name);
+                if (isSuccess)
+                {
+                    return StatusCode(200);
+                }
+                else
+                {
+                    return StatusCode(406);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server Error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("categories/edit/description/{id:int}")]
+        public async Task<IActionResult> EditCategoryDescrption(int id, [FromQuery] string description)
+        {
+            try
+            {
+                var isSuccess = await _dataService.EditCategoryDescription(id, description);
+                if (isSuccess)
+                {
+                    return StatusCode(200);
+                }
+                else
+                {
+                    return StatusCode(406);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server Error: {ex.Message}");
+            }
+        }
+
         [HttpPost("password/diactivate")]
         public async Task<IActionResult> DiactivatePassword([FromQuery] int recordId, [FromQuery] int passwordId, PasswordInputModel input)
         {

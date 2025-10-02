@@ -1,0 +1,75 @@
+﻿@using PManagerFrontend.Components.Utility
+@using PManagerFrontend.Interfaces.Services
+@using PManagerFrontend.Models
+@using PManagerFrontend.Models.Components
+
+@inject IDataService _data
+
+<ModalWindow Modal="@Modal" />
+<div class="bg-white rounded-md px-10 py-5 shadow-md basis-3/10">
+    @if (IsEditMode)
+    {
+        <div class="flex flex-row gap-x-5">
+            <div class="font-semibold font-[Outfit]">Name</div>
+        </div>
+        <div class="flex flex-row items-center mt-2 gap-x-1">
+            <input type="text" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="@Name" @onkeydown="OnKeyDown" />
+            <img src="icons/close.svg" class="w-5 h-5" @onclick="CloseEditMode" />
+        </div>
+    }
+    else
+    {
+        <div class="flex flex-row gap-x-5">
+            <div class="font-semibold font-[Outfit]">Name</div>
+            <img src="icons/edit.svg" class="cursor-pointer" @onclick="OpenEditMode" />
+        </div>
+        <div class="font-[Outfit] font-light mt-2">@Folder.Category.Name</div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public GroupFolderModel Folder { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback RefreshData { get; set; }
+
+    bool IsEditMode { get; set; } = false;
+
+    string Name { get; set; }
+
+    ModalWindowState Modal = new ModalWindowState();
+
+    void OpenEditMode()
+    {
+        Name = Folder.Category.Name;
+        IsEditMode = true;
+    }
+
+    void CloseEditMode()
+    {
+        IsEditMode = false;
+    }
+
+    async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            await EditCategoryName();
+            CloseEditMode();
+        }
+    }
+
+    async Task EditCategoryName()
+    {
+        var result = await _data.EditCategoryName(Folder.Category.Id, Name);
+
+        if (result)
+        {
+            await RefreshData.InvokeAsync();
+        }
+        else
+        {
+            ModalWindowState.OpenModal(Modal, "Error", "Failed to rename. Make sure name is unique.");
+        }
+    }
+}

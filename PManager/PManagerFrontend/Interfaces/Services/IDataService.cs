@@ -13,5 +13,7 @@ namespace PManagerFrontend.Interfaces.Services
         Task<bool> DiactivatePassword(int recordId, int passwordId, string password);
         Task<bool> ActivatePassword(int recordId, int passwordId, string password);
         Task<List<GroupFolderModel>> GetAllRecords();
+        Task<bool> EditCategoryName(int categoryId, string name);
+        Task<bool> EditCategoryDescription(int categoryId, string description);
     }
 }

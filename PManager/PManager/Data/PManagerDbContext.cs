@@ -94,6 +94,9 @@ namespace PManager.Data
             categories
                 .Property(c => c.Name)
                 .HasMaxLength(200);
+            categories
+                .Property(c => c.Description)
+                .HasMaxLength(1000);
 
             var recordPasswords = modelBuilder
                 .Entity<RecordPasswords>();

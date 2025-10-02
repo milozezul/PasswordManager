@@ -18,5 +18,7 @@ namespace PManager.Interfaces.Services
         int GetPasswordId();
         string GetFallback();
         Task<List<CategoryRecords>> GetAllRecords();
+        Task<bool> EditCategoryName(int categoryId, string newName);
+        Task<bool> EditCategoryDescription(int categoryId, string description);
     }
 }

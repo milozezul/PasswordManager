@@ -397,6 +397,9 @@
   .justify-end {
     justify-content: flex-end;
   }
+  .gap-x-1 {
+    column-gap: calc(var(--spacing) * 1);
+  }
   .gap-x-2 {
     column-gap: calc(var(--spacing) * 2);
   }

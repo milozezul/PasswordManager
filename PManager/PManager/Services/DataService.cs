@@ -147,11 +147,51 @@ namespace PManager
                     UserId = userId,
                     Category = new Category()
                     {
-                        Name = name
+                        Name = name,
+                        Description = string.Empty
                     }
                 });
             await _context.SaveChangesAsync();
             return category.Entity.Category;
+        }
+
+        public async Task<bool> EditCategoryName(int categoryId, string newName)
+        {
+            int userId = GetUserId();
+
+            var category = await _context.UserCategories
+                .Include(u => u.Category)
+                .SingleOrDefaultAsync(u => u.UserId == userId && u.Category.Id == categoryId);
+
+            if (category == null)
+            {
+                return false;
+            }
+
+            category.Category.Name = newName;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> EditCategoryDescription(int categoryId, string description)
+        {
+            int userId = GetUserId();
+
+            var category = await _context.UserCategories
+                .SingleOrDefaultAsync(u => u.UserId == userId && u.Category.Id == categoryId);
+
+            if (category == null)
+            {
+                return false;
+            }
+
+            category.Category.Name = description;
+
+            await _context.SaveChangesAsync();
+
+            return true;
         }
         
         async Task<Category?> GetCategoryByName(string name)

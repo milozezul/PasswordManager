@@ -1,4 +1,5 @@
-﻿@using PManagerFrontend.Components.Utility
+﻿@using PManagerFrontend.Components.Cards
+@using PManagerFrontend.Components.Utility
 @using PManagerFrontend.Interfaces.Services
 @using PManagerFrontend.Models
 @using PManagerFrontend.Models.Components
@@ -8,19 +9,16 @@
 <ModalWindow Modal="@ModalWindow" />
 <div class="px-15 py-5">
     <div class="flex flex-row gap-x-5">
-        <div class="bg-white rounded-md px-10 py-5 shadow-md basis-3/10">
-            <div class="flex flex-row gap-x-5">
-                <div class="font-semibold font-[Outfit]">Name</div>
-                <img src="icons/edit.svg" class="cursor-pointer" />
-            </div>
-            <div class="font-[Outfit] font-light mt-2">@Folder.Category.Name</div>
-        </div>
+        <EditGroupName 
+            @key=@(Folder.Category.Name)
+            Folder="@Folder" 
+            RefreshData="RefreshData" />
         <div class="bg-white rounded-md px-10 py-5 shadow-md basis-7/10">
             <div class="flex flex-row gap-x-5">
                 <div class="font-semibold font-[Outfit]">Description</div>
                 <img src="icons/edit.svg" class="cursor-pointer" />
             </div>
-            <div class="font-[Outfit] font-light mt-2">This is a folder for passwords</div>
+            <div class="font-[Outfit] font-light mt-2">@Folder.Category.Description</div>
         </div>
     </div>
     <div class="flex flex-row mt-5">

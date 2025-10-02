@@ -211,5 +211,49 @@ namespace PManagerFrontend.Services
                 }
             }
         }
+
+        public async Task<bool> EditCategoryName(int categoryId, string name)
+        {
+            using (var client = _factory.CreateClient("api"))
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
+                try
+                {
+                    var response = await client.PostAsync($"api/Data/categories/edit/name/{categoryId}?name={name}", null);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+
+        public async Task<bool> EditCategoryDescription(int categoryId, string description)
+        {
+            using (var client = _factory.CreateClient("api"))
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
+                try
+                {
+                    var response = await client.PostAsync($"api/Data/categories/edit/description/{categoryId}?description={description}", null);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+
+
     }
 }
