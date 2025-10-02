@@ -13,7 +13,21 @@
             <div class="font-semibold font-[Outfit]">Name</div>
         </div>
         <div class="flex flex-row items-center mt-2 gap-x-1">
-            <input type="text" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="@Name" @onkeydown="OnKeyDown" />
+            <div class="relative">
+                <input type="text" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="@Name" @onkeydown="OnKeyDown" />
+                @if (IsSaved == true)
+                {
+                    if (Name.Length == 0)
+                    {
+                        <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
+                    }
+                    if (Name.Length > 200)
+                    {
+                        <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be within 200 characters</div>
+                    }
+                }
+            </div>
+            
             <img src="icons/close.svg" class="w-5 h-5" @onclick="CloseEditMode" />
         </div>
     }
@@ -34,7 +48,7 @@
     public EventCallback RefreshData { get; set; }
 
     bool IsEditMode { get; set; } = false;
-
+    bool IsSaved { get; set; } = false;
     string Name { get; set; }
 
     ModalWindowState Modal = new ModalWindowState();
@@ -54,6 +68,13 @@
     {
         if (e.Key == "Enter")
         {
+            IsSaved = true;
+
+            if (Name.Length == 0 || Name.Length > 200)
+            {
+                return;
+            }
+
             await EditCategoryName();
             CloseEditMode();
         }
