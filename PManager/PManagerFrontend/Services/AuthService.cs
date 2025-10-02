@@ -15,7 +15,7 @@ namespace PManagerFrontend.Services
             _state = state;
         }
 
-        public async Task<ResponseWrapper<bool>> Register(LoginInput input)
+        public async Task<ResponseWrapper<bool>> Register(RegisterInput input)
         {
             using (var client = _factory.CreateClient("api"))
             {
@@ -53,6 +53,9 @@ namespace PManagerFrontend.Services
                     if (model.IsSuccess)
                     {
                         _state.JwtBearer = model.Token;
+                        _state.FirstName = model.FirstName;
+                        _state.LastName = model.LastName;
+                        _state.Email = model.Email;
                     }
                     return model;
                 }

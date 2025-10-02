@@ -44,7 +44,7 @@ namespace PManager.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(LoginInput input)
+        public async Task<IActionResult> Register(RegisterInput input)
         {
             try
             {

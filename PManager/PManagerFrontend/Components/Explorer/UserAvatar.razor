@@ -1,9 +1,19 @@
-﻿<div class="flex flex-row items-center pl-8 mt-5 gap-x-3 text-white">
-    <div class="rounded-[50%] bg-gray-200 w-14 h-14">
+﻿@using PManagerFrontend.Interfaces.Services
 
+@inject IStateManager _state
+
+<div class="flex flex-row items-end justify-between">
+    <div class="flex flex-row items-center pl-8 mt-5 gap-x-3 text-white">
+        <div class="rounded-[50%] bg-indigo-900 border-white border-2 w-14 h-14 flex flex-row justify-center items-center">
+            <div class="text-lg">@_state.FirstName[0]@_state.LastName[0]</div>
+        </div>
+        <div>
+            <div>@_state.FirstName @_state.LastName</div>
+            <div class="text-sm">@_state.Email</div>
+        </div>
     </div>
-    <div>
-        USER
+    <div class="pr-4">
+        <NavLink href="/"><img src="icons/login.svg" class="w-5 h-5" /></NavLink>
     </div>
 </div>
 

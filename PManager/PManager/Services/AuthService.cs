@@ -35,8 +35,11 @@ namespace PManager.Services
 
             if (user == null) return new LoginResponse() {
                 IsSuccess = false,
-                Token = "",
-                Message = "User not found."
+                Token = string.Empty,
+                Message = "User not found.",
+                FirstName = string.Empty,
+                LastName = string.Empty,
+                Email = string.Empty
             };
             
             using (var sha = SHA256.Create())
@@ -47,19 +50,25 @@ namespace PManager.Services
                 {
                     IsSuccess = false,
                     Token = "",
-                    Message = "Wrong password."
+                    Message = "Wrong password.",
+                    FirstName = string.Empty,
+                    LastName = string.Empty,
+                    Email = string.Empty
                 };
 
                 return new LoginResponse()
                 {
                     IsSuccess = true,
                     Token = GetBearerToken(user.Id),
-                    Message = "Success"
+                    Message = "Success",
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email
                 };
             }
         }
 
-        public async Task<User?> CreateUser(LoginInput input)
+        public async Task<User?> CreateUser(RegisterInput input)
         {
             try
             {
@@ -68,7 +77,10 @@ namespace PManager.Services
                     var user = await _context.Users.AddAsync(new User()
                     {
                         Username = input.Username,
-                        PasswordHash = Encoding.UTF8.GetString(sha.ComputeHash(Encoding.UTF8.GetBytes(input.Password)))
+                        PasswordHash = Encoding.UTF8.GetString(sha.ComputeHash(Encoding.UTF8.GetBytes(input.Password))),
+                        FirstName = input.FirstName,
+                        LastName = input.LastName,
+                        Email = input.Email
                     });
                     await _context.SaveChangesAsync();
                     return user.Entity;

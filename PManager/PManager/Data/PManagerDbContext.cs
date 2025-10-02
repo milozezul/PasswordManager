@@ -44,6 +44,15 @@ namespace PManager.Data
             users
                 .Property(u => u.PasswordHash)
                 .HasMaxLength(300);
+            users
+                .Property(u => u.Email)
+                .HasMaxLength(300);
+            users
+                .Property(u => u.FirstName)
+                .HasMaxLength(50);
+            users
+                .Property(u => u.LastName)
+                .HasMaxLength(50);
 
             var userrecords = modelBuilder
                 .Entity<UserRecord>();
