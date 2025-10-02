@@ -124,7 +124,7 @@
             CurrentRecord = CurrentGroup?.Records
             .FirstOrDefault(r => r.Record.Id == CurrentRecord.Record.Id);
         }
-        if (CurrentPassword != null && CurrentRecord.Passwords != null)
+        if (CurrentPassword != null && CurrentRecord?.Passwords != null)
         {
             CurrentPassword = CurrentRecord?.Passwords
             .FirstOrDefault(p => p.Id == CurrentPassword.Id);
