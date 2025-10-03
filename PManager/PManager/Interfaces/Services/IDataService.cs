@@ -20,5 +20,6 @@ namespace PManager.Interfaces.Services
         Task<List<CategoryRecords>> GetAllRecords();
         Task<bool> EditCategoryName(int categoryId, string newName);
         Task<bool> EditCategoryDescription(int categoryId, string description);
+        Task<bool> EditRecordName(int recordId, string newName);
     }
 }

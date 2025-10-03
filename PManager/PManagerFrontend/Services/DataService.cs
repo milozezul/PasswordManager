@@ -212,6 +212,27 @@ namespace PManagerFrontend.Services
             }
         }
 
+        public async Task<bool> EditRecordName(int recordId, string name)
+        {
+            using (var client = _factory.CreateClient("api"))
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
+                try
+                {
+                    var response = await client.PostAsync($"api/Data/records/{recordId}/edit/name?name={name}", null);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+
         public async Task<bool> EditCategoryName(int categoryId, string name)
         {
             using (var client = _factory.CreateClient("api"))

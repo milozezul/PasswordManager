@@ -81,7 +81,8 @@
         {
             <RecordWindow 
                 Folder="@CurrentRecord"
-                RefreshState="RefreshState"/>
+                RefreshState="RefreshState"
+                RefreshData="LoadData"/>
         }
         @if (MainMenuSelection == 3)
         {
@@ -113,7 +114,18 @@
 
     async Task LoadData()
     {
-        ExplorerData = await _data.GetAllRecords();
+        var newData = await _data.GetAllRecords();
+
+        foreach (var folder in ExplorerData ?? new List<GroupFolderModel>())
+        {
+            var item = newData.SingleOrDefault(f => f.Category.Id == folder.Category.Id);
+            if (item != null)
+            {
+                item.IsExpand = folder.IsExpand;
+            }
+        }
+
+        ExplorerData = newData;
 
         if (CurrentGroup != null) {
             CurrentGroup = ExplorerData

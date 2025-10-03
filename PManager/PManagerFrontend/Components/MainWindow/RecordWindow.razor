@@ -1,4 +1,5 @@
-﻿@using PManagerFrontend.Components.Utility
+﻿@using PManagerFrontend.Components.Cards
+@using PManagerFrontend.Components.Utility
 @using PManagerFrontend.Interfaces.Services
 @using PManagerFrontend.Models
 @using PManagerFrontend.Models.Components
@@ -9,13 +10,9 @@
 <ModalWindow Modal="@ModalWindow" />
 <div class="px-15 py-5">
     <div class="flex flex-row gap-x-5">
-        <div class="bg-white rounded-md px-10 py-5 shadow-md basis-3/10">
-            <div class="flex flex-row gap-x-5">
-                <div class="font-semibold font-[Outfit]">Name</div>
-                <img src="icons/edit.svg" class="cursor-pointer" />
-            </div>
-            <div class="font-[Outfit] font-light mt-2">@Folder.Record.Name</div>
-        </div>
+        <EditRecordName
+            Folder="@Folder"
+            RefreshData="RefreshData"/>
         <div class="bg-white rounded-md px-10 py-5 shadow-md basis-3/10">
             <div class="font-semibold font-[Outfit]">Record Properties</div>
             <div class="font-[Outfit] flex flex-col">
@@ -106,6 +103,8 @@
     public RecordFolderModel Folder { get; set; }
     [Parameter, EditorRequired]
     public EventCallback RefreshState { get; set; }
+    [Parameter, EditorRequired]
+    public EventCallback RefreshData { get; set; }
 
     ModalWindowState ModalWindow = new ModalWindowState();
     bool IsSubmit { get; set; } = false;

@@ -15,5 +15,6 @@ namespace PManagerFrontend.Interfaces.Services
         Task<List<GroupFolderModel>> GetAllRecords();
         Task<bool> EditCategoryName(int categoryId, string name);
         Task<bool> EditCategoryDescription(int categoryId, string description);
+        Task<bool> EditRecordName(int recordId, string name);
     }
 }

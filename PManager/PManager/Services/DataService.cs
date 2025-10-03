@@ -133,7 +133,6 @@ namespace PManager
         
         public async Task<Category?> CreateCategory(string name)
         {
-            //lowercase
             //clean string
             var existedCategory = await GetCategoryByName(name);
 
@@ -155,9 +154,33 @@ namespace PManager
             return category.Entity.Category;
         }
 
+        public async Task<bool> EditRecordName(int recordId, string newName)
+        {
+            int userId = GetUserId();
+
+            var record = await _context.UserRecords
+                .Include(u => u.Record)
+                .SingleOrDefaultAsync(u => u.UserId == userId && u.Record.Id == recordId);
+
+            if (record == null)
+            {
+                return false;
+            }
+
+            record.Record.Name = newName;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<bool> EditCategoryName(int categoryId, string newName)
         {
             int userId = GetUserId();
+
+            var existedCategory = await GetCategoryByName(newName);
+
+            if (existedCategory != null) return false;
 
             var category = await _context.UserCategories
                 .Include(u => u.Category)
@@ -197,7 +220,6 @@ namespace PManager
         
         async Task<Category?> GetCategoryByName(string name)
         {
-            //lowercase
             //clean string
             int userId = GetUserId();
 

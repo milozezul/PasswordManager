@@ -67,6 +67,27 @@ namespace PManager.Controllers
             }
         }
 
+        [HttpPost("records/{recordId:int}/edit/name")]
+        public async Task<IActionResult> EditRecordName(int recordId, [FromQuery] string name)
+        {
+            try
+            {
+                var result = await _dataService.EditRecordName(recordId, name);
+                if (result)
+                {
+                    return StatusCode(200);
+                }
+                else
+                {
+                    return StatusCode(406);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server Error: {ex.Message}");
+            }
+        }
+
         [HttpPost("categories/{category}")]
         public async Task<IActionResult> CreateCategory(string category)
         {
