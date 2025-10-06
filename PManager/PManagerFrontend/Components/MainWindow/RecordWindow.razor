@@ -48,7 +48,7 @@
                 <input type="password" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="LockPassword" />
                 @if (LockPassword.Length == 0 && IsSubmit)
                 {
-                <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
+                    <div class="absolute text-red-500 text-[10px] bottom-[-15px]">Must be at least 1 character long</div>
                 }
                 @if (LockPassword.Length > 0)
                 {
@@ -90,7 +90,7 @@
                 }
             </div>
 
-            <button class="flex flex-row items-center bg-white w-full mt-8 text-sm font-bold font-[Outfit] justify-center gap-x-3 shadow-[2px_2px_5px_rgba(0.0,0.0,0.0,0.3)] rounded-md py-2 hover:bg-orange-100 cursor-pointer" @onclick="AddPassword">
+            <button disabled="@IsDisabled" style="@(IsDisabled ? "background-color: rgb(150,150,150)" : "")" class="flex flex-row items-center bg-white w-full mt-8 text-sm font-bold font-[Outfit] justify-center gap-x-3 shadow-[2px_2px_5px_rgba(0.0,0.0,0.0,0.3)] rounded-md py-2 hover:bg-orange-100 cursor-pointer" @onclick="AddPassword">
                 <img src="icons/add.svg" class="w-4 h-4" />
                 <div>ADD</div>
             </button>
@@ -111,6 +111,7 @@
     bool IsAdd { get; set; } = false;
     string LockPassword { get; set; } = string.Empty;
     string NewPassword { get; set; } = string.Empty;
+    bool IsDisabled { get; set; } = false;
 
     void ClearLockPassword()
     {
@@ -143,6 +144,7 @@
     async Task AddPassword()
     {
         IsAdd = true;
+        IsDisabled = true;
 
         if (LockPassword.Length == 0 && NewPassword.Length != 0)
         {
@@ -169,6 +171,8 @@
         {
             ModalWindowState.OpenModal(ModalWindow, "Error", "Failed to add New Password");
         }
+
+        IsDisabled = false;
     }
 
     async Task CopyUrl()

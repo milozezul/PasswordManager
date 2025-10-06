@@ -72,7 +72,7 @@ namespace PManager
             return await _context.UserRecords
                 .Where(u => u.UserId == userId)
                 .Select(u => u.Record)
-                .SingleOrDefaultAsync(r => r.Id == id);            
+                .SingleOrDefaultAsync(r => r.Id == id);
         }
         
         public async Task<RecordPasswordsModel?> GetPasswordsByRecordId(int recordId, string password)
