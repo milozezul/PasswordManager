@@ -7,20 +7,20 @@
 @inject IDataService _data
 
 <ModalWindow Modal="@ModalWindow" />
-<div class="px-15 py-5">
-    <div class="flex flex-row gap-x-5">
-        <EditGroupName 
-            Folder="@Folder" 
-            RefreshData="RefreshData" />
-        <EditGroupDescription 
-            Folder="@Folder"
-            RefreshData="RefreshData"/>
-    </div>
-    <div class="flex flex-row mt-5">
-        <div class="bg-white rounded-md px-10 py-5 shadow-md basis-3/10">
+<div class="px-5">
+    <div class="w-3/10 bg-white shadow-md mt-5">
+        <div class="flex flex-col gap-x-5">
+            <EditGroupName Folder="@Folder"
+                           RefreshData="RefreshData" />
+            <EditGroupDescription Folder="@Folder"
+                                  RefreshData="RefreshData" />
+        </div>
+        
+        <div class="border-b-1 border-b-gray-400 mx-5"></div>
+
+        <div class="px-10 py-5">
             <div class="font-semibold font-[Outfit] mb-4">Add New Record</div>
 
-            
             <div class="font-semibold font-[Outfit] text-sm mb-1">Name</div>
             <div class="relative">
                 <input type="text" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="Name" />
@@ -37,12 +37,12 @@
                 }
                 @if (Name.Length > 0)
                 {
-                <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
-                    <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearName" />
-                </div>
+                    <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                        <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearName" />
+                    </div>
                 }
             </div>
-            
+
             <div class="font-semibold font-[Outfit] text-sm mb-1 mt-4">Url</div>
             <div class="relative">
                 <input type="text" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="Url" />
@@ -59,12 +59,12 @@
                 }
                 @if (Url.Length > 0)
                 {
-                <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
-                    <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearUrl" />
-                </div>
+                    <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                        <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearUrl" />
+                    </div>
                 }
             </div>
-            
+
             <div class="font-semibold font-[Outfit] text-sm mb-1 mt-4">Username</div>
             <div class="relative">
                 <input type="text" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="Username" />
@@ -81,12 +81,12 @@
                 }
                 @if (Username.Length > 0)
                 {
-                <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
-                    <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearUsername" />
-                </div>
+                    <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                        <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearUsername" />
+                    </div>
                 }
             </div>
-            
+
             <button class="flex flex-row bg-white items-center w-full mt-8 text-sm font-bold font-[Outfit] justify-center gap-x-3 shadow-[2px_2px_5px_rgba(0.0,0.0,0.0,0.3)] rounded-md py-2 hover:bg-orange-100 cursor-pointer" @onclick="Submit">
                 <img src="icons/add.svg?v=1" class="w-4 h-4" />
                 <div>CREATE NEW RECORD</div>

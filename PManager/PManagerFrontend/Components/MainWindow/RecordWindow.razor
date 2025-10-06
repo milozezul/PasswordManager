@@ -8,39 +8,41 @@
 @inject IJSRuntime _js
 
 <ModalWindow Modal="@ModalWindow" />
-<div class="px-15 py-5">
-    <div class="flex flex-row gap-x-5">
-        <EditRecordName
-            Folder="@Folder"
-            RefreshData="RefreshData"/>
-        <div class="bg-white rounded-md px-10 py-5 shadow-md basis-3/10">
-            <div class="font-semibold font-[Outfit]">Record Properties</div>
-            <div class="font-[Outfit] flex flex-col">
-                <div class="flex flex-row justify-between mt-2">
-                    <div class="flex flex-row gap-x-2 items-center">
-                        <img src="icons/link.svg" class="w-4 h-4" />
-                        <div class="text-sm font-semibold">Url</div>
+<div class="px-5">
+    <div class="px-5 py-5 w-3/10 bg-white shadow-md mt-5">
+        <div class="flex flex-col gap-x-5">
+            <EditRecordName Folder="@Folder"
+                            RefreshData="RefreshData" />
+            <div class="px-5 py-5">
+                <div class="font-semibold font-[Outfit]">Record Properties</div>
+                <div class="font-[Outfit] flex flex-col">
+                    <div class="flex flex-row justify-between mt-2">
+                        <div class="flex flex-row gap-x-2 items-center">
+                            <img src="icons/link.svg" class="w-4 h-4" />
+                            <div class="text-sm font-semibold">Url</div>
+                        </div>
+                        <div class="flex flex-row gap-x-2 items-center">
+                            <div class="font-light text-gray-600 max-w-80 overflow-hidden text-ellipsis text-sm">@Folder.Record.Url</div>
+                            <img src="icons/copy.svg?v=1" class="w-4 h-4 cursor-pointer" @onclick="CopyUrl" />
+                        </div>
                     </div>
-                    <div class="flex flex-row gap-x-2 items-center">
-                        <div class="font-light text-gray-600 max-w-80 overflow-hidden text-ellipsis text-sm">@Folder.Record.Url</div>
-                        <img src="icons/copy.svg?v=1" class="w-4 h-4 cursor-pointer" @onclick="CopyUrl" />
-                    </div>
-                </div>
-                <div class="flex flex-row justify-between mt-2">
-                    <div class="flex flex-row gap-x-2 items-center">
-                        <img src="icons/username.svg?v=1" class="w-4 h-4" />
-                        <div class="text-sm font-semibold">Username</div>
-                    </div>
-                    <div class="flex flex-row gap-x-2 items-center">
-                        <div class="font-light text-gray-600 max-w-80 overflow-hidden text-ellipsis text-sm">@Folder.Record.Username</div>
-                        <img src="icons/copy.svg?v=1" class="w-4 h-4 cursor-pointer" @onclick="CopyUsername" />
+                    <div class="flex flex-row justify-between mt-2">
+                        <div class="flex flex-row gap-x-2 items-center">
+                            <img src="icons/username.svg?v=1" class="w-4 h-4" />
+                            <div class="text-sm font-semibold">Username</div>
+                        </div>
+                        <div class="flex flex-row gap-x-2 items-center">
+                            <div class="font-light text-gray-600 max-w-80 overflow-hidden text-ellipsis text-sm">@Folder.Record.Username</div>
+                            <img src="icons/copy.svg?v=1" class="w-4 h-4 cursor-pointer" @onclick="CopyUsername" />
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="flex flex-row gap-x-5 mt-5">
-        <div class="bg-white rounded-md px-10 py-5 shadow-md basis-3/10">
+
+        <div class="border-b-1 border-b-gray-400"></div>
+
+        <div class="px-5 py-6">
             <div class="font-semibold font-[Outfit] mb-4">Unlock Passwords</div>
 
             <div class="font-semibold font-[Outfit] text-sm mb-1">Key</div>
@@ -64,7 +66,9 @@
             </button>
         </div>
 
-        <div class="bg-white rounded-md px-10 py-5 shadow-md basis-3/10">
+        <div class="border-b-1 border-b-gray-400"></div>
+
+        <div class="px-5 py-6">
             <div class="font-semibold font-[Outfit] mb-4">Add New Password</div>
 
             <div class="font-semibold font-[Outfit] text-sm mb-1">Password</div>
@@ -95,8 +99,10 @@
                 <div>ADD</div>
             </button>
         </div>
+
     </div>
 </div>
+
 
 @code {
     [Parameter, EditorRequired]
