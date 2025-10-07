@@ -9,7 +9,7 @@
 
 <ModalWindow Modal="@ModalWindow" />
 <div class="px-5">
-    <div class="px-5 py-5 w-3/10 bg-white shadow-md mt-5">
+    <div class="px-5 py-5 min-w-[380px] w-3/10 bg-white shadow-md mt-5">
         <div class="flex flex-col gap-x-5">
             <EditRecordName Folder="@Folder"
                             RefreshData="RefreshData" />
@@ -60,7 +60,7 @@
                 }
             </div>
 
-            <button class="flex flex-row bg-white w-full mt-8 text-sm font-bold font-[Outfit] justify-center gap-x-3 shadow-[2px_2px_5px_rgba(0.0,0.0,0.0,0.3)] rounded-md py-2 hover:bg-orange-100 cursor-pointer" @onclick="Unlock">
+            <button class="flex flex-row bg-white items-center w-full mt-8 text-sm font-bold font-[Outfit] justify-center gap-x-3 shadow-[3px_3px_5px_2px_rgba(0.0,0.0,0.0,0.5)] rounded-md py-2 hover:bg-green-100 cursor-pointer" @onclick="Unlock">
                 <img src="icons/unlock.svg" class="w-4 h-4" />
                 <div>UNLOCK</div>
             </button>
@@ -94,7 +94,7 @@
                 }
             </div>
 
-            <button disabled="@IsDisabled" style="@(IsDisabled ? "background-color: rgb(150,150,150)" : "")" class="flex flex-row items-center bg-white w-full mt-8 text-sm font-bold font-[Outfit] justify-center gap-x-3 shadow-[2px_2px_5px_rgba(0.0,0.0,0.0,0.3)] rounded-md py-2 hover:bg-orange-100 cursor-pointer" @onclick="AddPassword">
+            <button disabled="@IsDisabled" style="@(IsDisabled ? "background-color: rgb(150,150,150)" : "")" class="flex flex-row bg-white items-center w-full mt-8 text-sm font-bold font-[Outfit] justify-center gap-x-3 shadow-[3px_3px_5px_2px_rgba(0.0,0.0,0.0,0.5)] rounded-md py-2 hover:bg-green-100 cursor-pointer" @onclick="AddPassword">
                 <img src="icons/add.svg" class="w-4 h-4" />
                 <div>ADD</div>
             </button>

@@ -11,7 +11,11 @@
     --color-red-400: oklch(70.4% 0.191 22.216);
     --color-red-500: oklch(63.7% 0.237 25.331);
     --color-orange-100: oklch(95.4% 0.038 75.164);
+    --color-green-100: oklch(96.2% 0.044 156.743);
     --color-green-500: oklch(72.3% 0.219 149.579);
+    --color-emerald-100: oklch(95% 0.052 163.051);
+    --color-teal-100: oklch(95.3% 0.051 180.801);
+    --color-sky-100: oklch(95.1% 0.026 236.824);
     --color-sky-400: oklch(74.6% 0.16 232.661);
     --color-sky-600: oklch(58.8% 0.158 241.966);
     --color-indigo-100: oklch(93% 0.034 272.788);
@@ -355,6 +359,12 @@
   .max-w-80 {
     max-width: calc(var(--spacing) * 80);
   }
+  .min-w-\[350px\] {
+    min-width: 350px;
+  }
+  .min-w-\[380px\] {
+    min-width: 380px;
+  }
   .basis-1\/4 {
     flex-basis: calc(1/4 * 100%);
   }
@@ -545,9 +555,6 @@
   .pb-3 {
     padding-bottom: calc(var(--spacing) * 3);
   }
-  .pb-5 {
-    padding-bottom: calc(var(--spacing) * 5);
-  }
   .pl-2 {
     padding-left: calc(var(--spacing) * 2);
   }
@@ -644,6 +651,30 @@
     --tw-shadow: 2px 2px 5px var(--tw-shadow-color, rgba(0.0,0.0,0.0,0.3));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .shadow-\[3px_3px_1px_5px_rgba\(0\.0\,0\.0\,0\.0\,0\.5\)\] {
+    --tw-shadow: 3px 3px 1px 5px var(--tw-shadow-color, rgba(0.0,0.0,0.0,0.5));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-\[3px_3px_5px_1px_rgba\(0\.0\,0\.0\,0\.0\,0\.5\)\] {
+    --tw-shadow: 3px 3px 5px 1px var(--tw-shadow-color, rgba(0.0,0.0,0.0,0.5));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-\[3px_3px_5px_2px_rgba\(0\.0\,0\.0\,0\.0\,0\.5\)\] {
+    --tw-shadow: 3px 3px 5px 2px var(--tw-shadow-color, rgba(0.0,0.0,0.0,0.5));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-\[3px_3px_5px_5px_rgba\(0\.0\,0\.0\,0\.0\,0\.5\)\] {
+    --tw-shadow: 3px 3px 5px 5px var(--tw-shadow-color, rgba(0.0,0.0,0.0,0.5));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-\[3px_3px_5px_rgba\(0\.0\,0\.0\,0\.0\,0\.3\)\] {
+    --tw-shadow: 3px 3px 5px var(--tw-shadow-color, rgba(0.0,0.0,0.0,0.3));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-\[3px_3px_5px_rgba\(0\.0\,0\.0\,0\.0\,0\.5\)\] {
+    --tw-shadow: 3px 3px 5px var(--tw-shadow-color, rgba(0.0,0.0,0.0,0.5));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
   .shadow-lg {
     --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -656,10 +687,24 @@
     -webkit-user-select: none;
     user-select: none;
   }
+  .hover\:bg-emerald-100 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-emerald-100);
+      }
+    }
+  }
   .hover\:bg-gray-400 {
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-gray-400);
+      }
+    }
+  }
+  .hover\:bg-green-100 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-green-100);
       }
     }
   }
@@ -677,10 +722,24 @@
       }
     }
   }
+  .hover\:bg-sky-100 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-sky-100);
+      }
+    }
+  }
   .hover\:bg-sky-600 {
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-sky-600);
+      }
+    }
+  }
+  .hover\:bg-teal-100 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-teal-100);
       }
     }
   }
