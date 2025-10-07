@@ -15,14 +15,14 @@
      id="layer1"
      transform="translate(-2.8403729,-4.5272788)">
     <ellipse
-       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.588018;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:none;fill-opacity:1;stroke:#333333;stroke-width:0.588018;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        id="path3"
        cx="3.7055149"
        cy="6.8972998"
        rx="0.57113314"
        ry="0.55537438" />
     <path
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#333333;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
        d="M 3.3982231,6.0479169 V 4.7727476 l 0.3072918,-0.2454685 0.3072917,0.263621 9.258e-4,0.061053 -0.3527818,0.1296512 0.00172,0.087555 0.3501383,0.085421 8.582e-4,0.077798 -0.3511596,0.104069 0.00189,0.073731 0.3484084,0.091302 0.00207,0.077438 -0.3514805,0.1216325 -3.327e-4,0.080272 0.3497403,0.05251 V 5.945312 6.1041661 l -0.6145834,0.010417 z"
        id="path5" />
   </g>
