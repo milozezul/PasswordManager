@@ -4,6 +4,7 @@ using PManager.Interfaces.Services;
 using PManager.Models.Database;
 using SharedModels.Database;
 using SharedModels.DataService;
+using SharedModels.InputModels;
 using System.Text;
 
 namespace PManager
@@ -93,34 +94,11 @@ namespace PManager
                     {
                         Id = c.Id,
                         Value = passwordValueStatus,
-                        IsActive = c.IsActive
+                        IsActive = c.IsActive,
+                        DateCreated = c.DateCreated,
+                        ExpirationDate = c.ExpirationDate,
+                        Notes = c.Notes
                     };
-                }).ToList();
-
-            var result = new RecordPasswordsModel()
-            {
-                Record = record,
-                Passwords = decryptedPasswords
-            };
-            return result;
-        }
-        
-        async Task<RecordPasswordsModel> GetEncryptedPasswordsByRecordId(int recordId)
-        {
-            var record = await GetRecordById(recordId);
-
-            if (record == null) return null;
-
-            var passwords = await _context.RecordPasswords
-                .Where(r => r.RecordId == record.Id)
-                .Select(p => p.Password)
-                .ToListAsync();
-            var decryptedPasswords = passwords
-                .Select(c => new DecryptedPassword()
-                {
-                    Id = c.Id,
-                    Value = c.IsActive == true ? Encoding.UTF8.GetString(c.Value) : "DIACTIVATED",
-                    IsActive = c.IsActive
                 }).ToList();
 
             var result = new RecordPasswordsModel()
@@ -266,19 +244,22 @@ namespace PManager
             return userrecord.Entity.Record;
         }
         
-        public async Task<Password?> AddPassword(int recordId, string newPassword, string password)
+        public async Task<Password?> AddPassword(PasswordAddInputModel model)
         {
             //clean password
             //remove roundtrip
-            var record = await GetRecordById(recordId);
+            var record = await GetRecordById(model.RecordId);
 
             if (record == null) return null;
 
             var createdPassword = await _context.Passwords
                 .AddAsync(new Password()
                 {
-                    Value = _encryptService.EncryptWithPassword(Encoding.UTF8.GetBytes(newPassword), password),
-                    IsActive = true
+                    Value = _encryptService.EncryptWithPassword(Encoding.UTF8.GetBytes(model.NewPassword), model.Password),
+                    IsActive = true,
+                    DateCreated = DateTime.Now,
+                    Notes = new List<Note>(),
+                    ExpirationDate = model.ExpirationDate
                 });
 
             var recordPassword = await _context.RecordPasswords
@@ -289,7 +270,29 @@ namespace PManager
                 });
             await _context.SaveChangesAsync();
             return createdPassword.Entity;
-        }      
+        }
+        
+        public async Task AddNoteToPassword(NoteInputModel model)
+        {
+            var record = await GetRecordById(model.RecordId);
+
+            if (record == null) return;
+
+            var recordPassword = await _context.RecordPasswords
+                .Where(rp => rp.RecordId == model.RecordId && rp.PasswordId == model.PasswordId)
+                .Include(rp => rp.Password)
+                .SingleOrDefaultAsync();
+
+            if (recordPassword == null) return;
+
+            recordPassword.Password.Notes.Add(new Note()
+            {
+                DateCreated = DateTime.Now,
+                Text = model.Text
+            });
+
+            await _context.SaveChangesAsync();
+        }
         
         public async Task DeactivatePassword(int recordId, int passwordId, string password)
         {

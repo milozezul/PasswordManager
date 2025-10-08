@@ -26,6 +26,7 @@ namespace PManager.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserRecord> UserRecords { get; set; }
         public DbSet<UserCategory> UserCategories { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -86,6 +87,13 @@ namespace PManager.Data
                 .HasKey(item => new { item.Id });
             passwords
                 .Property(p => p.Value);
+            passwords
+                .HasMany(p => p.Notes)
+                .WithOne(n => n.Password)
+                .HasForeignKey(n => n.PasswordId);
+            passwords
+                .Property(p => p.ExpirationDate)
+                .IsRequired(false);
 
             var categories = modelBuilder
                 .Entity<Category>();
@@ -127,6 +135,11 @@ namespace PManager.Data
             record
                 .Property(v => v.Username)
                 .HasMaxLength(300);
+
+            var notes = modelBuilder
+                .Entity<Note>();
+            notes
+                .HasKey(n => n.Id);
         }
     }
 }

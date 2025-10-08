@@ -1,11 +1,12 @@
 ﻿using SharedModels.Database;
 using SharedModels.DataService;
+using SharedModels.InputModels;
 
 namespace PManager.Interfaces.Services
 {
     public interface IDataService
     {
-        Task<Password?> AddPassword(int recordId, string newPassword, string password);
+        Task<Password?> AddPassword(PasswordAddInputModel model);
         Task<Category?> CreateCategory(string name);
         Task<Record?> CreateRecord(int categoryId, string name, string url, string username);
         Task DeactivatePassword(int recordId, int passwordId, string password);
@@ -21,5 +22,6 @@ namespace PManager.Interfaces.Services
         Task<bool> EditCategoryName(int categoryId, string newName);
         Task<bool> EditCategoryDescription(int categoryId, string description);
         Task<bool> EditRecordName(int recordId, string newName);
+        Task AddNoteToPassword(NoteInputModel model);
     }
 }

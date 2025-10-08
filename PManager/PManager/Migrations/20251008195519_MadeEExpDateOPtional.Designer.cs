@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PManager.Data;
 
@@ -11,9 +12,11 @@ using PManager.Data;
 namespace PManager.Migrations
 {
     [DbContext(typeof(PManagerDbContext))]
-    partial class PManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251008195519_MadeEExpDateOPtional")]
+    partial class MadeEExpDateOPtional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

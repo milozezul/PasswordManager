@@ -3,6 +3,7 @@
 @using PManagerFrontend.Interfaces.Services
 @using PManagerFrontend.Models
 @using PManagerFrontend.Models.Components
+@using SharedModels.InputModels
 
 @inject IDataService _data
 @inject IJSRuntime _js
@@ -94,6 +95,18 @@
                 }
             </div>
 
+            <div class="font-semibold font-[Outfit] text-sm mb-1 mt-3">Expiration Date</div>
+            <div class="relative">
+                <input type="date" class="bg-gray-200 text-gray-700 rounded-sm pl-2 h-8 w-full" @bind-value:event="oninput" @bind-value="ExpirationDate" />
+                
+                @if (ExpirationDate != null)
+                {
+                    <div class="absolute top-0 right-2 h-full flex flex-row justify-end items-center">
+                        <img src="icons/cancel.svg" class="w-4 h-4" @onclick="ClearExpDate" />
+                    </div>
+                }
+            </div>
+
             <button disabled="@IsDisabled" style="@(IsDisabled ? "background-color: rgb(150,150,150)" : "")" class="flex flex-row bg-white items-center w-full mt-8 text-sm font-bold font-[Outfit] justify-center gap-x-3 shadow-[3px_3px_5px_2px_rgba(0.0,0.0,0.0,0.5)] rounded-md py-2 hover:bg-green-100 cursor-pointer" @onclick="AddPassword">
                 <img src="icons/add.svg" class="w-4 h-4" />
                 <div>ADD</div>
@@ -118,6 +131,7 @@
     string LockPassword { get; set; } = string.Empty;
     string NewPassword { get; set; } = string.Empty;
     bool IsDisabled { get; set; } = false;
+    DateTime? ExpirationDate { get; set; } = null;
 
     void ClearLockPassword()
     {
@@ -127,6 +141,11 @@
     void ClearNewPassword()
     {
         NewPassword = string.Empty;
+    }
+
+    void ClearExpDate()
+    {
+        ExpirationDate = null;
     }
 
     async Task Unlock()
@@ -165,7 +184,13 @@
             return;
         }
 
-        var password = await _data.AddPassword(LockPassword, NewPassword, Folder.Record.Id);
+        var password = await _data.AddPassword(new PasswordAddInputModel()
+        {
+            Password = LockPassword,
+            NewPassword = NewPassword,
+            RecordId = Folder.Record.Id,
+            ExpirationDate = ExpirationDate
+        });
 
         if (password != null)
         {

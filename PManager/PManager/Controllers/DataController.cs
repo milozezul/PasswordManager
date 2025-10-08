@@ -33,16 +33,31 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("records/password/{recordId:int}")]
-        public async Task<IActionResult> AddPasswordToRecord(int recordId, PasswordParametersModel model)
+        [HttpPost("records/password")]
+        public async Task<IActionResult> AddPasswordToRecord(PasswordAddInputModel model)
         {
             try
             {
-                var createdPassword = await _dataService.AddPassword(recordId, model.NewPassword, model.Password);
+                var createdPassword = await _dataService.AddPassword(model);
 
                 if (createdPassword == null) return StatusCode(409);
 
                 return StatusCode(201, createdPassword);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server Error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("records/password/note")]
+        public async Task<IActionResult> AddNoteToPassword(NoteInputModel model)
+        {
+            try
+            {
+                await _dataService.AddNoteToPassword(model);
+
+                return StatusCode(201);
             }
             catch (Exception ex)
             {
