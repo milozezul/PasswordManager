@@ -58,7 +58,7 @@
             }
         }
     </div>
-    <div class="basis-3/4 bg-neutral-200 overflow-y-scroll overflow-x-hidden">
+    <div class="basis-3/4 bg-neutral-200 h-[100vh] overflow-y-scroll overflow-x-hidden">
         <MainMenu 
             GroupFolder="@(CurrentGroup != null)"
             RecordFolder="@(CurrentRecord != null)"
@@ -159,11 +159,17 @@
         SelectMainMenuItem(2);
     }
 
-    void OpenPasswordHandler((DecryptedPassword password, RecordFolderModel record, GroupFolderModel group) data)
+    void OpenPasswordHandler((int passwordId, int recordId, int groupId) data)
     {
-        CurrentPassword = data.password;
-        CurrentRecord = data.record;
-        CurrentGroup = data.group;
+        var group = ExplorerData.SingleOrDefault(g => g.Category.Id == data.groupId);
+
+        var record = group.Records.SingleOrDefault(r => r.Record.Id == data.recordId);
+
+        var password = record.Passwords.SingleOrDefault(p => p.Id == data.passwordId);
+
+        CurrentPassword = password;
+        CurrentRecord = record;
+        CurrentGroup = group;
         SelectMainMenuItem(3);
     }
 
