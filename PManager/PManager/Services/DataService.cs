@@ -75,6 +75,39 @@ namespace PManager
                 .Select(u => u.Record)
                 .SingleOrDefaultAsync(r => r.Id == id);
         }
+
+        public async Task<DecryptedPassword?> GetPasswordByPasswordId(PasswordGetOutputModel model)
+        {
+            var record = await GetRecordById(model.RecordId);
+
+            if (record == null) return null;
+
+            var result = await _context.RecordPasswords
+                .Where(r => r.RecordId == record.Id && r.PasswordId == model.PasswordId)
+                .Include(r => r.Password)
+                .Include(p => p.Password.Notes)
+                .Select(p => p.Password)
+                .SingleOrDefaultAsync();
+
+            var passwordValue = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(result.Value, model.Password));
+
+            string passwordValueStatus = result.IsActive ? passwordValue : (!string.IsNullOrEmpty(passwordValue) ? "Inactive" : "");
+
+            return new DecryptedPassword()
+            {
+                Id = result.Id,
+                Value = passwordValueStatus,
+                IsActive = result.IsActive,
+                DateCreated = result.DateCreated,
+                ExpirationDate = result.ExpirationDate,
+                Notes = result.Notes.Select(n => new NoteData()
+                {
+                    DateCreated = n.DateCreated,
+                    Id = n.Id,
+                    Text = n.Text
+                }).ToList()
+            };
+        }
         
         public async Task<RecordPasswordsModel?> GetPasswordsByRecordId(int recordId, string password)
         {
@@ -84,6 +117,8 @@ namespace PManager
 
             var passwords = await _context.RecordPasswords
                 .Where(r => r.RecordId == record.Id)
+                .Include(r => r.Password)
+                .Include(p => p.Password.Notes)
                 .Select(p => p.Password)
                 .ToListAsync();
             var decryptedPasswords = passwords
@@ -97,7 +132,12 @@ namespace PManager
                         IsActive = c.IsActive,
                         DateCreated = c.DateCreated,
                         ExpirationDate = c.ExpirationDate,
-                        Notes = c.Notes
+                        Notes = c.Notes.Select(n => new NoteData()
+                        {
+                            DateCreated = n.DateCreated,
+                            Id = n.Id,
+                            Text = n.Text
+                        }).ToList()
                     };
                 }).ToList();
 
@@ -272,18 +312,18 @@ namespace PManager
             return createdPassword.Entity;
         }
         
-        public async Task AddNoteToPassword(NoteInputModel model)
+        public async Task<bool> AddNoteToPassword(NoteInputModel model)
         {
             var record = await GetRecordById(model.RecordId);
 
-            if (record == null) return;
+            if (record == null) return false;
 
             var recordPassword = await _context.RecordPasswords
                 .Where(rp => rp.RecordId == model.RecordId && rp.PasswordId == model.PasswordId)
                 .Include(rp => rp.Password)
                 .SingleOrDefaultAsync();
 
-            if (recordPassword == null) return;
+            if (recordPassword == null) return false;
 
             recordPassword.Password.Notes.Add(new Note()
             {
@@ -292,6 +332,8 @@ namespace PManager
             });
 
             await _context.SaveChangesAsync();
+
+            return true;
         }
         
         public async Task DeactivatePassword(int recordId, int passwordId, string password)

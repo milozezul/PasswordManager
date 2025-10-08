@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PManager.Interfaces.Services;
+using SharedModels.Database;
 using SharedModels.InputModels;
 
 namespace PManager.Controllers
@@ -55,9 +56,17 @@ namespace PManager.Controllers
         {
             try
             {
-                await _dataService.AddNoteToPassword(model);
+                var result = await _dataService.AddNoteToPassword(model);
 
-                return StatusCode(201);
+                if (result)
+                {
+                    return StatusCode(201);
+                }
+                else
+                {
+                    return StatusCode(406);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -75,6 +84,23 @@ namespace PManager.Controllers
                 if (passwords == null) return StatusCode(404);
 
                 return StatusCode(200, passwords);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server Error: {ex.Message}");
+            }
+        }
+
+        [HttpPost("record/password/get")]
+        public async Task<IActionResult> GetPasswordByPasswordId(PasswordGetOutputModel model)
+        {
+            try
+            {
+                var password = await _dataService.GetPasswordByPasswordId(model);
+
+                if (password == null) return StatusCode(404);
+
+                return StatusCode(200, password);
             }
             catch (Exception ex)
             {

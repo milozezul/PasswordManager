@@ -1,5 +1,4 @@
-﻿using SharedModels.Database;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace SharedModels.DataService
 {
@@ -16,7 +15,7 @@ namespace SharedModels.DataService
         [JsonPropertyName("expirationDate")]
         public DateTime? ExpirationDate { get; set; }
         [JsonPropertyName("notes")]
-        public List<Note> Notes { get; set; }
+        public List<NoteData> Notes { get; set; }
 
     }
 }

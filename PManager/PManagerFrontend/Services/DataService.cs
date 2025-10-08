@@ -93,6 +93,31 @@ namespace PManagerFrontend.Services
             }
         }
 
+        public async Task<DecryptedPassword?> GetPasswordsByPasswordId(PasswordGetOutputModel input)
+        {
+            using (var client = _factory.CreateClient("api"))
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
+                try
+                {
+                    var json = JsonSerializer.Serialize(input);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync("api/Data/record/password/get", content);
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var model = JsonSerializer.Deserialize<DecryptedPassword>(responseContent);
+                        return model;
+                    }
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
         public async Task<Password?> AddPassword(PasswordAddInputModel input)
         {
             using (var client = _factory.CreateClient("api"))
@@ -118,7 +143,7 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task AddNoteToPassword(NoteInputModel input)
+        public async Task<bool> AddNoteToPassword(NoteInputModel input)
         {
             using (var client = _factory.CreateClient("api"))
             {
@@ -129,16 +154,15 @@ namespace PManagerFrontend.Services
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
                     var response = await client.PostAsync($"api/Data/records/password/note", content);
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    /*if (response.IsSuccessStatusCode)
+                    if (response.IsSuccessStatusCode)
                     {
-                        var model = JsonSerializer.Deserialize<Password>(responseContent);
-                        return model;
+                        return true;
                     }
-                    return null;*/
+                    return false;
                 }
                 catch (Exception ex)
                 {
-                    //return null;
+                    return false;
                 }
             }
         }

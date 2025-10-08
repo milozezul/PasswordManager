@@ -17,6 +17,7 @@ namespace PManagerFrontend.Interfaces.Services
         Task<bool> EditCategoryName(int categoryId, string name);
         Task<bool> EditCategoryDescription(int categoryId, string description);
         Task<bool> EditRecordName(int recordId, string name);
-        Task AddNoteToPassword(NoteInputModel input);
+        Task<bool> AddNoteToPassword(NoteInputModel input);
+        Task<DecryptedPassword?> GetPasswordsByPasswordId(PasswordGetOutputModel input);
     }
 }
