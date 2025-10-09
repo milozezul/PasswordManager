@@ -319,6 +319,27 @@ namespace PManagerFrontend.Services
             }
         }
 
-
+        public async Task<bool> ReencryptPassword(PasswordReencryptInputModel input)
+        {
+            using (var client = _factory.CreateClient("api"))
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
+                try
+                {
+                    string json = JsonSerializer.Serialize(input);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"api/Data/password/reencrypt", content);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
     }
 }

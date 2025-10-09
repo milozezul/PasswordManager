@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PManager.Interfaces.Services;
-using SharedModels.Database;
 using SharedModels.InputModels;
 
 namespace PManager.Controllers
@@ -209,6 +208,28 @@ namespace PManager.Controllers
             {
                 await _dataService.ActivatePassword(recordId, passwordId, input.Password);
                 return StatusCode(200);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server Error {ex.Message}");
+            }
+        }
+
+        [HttpPost("password/reencrypt")]
+        public async Task<IActionResult> ReencryptPassword(PasswordReencryptInputModel model)
+        {
+            try
+            {
+                var result = await _dataService.ReencryptPassword(model);
+
+                if (result)
+                {
+                    return StatusCode(200);
+                }
+                else
+                {
+                    return StatusCode(406);
+                }
             }
             catch (Exception ex)
             {

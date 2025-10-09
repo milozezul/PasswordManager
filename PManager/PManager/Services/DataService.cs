@@ -108,6 +108,34 @@ namespace PManager
                 }).ToList()
             };
         }
+
+        public async Task<bool> ReencryptPassword(PasswordReencryptInputModel model)
+        {
+            var record = await GetRecordById(model.RecordId);
+
+            if (record == null) return false;
+
+            var result = await _context.RecordPasswords
+                .Where(r => r.RecordId == record.Id && r.PasswordId == model.PasswordId)
+                .Include(r => r.Password)
+                .Include(p => p.Password.Notes)
+                .Select(p => p.Password)
+                .SingleOrDefaultAsync();
+
+            var passwordValue = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(result.Value, model.OldKey));
+
+            if (string.IsNullOrEmpty(passwordValue)) return false;
+
+            var passwordBytes = _encryptService.EncryptWithPassword(Encoding.UTF8.GetBytes(passwordValue), model.NewKey);
+
+            if (passwordBytes == null || passwordBytes.Length == 0) return false;
+
+            result.Value = passwordBytes;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
         
         public async Task<RecordPasswordsModel?> GetPasswordsByRecordId(int recordId, string password)
         {

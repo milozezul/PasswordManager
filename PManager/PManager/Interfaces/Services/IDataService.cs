@@ -24,5 +24,6 @@ namespace PManager.Interfaces.Services
         Task<bool> EditRecordName(int recordId, string newName);
         Task<bool> AddNoteToPassword(NoteInputModel model);
         Task<DecryptedPassword?> GetPasswordByPasswordId(PasswordGetOutputModel model);
+        Task<bool> ReencryptPassword(PasswordReencryptInputModel model);
     }
 }
