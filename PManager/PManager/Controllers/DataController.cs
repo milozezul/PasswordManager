@@ -236,5 +236,27 @@ namespace PManager.Controllers
                 return StatusCode(500, $"Server Error {ex.Message}");
             }
         }
+
+        [HttpPost("password/delete")]
+        public async Task<IActionResult> DeletePassword(NoteDeleteInput model)
+        {
+            try
+            {
+                var result = await _dataService.DeletePasswordNote(model);
+
+                if (result)
+                {
+                    return StatusCode(200);
+                }
+                else
+                {
+                    return StatusCode(406);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Server Error {ex.Message}");
+            }
+        }
     }
 }

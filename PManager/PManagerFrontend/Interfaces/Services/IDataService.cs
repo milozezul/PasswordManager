@@ -20,5 +20,6 @@ namespace PManagerFrontend.Interfaces.Services
         Task<bool> AddNoteToPassword(NoteInputModel input);
         Task<DecryptedPassword?> GetPasswordsByPasswordId(PasswordGetOutputModel input);
         Task<bool> ReencryptPassword(PasswordReencryptInputModel input);
+        Task<bool> DeletePasswordNote(NoteDeleteInput input);
     }
 }

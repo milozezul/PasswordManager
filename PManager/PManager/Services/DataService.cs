@@ -441,6 +441,30 @@ namespace PManager
             return categories;
         }
 
+        public async Task<bool> DeletePasswordNote(NoteDeleteInput model)
+        {
+            var record = await GetRecordById(model.RecordId);
+
+            if (record == null) return false;
+
+            var recordPassword = await _context.RecordPasswords
+                .Where(rp => rp.RecordId == model.RecordId && rp.PasswordId == model.PasswordId)
+                .Include(rp => rp.Password)
+                .Include(rp => rp.Password.Notes)
+                .SingleOrDefaultAsync();
+
+            if (recordPassword == null) return false;
+
+            var note = recordPassword.Password.Notes.SingleOrDefault(n => n.Id == model.NoteId);
+
+            if (note == null) return false;
+
+            recordPassword.Password.Notes.Remove(note);
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
         public void Dispose()
         {
             _context.Dispose();
