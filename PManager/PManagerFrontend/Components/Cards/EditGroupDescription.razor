@@ -2,6 +2,7 @@
 @using PManagerFrontend.Interfaces.Services
 @using PManagerFrontend.Models
 @using PManagerFrontend.Models.Components
+@using SharedModels.InputModels
 
 @inject IDataService _data
 
@@ -81,7 +82,11 @@
 
     async Task EditCategoryDescription()
     {
-        var result = await _data.EditCategoryDescription(Folder.Category.Id, Description);
+        var result = await _data.EditCategoryDescription(new EditInput()
+        {
+            Id = Folder.Category.Id,
+            Value = Description
+        });
 
         if (result)
         {

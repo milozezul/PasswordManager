@@ -8,18 +8,18 @@ namespace PManagerFrontend.Interfaces.Services
     public interface IDataService
     {
         Task<Category?> CreateNewCategory(string category);
-        Task<Record?> CreateRecord(string name, string url, string username, int category);
-        Task<RecordPasswordsModel> GetPasswordsByRecordId(int id, string lockpassword);
-        Task<Password?> AddPassword(PasswordAddInputModel input);
-        Task<bool> DiactivatePassword(int recordId, int passwordId, string password);
-        Task<bool> ActivatePassword(int recordId, int passwordId, string password);
+        Task<Record?> CreateRecord(CreateRecordInput input);
+        Task<RecordPasswordsModel> GetPasswordsByRecordId(RecordPasswordsInput input);
+        Task<Password?> AddPassword(PasswordAddInput input);
+        Task<bool> DiactivatePassword(PasswordStatusInput input);
+        Task<bool> ActivatePassword(PasswordStatusInput input);
         Task<List<GroupFolderModel>> GetAllRecords();
-        Task<bool> EditCategoryName(int categoryId, string name);
-        Task<bool> EditCategoryDescription(int categoryId, string description);
-        Task<bool> EditRecordName(int recordId, string name);
+        Task<bool> EditCategoryName(EditInput input);
+        Task<bool> EditCategoryDescription(EditInput input);
+        Task<bool> EditRecordName(EditInput input);
         Task<bool> AddNoteToPassword(NoteInputModel input);
-        Task<DecryptedPassword?> GetPasswordsByPasswordId(PasswordGetOutputModel input);
-        Task<bool> ReencryptPassword(PasswordReencryptInputModel input);
+        Task<DecryptedPassword?> GetPasswordsByPasswordId(PasswordLocationInput input);
+        Task<bool> ReencryptPassword(PasswordReencryptInput input);
         Task<bool> DeletePasswordNote(NoteDeleteInput input);
     }
 }

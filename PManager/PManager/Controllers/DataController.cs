@@ -16,12 +16,12 @@ namespace PManager.Controllers
             _dataService = dataService;
         }
 
-        [HttpPost("records/create/{category:int}")]
-        public async Task<IActionResult> CreateRecord(int category, [FromQuery] string name, [FromQuery] string url, [FromQuery] string username)
+        [HttpPost("records/create")]
+        public async Task<IActionResult> CreateRecord(CreateRecordInput model)
         {
             try
             {
-                var record = await _dataService.CreateRecord(category, name, url, username);
+                var record = await _dataService.CreateRecord(model);
 
                 if (record == null) return StatusCode(409);
 
@@ -34,7 +34,7 @@ namespace PManager.Controllers
         }
 
         [HttpPost("records/password")]
-        public async Task<IActionResult> AddPasswordToRecord(PasswordAddInputModel model)
+        public async Task<IActionResult> AddPasswordToRecord(PasswordAddInput model)
         {
             try
             {
@@ -73,12 +73,12 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("records/{recordId:int}")]
-        public async Task<IActionResult> GetRecordPasswords(int recordId, PasswordInputModel model)
+        [HttpPost("records")]
+        public async Task<IActionResult> GetRecordPasswords(RecordPasswordsInput model)
         {
             try
             {
-                var passwords = await _dataService.GetPasswordsByRecordId(recordId, model.Password);
+                var passwords = await _dataService.GetPasswordsByRecordId(model);
 
                 if (passwords == null) return StatusCode(404);
 
@@ -91,7 +91,7 @@ namespace PManager.Controllers
         }
 
         [HttpPost("record/password/get")]
-        public async Task<IActionResult> GetPasswordByPasswordId(PasswordGetOutputModel model)
+        public async Task<IActionResult> GetPasswordByPasswordId(PasswordLocationInput model)
         {
             try
             {
@@ -107,12 +107,12 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("records/{recordId:int}/edit/name")]
-        public async Task<IActionResult> EditRecordName(int recordId, [FromQuery] string name)
+        [HttpPost("records/edit/name")]
+        public async Task<IActionResult> EditRecordName(EditInput model)
         {
             try
             {
-                var result = await _dataService.EditRecordName(recordId, name);
+                var result = await _dataService.EditRecordName(model);
                 if (result)
                 {
                     return StatusCode(200);
@@ -145,12 +145,12 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("categories/edit/name/{id:int}")]
-        public async Task<IActionResult> EditCategoryName(int id, [FromQuery] string name)
+        [HttpPost("categories/edit/name")]
+        public async Task<IActionResult> EditCategoryName(EditInput model)
         {
             try
             {
-                var isSuccess = await _dataService.EditCategoryName(id, name);
+                var isSuccess = await _dataService.EditCategoryName(model);
                 if (isSuccess)
                 {
                     return StatusCode(200);
@@ -166,12 +166,12 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("categories/edit/description/{id:int}")]
-        public async Task<IActionResult> EditCategoryDescrption(int id, [FromQuery] string description)
+        [HttpPost("categories/edit/description")]
+        public async Task<IActionResult> EditCategoryDescrption(EditInput model)
         {
             try
             {
-                var isSuccess = await _dataService.EditCategoryDescription(id, description);
+                var isSuccess = await _dataService.EditCategoryDescription(model);
                 if (isSuccess)
                 {
                     return StatusCode(200);
@@ -188,11 +188,11 @@ namespace PManager.Controllers
         }
 
         [HttpPost("password/diactivate")]
-        public async Task<IActionResult> DiactivatePassword([FromQuery] int recordId, [FromQuery] int passwordId, PasswordInputModel input)
+        public async Task<IActionResult> DiactivatePassword(PasswordStatusInput model)
         {
             try
             {
-                await _dataService.DeactivatePassword(recordId, passwordId, input.Password);
+                await _dataService.DeactivatePassword(model);
                 return StatusCode(200);
             }
             catch (Exception ex)
@@ -202,11 +202,11 @@ namespace PManager.Controllers
         }
 
         [HttpPost("password/activate")]
-        public async Task<IActionResult> ActivatePassword([FromQuery] int recordId, [FromQuery] int passwordId, PasswordInputModel input)
+        public async Task<IActionResult> ActivatePassword(PasswordStatusInput model)
         {
             try
             {
-                await _dataService.ActivatePassword(recordId, passwordId, input.Password);
+                await _dataService.ActivatePassword(model);
                 return StatusCode(200);
             }
             catch (Exception ex)
@@ -216,7 +216,7 @@ namespace PManager.Controllers
         }
 
         [HttpPost("password/reencrypt")]
-        public async Task<IActionResult> ReencryptPassword(PasswordReencryptInputModel model)
+        public async Task<IActionResult> ReencryptPassword(PasswordReencryptInput model)
         {
             try
             {

@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace SharedModels.InputModels
+﻿namespace SharedModels.InputModels
 {
     public class PasswordInputModel
     {        

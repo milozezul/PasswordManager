@@ -6,25 +6,25 @@ namespace PManager.Interfaces.Services
 {
     public interface IDataService
     {
-        Task<Password?> AddPassword(PasswordAddInputModel model);
+        Task<Password?> AddPassword(PasswordAddInput model);
         Task<Category?> CreateCategory(string name);
-        Task<Record?> CreateRecord(int categoryId, string name, string url, string username);
-        Task DeactivatePassword(int recordId, int passwordId, string password);
-        Task ActivatePassword(int recordId, int passwordId, string password);
+        Task<Record?> CreateRecord(CreateRecordInput model);
+        Task DeactivatePassword(PasswordStatusInput model);
+        Task ActivatePassword(PasswordStatusInput model);
         void Dispose();
-        Task<RecordPasswordsModel?> GetPasswordsByRecordId(int recordId, string password);
+        Task<RecordPasswordsModel?> GetPasswordsByRecordId(RecordPasswordsInput model);
         public int GetUserId();
         Task<Record?> GetRecordById(int id);
         int GetRecordId();
         int GetPasswordId();
         string GetFallback();
         Task<List<CategoryRecords>> GetAllRecords();
-        Task<bool> EditCategoryName(int categoryId, string newName);
-        Task<bool> EditCategoryDescription(int categoryId, string description);
-        Task<bool> EditRecordName(int recordId, string newName);
+        Task<bool> EditCategoryName(EditInput model);
+        Task<bool> EditCategoryDescription(EditInput model);
+        Task<bool> EditRecordName(EditInput model);
         Task<bool> AddNoteToPassword(NoteInputModel model);
-        Task<DecryptedPassword?> GetPasswordByPasswordId(PasswordGetOutputModel model);
-        Task<bool> ReencryptPassword(PasswordReencryptInputModel model);
+        Task<DecryptedPassword?> GetPasswordByPasswordId(PasswordLocationInput model);
+        Task<bool> ReencryptPassword(PasswordReencryptInput model);
         Task<bool> DeletePasswordNote(NoteDeleteInput model);
     }
 }

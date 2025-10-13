@@ -76,7 +76,7 @@ namespace PManager
                 .SingleOrDefaultAsync(r => r.Id == id);
         }
 
-        public async Task<DecryptedPassword?> GetPasswordByPasswordId(PasswordGetOutputModel model)
+        public async Task<DecryptedPassword?> GetPasswordByPasswordId(PasswordLocationInput model)
         {
             var record = await GetRecordById(model.RecordId);
 
@@ -109,7 +109,7 @@ namespace PManager
             };
         }
 
-        public async Task<bool> ReencryptPassword(PasswordReencryptInputModel model)
+        public async Task<bool> ReencryptPassword(PasswordReencryptInput model)
         {
             var record = await GetRecordById(model.RecordId);
 
@@ -137,9 +137,9 @@ namespace PManager
             return true;
         }
         
-        public async Task<RecordPasswordsModel?> GetPasswordsByRecordId(int recordId, string password)
+        public async Task<RecordPasswordsModel?> GetPasswordsByRecordId(RecordPasswordsInput model)
         {
-            var record = await GetRecordById(recordId);
+            var record = await GetRecordById(model.RecordId);
 
             if (record == null) return null;
 
@@ -151,7 +151,7 @@ namespace PManager
                 .ToListAsync();
             var decryptedPasswords = passwords
                 .Select(c => {
-                    var passwordValue = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(c.Value, password));
+                    var passwordValue = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(c.Value, model.Password));
                     string passwordValueStatus = c.IsActive ? passwordValue : (!string.IsNullOrEmpty(passwordValue) ? "Inactive" : "");
                     return new DecryptedPassword()
                     {
@@ -200,64 +200,64 @@ namespace PManager
             return category.Entity.Category;
         }
 
-        public async Task<bool> EditRecordName(int recordId, string newName)
+        public async Task<bool> EditRecordName(EditInput model)
         {
             int userId = GetUserId();
 
             var record = await _context.UserRecords
                 .Include(u => u.Record)
-                .SingleOrDefaultAsync(u => u.UserId == userId && u.Record.Id == recordId);
+                .SingleOrDefaultAsync(u => u.UserId == userId && u.Record.Id == model.Id);
 
             if (record == null)
             {
                 return false;
             }
 
-            record.Record.Name = newName;
+            record.Record.Name = model.Value;
 
             await _context.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<bool> EditCategoryName(int categoryId, string newName)
+        public async Task<bool> EditCategoryName(EditInput model)
         {
             int userId = GetUserId();
 
-            var existedCategory = await GetCategoryByName(newName);
+            var existedCategory = await GetCategoryByName(model.Value);
 
             if (existedCategory != null) return false;
 
             var category = await _context.UserCategories
                 .Include(u => u.Category)
-                .SingleOrDefaultAsync(u => u.UserId == userId && u.Category.Id == categoryId);
+                .SingleOrDefaultAsync(u => u.UserId == userId && u.Category.Id == model.Id);
 
             if (category == null)
             {
                 return false;
             }
 
-            category.Category.Name = newName;
+            category.Category.Name = model.Value;
 
             await _context.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<bool> EditCategoryDescription(int categoryId, string description)
+        public async Task<bool> EditCategoryDescription(EditInput model)
         {
             int userId = GetUserId();
 
             var category = await _context.UserCategories
                 .Include(u => u.Category)
-                .SingleOrDefaultAsync(u => u.UserId == userId && u.Category.Id == categoryId);
+                .SingleOrDefaultAsync(u => u.UserId == userId && u.Category.Id == model.Id);
 
             if (category == null)
             {
                 return false;
             }
 
-            category.Category.Description = description;
+            category.Category.Description = model.Value;
 
             await _context.SaveChangesAsync();
 
@@ -285,12 +285,12 @@ namespace PManager
                 .SingleOrDefaultAsync(c => c.Id == id);
         }
         
-        public async Task<Record?> CreateRecord(int categoryId, string name, string url, string username)
+        public async Task<Record?> CreateRecord(CreateRecordInput model)
         {
             //lowercase compare
             //clean strings
             //validate strings
-            var categoryInput = await GetCategoryById(categoryId);
+            var categoryInput = await GetCategoryById(model.CategoryId);
 
             if (categoryInput == null) return null;
             
@@ -303,16 +303,16 @@ namespace PManager
                     Record = new Record()
                     {
                         Category = categoryInput,
-                        Name = name,
-                        Url = url,
-                        Username = username
+                        Name = model.Name,
+                        Url = model.Url,
+                        Username = model.Username
                     }
                 });
             await _context.SaveChangesAsync();
             return userrecord.Entity.Record;
         }
         
-        public async Task<Password?> AddPassword(PasswordAddInputModel model)
+        public async Task<Password?> AddPassword(PasswordAddInput model)
         {
             //clean password
             //remove roundtrip
@@ -363,21 +363,21 @@ namespace PManager
 
             return true;
         }
-        
-        public async Task DeactivatePassword(int recordId, int passwordId, string password)
+
+        public async Task DeactivatePassword(PasswordStatusInput model)
         {
-            var record = await GetRecordById(recordId);
+            var record = await GetRecordById(model.RecordId);
 
             if (record == null) return;
 
             var foundPassword = await _context.RecordPasswords
-                .Where(r => r.RecordId == record.Id && r.PasswordId == passwordId)
+                .Where(r => r.RecordId == record.Id && r.PasswordId == model.PasswordId)
                 .Select(p => p.Password)
                 .SingleOrDefaultAsync();
 
             if (foundPassword != null)
             {
-                var passwordValue = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(foundPassword.Value, password));
+                var passwordValue = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(foundPassword.Value, model.Password));
                 if (!string.IsNullOrEmpty(passwordValue))
                 {
                     foundPassword.IsActive = false;
@@ -387,20 +387,20 @@ namespace PManager
             }
         }
 
-        public async Task ActivatePassword(int recordId, int passwordId, string password)
+        public async Task ActivatePassword(PasswordStatusInput model)
         {
-            var record = await GetRecordById(recordId);
+            var record = await GetRecordById(model.RecordId);
 
             if (record == null) return;
 
             var foundPassword = await _context.RecordPasswords
-                .Where(r => r.RecordId == record.Id && r.PasswordId == passwordId)
+                .Where(r => r.RecordId == record.Id && r.PasswordId == model.PasswordId)
                 .Select(p => p.Password)
                 .SingleOrDefaultAsync();
 
             if (foundPassword != null)
             {
-                var passwordValue = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(foundPassword.Value, password));
+                var passwordValue = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(foundPassword.Value, model.Password));
                 if (!string.IsNullOrEmpty(passwordValue))
                 {
                     foundPassword.IsActive = true;

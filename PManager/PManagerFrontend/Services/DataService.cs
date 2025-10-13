@@ -41,14 +41,16 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<Record?> CreateRecord(string name, string url, string username, int category)
+        public async Task<Record?> CreateRecord(CreateRecordInput input)
         {
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
-                    var response = await client.PostAsync($"api/Data/records/create/{category}?name={name}&url={url}&username={username}", null);
+                    var json = JsonSerializer.Serialize(input);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"api/Data/records/create", content);
                     var responseContent = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {
@@ -64,20 +66,16 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<RecordPasswordsModel> GetPasswordsByRecordId(int id, string lockpassword)
+        public async Task<RecordPasswordsModel> GetPasswordsByRecordId(RecordPasswordsInput input)
         {
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
-                    var input = new PasswordInputModel()
-                    {
-                        Password = lockpassword
-                    };
                     var json = JsonSerializer.Serialize(input);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync("api/Data/records/" + id, content);
+                    var response = await client.PostAsync("api/Data/records", content);
                     var responseContent = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {                        
@@ -93,7 +91,7 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<DecryptedPassword?> GetPasswordsByPasswordId(PasswordGetOutputModel input)
+        public async Task<DecryptedPassword?> GetPasswordsByPasswordId(PasswordLocationInput input)
         {
             using (var client = _factory.CreateClient("api"))
             {
@@ -118,7 +116,7 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<Password?> AddPassword(PasswordAddInputModel input)
+        public async Task<Password?> AddPassword(PasswordAddInput input)
         {
             using (var client = _factory.CreateClient("api"))
             {
@@ -167,20 +165,16 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<bool> DiactivatePassword(int recordId, int passwordId, string password)
+        public async Task<bool> DiactivatePassword(PasswordStatusInput input)
         {
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
-                    PasswordInputModel input = new PasswordInputModel()
-                    {
-                        Password = password
-                    };
                     string json = JsonSerializer.Serialize(input);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/password/diactivate?recordId={recordId}&passwordId={passwordId}", content);
+                    var response = await client.PostAsync($"api/Data/password/diactivate", content);
                     return response.IsSuccessStatusCode;
                 }
                 catch (Exception ex)
@@ -190,20 +184,16 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<bool> ActivatePassword(int recordId, int passwordId, string password)
+        public async Task<bool> ActivatePassword(PasswordStatusInput input)
         {
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
-                    PasswordInputModel input = new PasswordInputModel()
-                    {
-                        Password = password
-                    };
                     string json = JsonSerializer.Serialize(input);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/password/activate?recordId={recordId}&passwordId={passwordId}", content);
+                    var response = await client.PostAsync($"api/Data/password/activate", content);
                     return response.IsSuccessStatusCode;
                 }
                 catch (Exception ex)
@@ -256,14 +246,16 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<bool> EditRecordName(int recordId, string name)
+        public async Task<bool> EditRecordName(EditInput input)
         {
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
-                    var response = await client.PostAsync($"api/Data/records/{recordId}/edit/name?name={name}", null);
+                    string json = JsonSerializer.Serialize(input);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"api/Data/records/edit/name", content);
                     if (response.IsSuccessStatusCode)
                     {
                         return true;
@@ -277,14 +269,16 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<bool> EditCategoryName(int categoryId, string name)
+        public async Task<bool> EditCategoryName(EditInput input)
         {
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
-                    var response = await client.PostAsync($"api/Data/categories/edit/name/{categoryId}?name={name}", null);
+                    string json = JsonSerializer.Serialize(input);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"api/Data/categories/edit/name", content);
                     if (response.IsSuccessStatusCode)
                     {
                         return true;
@@ -298,14 +292,16 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<bool> EditCategoryDescription(int categoryId, string description)
+        public async Task<bool> EditCategoryDescription(EditInput input)
         {
             using (var client = _factory.CreateClient("api"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
                 try
                 {
-                    var response = await client.PostAsync($"api/Data/categories/edit/description/{categoryId}?description={description}", null);
+                    string json = JsonSerializer.Serialize(input);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync($"api/Data/categories/edit/description", content);
                     if (response.IsSuccessStatusCode)
                     {
                         return true;
@@ -319,7 +315,7 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<bool> ReencryptPassword(PasswordReencryptInputModel input)
+        public async Task<bool> ReencryptPassword(PasswordReencryptInput input)
         {
             using (var client = _factory.CreateClient("api"))
             {

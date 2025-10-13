@@ -157,7 +157,11 @@
             return;
         }
 
-        var passwords = await _data.GetPasswordsByRecordId(Folder.Record.Id, LockPassword);
+        var passwords = await _data.GetPasswordsByRecordId(new RecordPasswordsInput()
+        {
+            RecordId = Folder.Record.Id,
+            Password = LockPassword
+        });
 
         Folder.Passwords = passwords.Passwords;
         Folder.IsExpand = true;
@@ -184,7 +188,7 @@
             return;
         }
 
-        var password = await _data.AddPassword(new PasswordAddInputModel()
+        var password = await _data.AddPassword(new PasswordAddInput()
         {
             Password = LockPassword,
             NewPassword = NewPassword,
