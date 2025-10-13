@@ -83,7 +83,7 @@
 
     async Task EditCategoryName()
     {
-        var result = await _data.EditCategoryName(new EditInput()
+        var result = await _data.EditCategoryName(new EditCategoryNameInput()
         {
             Id = Folder.Category.Id,
             Value = Name

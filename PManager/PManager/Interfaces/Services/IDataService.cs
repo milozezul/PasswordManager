@@ -7,7 +7,7 @@ namespace PManager.Interfaces.Services
     public interface IDataService
     {
         Task<Password?> AddPassword(PasswordAddInput model);
-        Task<Category?> CreateCategory(string name);
+        Task<Category?> CreateCategory(CategoryInput model);
         Task<Record?> CreateRecord(CreateRecordInput model);
         Task DeactivatePassword(PasswordStatusInput model);
         Task ActivatePassword(PasswordStatusInput model);

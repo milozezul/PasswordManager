@@ -82,7 +82,7 @@
 
     async Task EditCategoryDescription()
     {
-        var result = await _data.EditCategoryDescription(new EditInput()
+        var result = await _data.EditCategoryDescription(new EditCategoryDescriptionInput()
         {
             Id = Folder.Category.Id,
             Value = Description

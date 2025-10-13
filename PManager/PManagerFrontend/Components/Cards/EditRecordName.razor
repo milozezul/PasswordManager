@@ -83,7 +83,7 @@
 
     async Task EditName()
     {
-        var result = await _data.EditRecordName(new EditInput()
+        var result = await _data.EditRecordName(new EditNameInput()
         {
             Id = Folder.Record.Id,
             Value = Name

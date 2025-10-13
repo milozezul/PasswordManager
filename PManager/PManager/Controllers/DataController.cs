@@ -16,7 +16,7 @@ namespace PManager.Controllers
             _dataService = dataService;
         }
 
-        [HttpPost("records/create")]
+        [HttpPost(CreateRecordInput.Api)]
         public async Task<IActionResult> CreateRecord(CreateRecordInput model)
         {
             try
@@ -33,7 +33,7 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("records/password")]
+        [HttpPost(PasswordAddInput.Api)]
         public async Task<IActionResult> AddPasswordToRecord(PasswordAddInput model)
         {
             try
@@ -50,7 +50,7 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("records/password/note")]
+        [HttpPost(NoteInputModel.Api)]
         public async Task<IActionResult> AddNoteToPassword(NoteInputModel model)
         {
             try
@@ -73,7 +73,7 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("records")]
+        [HttpPost(RecordPasswordsInput.Api)]
         public async Task<IActionResult> GetRecordPasswords(RecordPasswordsInput model)
         {
             try
@@ -90,7 +90,7 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("record/password/get")]
+        [HttpPost(PasswordLocationInput.Api)]
         public async Task<IActionResult> GetPasswordByPasswordId(PasswordLocationInput model)
         {
             try
@@ -107,8 +107,8 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("records/edit/name")]
-        public async Task<IActionResult> EditRecordName(EditInput model)
+        [HttpPost(EditNameInput.Api)]
+        public async Task<IActionResult> EditRecordName(EditNameInput model)
         {
             try
             {
@@ -128,12 +128,12 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("categories/{category}")]
-        public async Task<IActionResult> CreateCategory(string category)
+        [HttpPost(CategoryInput.Api)]
+        public async Task<IActionResult> CreateCategory(CategoryInput model)
         {
             try
             {
-                var createdCategory = await _dataService.CreateCategory(category);
+                var createdCategory = await _dataService.CreateCategory(model);
 
                 if (createdCategory == null) return StatusCode(409);
 
@@ -145,8 +145,8 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("categories/edit/name")]
-        public async Task<IActionResult> EditCategoryName(EditInput model)
+        [HttpPost(EditCategoryNameInput.Api)]
+        public async Task<IActionResult> EditCategoryName(EditCategoryNameInput model)
         {
             try
             {
@@ -166,8 +166,8 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("categories/edit/description")]
-        public async Task<IActionResult> EditCategoryDescrption(EditInput model)
+        [HttpPost(EditCategoryDescriptionInput.Api)]
+        public async Task<IActionResult> EditCategoryDescrption(EditCategoryDescriptionInput model)
         {
             try
             {
@@ -187,8 +187,8 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("password/diactivate")]
-        public async Task<IActionResult> DiactivatePassword(PasswordStatusInput model)
+        [HttpPost(PasswordDiactivateInput.Api)]
+        public async Task<IActionResult> DiactivatePassword(PasswordDiactivateInput model)
         {
             try
             {
@@ -201,8 +201,8 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("password/activate")]
-        public async Task<IActionResult> ActivatePassword(PasswordStatusInput model)
+        [HttpPost(PasswordActivateInput.Api)]
+        public async Task<IActionResult> ActivatePassword(PasswordActivateInput model)
         {
             try
             {
@@ -215,7 +215,7 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("password/reencrypt")]
+        [HttpPost(PasswordReencryptInput.Api)]
         public async Task<IActionResult> ReencryptPassword(PasswordReencryptInput model)
         {
             try
@@ -237,7 +237,7 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("password/delete")]
+        [HttpPost(NoteDeleteInput.Api)]
         public async Task<IActionResult> DeletePassword(NoteDeleteInput model)
         {
             try

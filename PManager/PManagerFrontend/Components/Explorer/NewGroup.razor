@@ -1,6 +1,7 @@
 ﻿@using PManagerFrontend.Components.Utility
 @using PManagerFrontend.Interfaces.Services
 @using PManagerFrontend.Models
+@using SharedModels.InputModels
 @inject IDataService _data
 
 <ModalWindow Modal="@Modal" />
@@ -54,7 +55,10 @@
 
     async Task CreateNewGroup()
     {
-        var result = await _data.CreateNewCategory(GroupName);
+        var result = await _data.CreateNewCategory(new CategoryInput()
+        {
+            Category = GroupName
+        });
         
         if (result == null)
         {

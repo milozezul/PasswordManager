@@ -177,10 +177,10 @@ namespace PManager
             return result;
         }
         
-        public async Task<Category?> CreateCategory(string name)
+        public async Task<Category?> CreateCategory(CategoryInput model)
         {
             //clean string
-            var existedCategory = await GetCategoryByName(name);
+            var existedCategory = await GetCategoryByName(model.Category);
 
             if (existedCategory != null) return null;
 
@@ -192,7 +192,7 @@ namespace PManager
                     UserId = userId,
                     Category = new Category()
                     {
-                        Name = name,
+                        Name = model.Category,
                         Description = string.Empty
                     }
                 });

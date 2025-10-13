@@ -1,4 +1,6 @@
-﻿namespace SharedModels.InputModels
+﻿using SharedModels.Interfaces;
+
+namespace SharedModels.InputModels
 {
     public class PasswordStatusInput
     {

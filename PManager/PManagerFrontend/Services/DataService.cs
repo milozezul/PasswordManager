@@ -3,6 +3,7 @@ using PManagerFrontend.Models.Components;
 using SharedModels.Database;
 using SharedModels.DataService;
 using SharedModels.InputModels;
+using SharedModels.Interfaces;
 using System.Text;
 using System.Text.Json;
 
@@ -18,62 +19,44 @@ namespace PManagerFrontend.Services
             _state = state;
         }
 
-        public async Task<Category?> CreateNewCategory(string category)
+        public async Task<Category?> CreateNewCategory(CategoryInput input)
         {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    var response = await client.PostAsync("api/Data/categories/" + category, null);
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var model = JsonSerializer.Deserialize<Category>(responseContent);
-                        return model;
-                    }
-                    return null;
-                }
-                catch (Exception ex)
-                {
-                    return null;
-                }
-            }
+            return await PostAsync<CategoryInput, Category?>(input);
         }
 
         public async Task<Record?> CreateRecord(CreateRecordInput input)
         {
-            return await PostAsync<CreateRecordInput, Record?>(input, "api/Data/records/create");
+            return await PostAsync<CreateRecordInput, Record?>(input);
         }
 
         public async Task<RecordPasswordsModel> GetPasswordsByRecordId(RecordPasswordsInput input)
         {
-            return await PostAsync<RecordPasswordsInput, RecordPasswordsModel>(input, "api/Data/records");
+            return await PostAsync<RecordPasswordsInput, RecordPasswordsModel>(input);
         }
 
         public async Task<DecryptedPassword?> GetPasswordsByPasswordId(PasswordLocationInput input)
         {
-            return await PostAsync<PasswordLocationInput, DecryptedPassword?>(input, "api/Data/record/password/get");
+            return await PostAsync<PasswordLocationInput, DecryptedPassword?>(input);
         }
 
         public async Task<Password?> AddPassword(PasswordAddInput input)
         {
-            return await PostAsync<PasswordAddInput, Password?>(input, "api/Data/records/password");
+            return await PostAsync<PasswordAddInput, Password?>(input);
         }
 
         public async Task<bool> AddNoteToPassword(NoteInputModel input)
         {
-            return await PostAsync(input, "api/Data/records/password/note");
+            return await PostAsync(input);
         }
 
-        public async Task<bool> DiactivatePassword(PasswordStatusInput input)
+        public async Task<bool> DiactivatePassword(PasswordDiactivateInput input)
         {
-            return await PostAsync(input, "api/Data/password/diactivate");
+            return await PostAsync(input);
         }
 
-        public async Task<bool> ActivatePassword(PasswordStatusInput input)
+        public async Task<bool> ActivatePassword(PasswordActivateInput input)
         {
-            return await PostAsync(input, "api/Data/password/activate");
+            return await PostAsync(input);
         }
 
         public async Task<List<GroupFolderModel>> GetAllRecords()
@@ -119,32 +102,32 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<bool> EditRecordName(EditInput input)
+        public async Task<bool> EditRecordName(EditNameInput input)
         {
-            return await PostAsync(input, "api/Data/records/edit/name");
+            return await PostAsync(input);
         }
 
-        public async Task<bool> EditCategoryName(EditInput input)
+        public async Task<bool> EditCategoryName(EditCategoryNameInput input)
         {
-            return await PostAsync(input, "api/Data/categories/edit/name");
+            return await PostAsync(input);
         }
 
-        public async Task<bool> EditCategoryDescription(EditInput input)
+        public async Task<bool> EditCategoryDescription(EditCategoryDescriptionInput input)
         {
-            return await PostAsync(input, "api/Data/categories/edit/description");
+            return await PostAsync(input);
         }
 
         public async Task<bool> ReencryptPassword(PasswordReencryptInput input)
         {
-            return await PostAsync(input, "api/Data/password/reencrypt");
+            return await PostAsync(input);
         }
 
         public async Task<bool> DeletePasswordNote(NoteDeleteInput input)
         {
-            return await PostAsync(input, "api/Data/password/delete");
+            return await PostAsync(input);
         }
 
-        public async Task<bool> PostAsync<T>(T input, string route)
+        public async Task<bool> PostAsync<T>(T input) where T: IApiRoute
         {
             using (var client = _factory.CreateClient("api"))
             {
@@ -153,7 +136,7 @@ namespace PManagerFrontend.Services
                 {
                     string json = JsonSerializer.Serialize(input);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync(route, content);
+                    var response = await client.PostAsync("api/Data/" + T.Api, content);
                     return response.IsSuccessStatusCode;
                 }
                 catch (Exception ex)
@@ -163,7 +146,7 @@ namespace PManagerFrontend.Services
             }
         }
 
-        public async Task<U?> PostAsync<T,U>(T input, string route)
+        public async Task<U?> PostAsync<T,U>(T input) where T: IApiRoute
         {
             using (var client = _factory.CreateClient("api"))
             {
@@ -172,7 +155,7 @@ namespace PManagerFrontend.Services
                 {
                     var json = JsonSerializer.Serialize(input);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync(route, content);
+                    var response = await client.PostAsync("api/Data/" + T.Api, content);
                     var responseContent = await response.Content.ReadAsStringAsync();
                     if (response.IsSuccessStatusCode)
                     {
