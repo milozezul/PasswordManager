@@ -43,164 +43,37 @@ namespace PManagerFrontend.Services
 
         public async Task<Record?> CreateRecord(CreateRecordInput input)
         {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    var json = JsonSerializer.Serialize(input);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/records/create", content);
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var model = JsonSerializer.Deserialize<Record>(responseContent);
-                        return model;
-                    }
-                    return null;
-                }
-                catch (Exception ex)
-                {
-                    return null;
-                }
-            }
+            return await PostAsync<CreateRecordInput, Record?>(input, "api/Data/records/create");
         }
 
         public async Task<RecordPasswordsModel> GetPasswordsByRecordId(RecordPasswordsInput input)
         {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    var json = JsonSerializer.Serialize(input);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync("api/Data/records", content);
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
-                    {                        
-                        var model = JsonSerializer.Deserialize<RecordPasswordsModel>(responseContent);
-                        return model;
-                    }
-                    return null;
-                }
-                catch (Exception ex)
-                {
-                    return null;
-                }
-            }
+            return await PostAsync<RecordPasswordsInput, RecordPasswordsModel>(input, "api/Data/records");
         }
 
         public async Task<DecryptedPassword?> GetPasswordsByPasswordId(PasswordLocationInput input)
         {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    var json = JsonSerializer.Serialize(input);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync("api/Data/record/password/get", content);
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var model = JsonSerializer.Deserialize<DecryptedPassword>(responseContent);
-                        return model;
-                    }
-                    return null;
-                }
-                catch (Exception ex)
-                {
-                    return null;
-                }
-            }
+            return await PostAsync<PasswordLocationInput, DecryptedPassword?>(input, "api/Data/record/password/get");
         }
 
         public async Task<Password?> AddPassword(PasswordAddInput input)
         {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    var json = JsonSerializer.Serialize(input);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/records/password", content);
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var model = JsonSerializer.Deserialize<Password>(responseContent);
-                        return model;
-                    }
-                    return null;
-                }
-                catch (Exception ex)
-                {
-                    return null;
-                }
-            }
+            return await PostAsync<PasswordAddInput, Password?>(input, "api/Data/records/password");
         }
 
         public async Task<bool> AddNoteToPassword(NoteInputModel input)
         {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    var json = JsonSerializer.Serialize(input);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/records/password/note", content);
-                    var responseContent = await response.Content.ReadAsStringAsync();
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
+            return await PostAsync(input, "api/Data/records/password/note");
         }
 
         public async Task<bool> DiactivatePassword(PasswordStatusInput input)
         {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    string json = JsonSerializer.Serialize(input);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/password/diactivate", content);
-                    return response.IsSuccessStatusCode;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
+            return await PostAsync(input, "api/Data/password/diactivate");
         }
 
         public async Task<bool> ActivatePassword(PasswordStatusInput input)
         {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    string json = JsonSerializer.Serialize(input);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/password/activate", content);
-                    return response.IsSuccessStatusCode;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
+            return await PostAsync(input, "api/Data/password/activate");
         }
 
         public async Task<List<GroupFolderModel>> GetAllRecords()
@@ -248,97 +121,30 @@ namespace PManagerFrontend.Services
 
         public async Task<bool> EditRecordName(EditInput input)
         {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    string json = JsonSerializer.Serialize(input);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/records/edit/name", content);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
+            return await PostAsync(input, "api/Data/records/edit/name");
         }
 
         public async Task<bool> EditCategoryName(EditInput input)
         {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    string json = JsonSerializer.Serialize(input);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/categories/edit/name", content);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
+            return await PostAsync(input, "api/Data/categories/edit/name");
         }
 
         public async Task<bool> EditCategoryDescription(EditInput input)
         {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    string json = JsonSerializer.Serialize(input);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/categories/edit/description", content);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
+            return await PostAsync(input, "api/Data/categories/edit/description");
         }
 
         public async Task<bool> ReencryptPassword(PasswordReencryptInput input)
         {
-            using (var client = _factory.CreateClient("api"))
-            {
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
-                try
-                {
-                    string json = JsonSerializer.Serialize(input);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/password/reencrypt", content);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
+            return await PostAsync(input, "api/Data/password/reencrypt");
         }
 
         public async Task<bool> DeletePasswordNote(NoteDeleteInput input)
+        {
+            return await PostAsync(input, "api/Data/password/delete");
+        }
+
+        public async Task<bool> PostAsync<T>(T input, string route)
         {
             using (var client = _factory.CreateClient("api"))
             {
@@ -347,16 +153,36 @@ namespace PManagerFrontend.Services
                 {
                     string json = JsonSerializer.Serialize(input);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync($"api/Data/password/delete", content);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
-                    }
-                    return false;
+                    var response = await client.PostAsync(route, content);
+                    return response.IsSuccessStatusCode;
                 }
                 catch (Exception ex)
                 {
                     return false;
+                }
+            }
+        }
+
+        public async Task<U?> PostAsync<T,U>(T input, string route)
+        {
+            using (var client = _factory.CreateClient("api"))
+            {
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _state.JwtBearer);
+                try
+                {
+                    var json = JsonSerializer.Serialize(input);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync(route, content);
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return JsonSerializer.Deserialize<U>(responseContent);
+                    }
+                    return default;
+                }
+                catch (Exception ex)
+                {
+                    return default;
                 }
             }
         }
