@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PManager.Interfaces.Services;
+using SharedModels.APIs.Explorer.Outputs;
 
 namespace PManager.Controllers
 {
@@ -15,13 +16,12 @@ namespace PManager.Controllers
             _data = data;
         }
 
-        [HttpGet("records")]
-        public async Task<IActionResult> GetAllRecords()
+        [HttpGet(CategoryRecords.Api)]
+        public async Task<ActionResult<List<CategoryRecords>>> GetAllRecords()
         {
             try
             {
-                var categories = await _data.GetAllRecords();
-                return StatusCode(200, categories);                                
+                return await _data.GetAllRecords();
             }
             catch (Exception ex)
             {

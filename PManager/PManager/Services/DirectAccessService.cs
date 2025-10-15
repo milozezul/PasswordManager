@@ -4,8 +4,8 @@ using Microsoft.IdentityModel.Tokens;
 using PManager.Data;
 using PManager.Interfaces.Services;
 using PManager.Models.Configs;
-using SharedModels.DataService;
-using SharedModels.InputModels;
+using SharedModels.APIs.Data.Outputs;
+using SharedModels.APIs.DirectAccess.Input;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -26,7 +26,7 @@ namespace PManager.Services
             _config = config;
         }
 
-        public async Task<DecryptedPassword?> GetDirectPassword(string password)
+        public async Task<DecryptedPasswordOutput?> GetDirectPassword(string password)
         {
             var record = await _dataService.GetRecordById(_dataService.GetRecordId());
 
@@ -37,7 +37,7 @@ namespace PManager.Services
                 .Select(p => p.Password)
                 .FirstAsync();
 
-            var decryptedPassword = new DecryptedPassword()
+            var decryptedPassword = new DecryptedPasswordOutput()
             {
                 Id = foundPassword.Id,
                 Value = foundPassword.IsActive == true ? Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(foundPassword.Value, password)) : "DIACTIVATED"

@@ -1,4 +1,5 @@
-﻿using SharedModels.InputModels;
+﻿using SharedModels.APIs.DirectAccess.Input;
+using SharedModels.InputModels;
 
 namespace PManagerFrontend.Interfaces.Services
 {

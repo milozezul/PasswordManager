@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PManager.Interfaces.Services;
+using PManager.Models.Database;
+using SharedModels.APIs.Auth.Input;
+using SharedModels.APIs.Auth.Output;
 using SharedModels.InputModels;
 
 namespace PManager.Controllers
@@ -16,8 +19,8 @@ namespace PManager.Controllers
             _auth = auth;
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginInput input)
+        [HttpPost(LoginInput.Api)]
+        public async Task<ActionResult<LoginResponse>> Login(LoginInput input)
         {
             try
             {
@@ -25,7 +28,7 @@ namespace PManager.Controllers
 
                 if (bearer.IsSuccess)
                 {
-                    return StatusCode(200, bearer);
+                    return bearer;
                 }
                 else
                 {
@@ -43,8 +46,8 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterInput input)
+        [HttpPost(RegisterInput.Api)]
+        public async Task<ActionResult<ResponseWrapper<bool>>> Register(RegisterInput input)
         {
             try
             {
@@ -52,11 +55,11 @@ namespace PManager.Controllers
 
                 if (user != null)
                 {
-                    return StatusCode(201, new ResponseWrapper<bool>()
+                    return new ResponseWrapper<bool>()
                     {
                         Value = true,
                         Message = ""
-                    });
+                    };
                 }
                 else
                 {

@@ -1,4 +1,6 @@
 ﻿using PManagerFrontend.Interfaces.Services;
+using SharedModels.APIs.Auth.Input;
+using SharedModels.APIs.Auth.Output;
 using SharedModels.InputModels;
 using System.Text;
 using System.Text.Json;

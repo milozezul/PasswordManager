@@ -4,6 +4,7 @@
 @using PManagerFrontend.Interfaces.Services
 @using PManagerFrontend.Models
 @using PManagerFrontend.Models.Components
+@using SharedModels.APIs.Auth.Input
 
 @inject NavigationManager Navigation;
 @inject IAuthService _auth;
@@ -102,7 +103,7 @@
 
     async Task OnLogin()
     {
-        var response = await _auth.Login(new SharedModels.InputModels.LoginInput()
+        var response = await _auth.Login(new LoginInput()
         {
             Username = Username,
             Password = Password
@@ -119,7 +120,7 @@
 
     async Task OnRegister()
     {
-        var response = await _auth.Register(new SharedModels.InputModels.RegisterInput()
+        var response = await _auth.Register(new RegisterInput()
         {
             Username = Username,
             Password = Password,

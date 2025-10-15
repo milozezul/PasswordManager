@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PManager.Interfaces.Services;
-using SharedModels.InputModels;
+using SharedModels.APIs.Data.Inputs;
+using SharedModels.APIs.Data.Outputs;
+using SharedModels.Database;
 
 namespace PManager.Controllers
 {
@@ -17,7 +19,7 @@ namespace PManager.Controllers
         }
 
         [HttpPost(CreateRecordInput.Api)]
-        public async Task<IActionResult> CreateRecord(CreateRecordInput model)
+        public async Task<ActionResult<Record>> CreateRecord(CreateRecordInput model)
         {
             try
             {
@@ -25,7 +27,7 @@ namespace PManager.Controllers
 
                 if (record == null) return StatusCode(409);
 
-                return StatusCode(201, record);
+                return record;
             }
             catch (Exception ex)
             {
@@ -34,7 +36,7 @@ namespace PManager.Controllers
         }
 
         [HttpPost(PasswordAddInput.Api)]
-        public async Task<IActionResult> AddPasswordToRecord(PasswordAddInput model)
+        public async Task<ActionResult<Password>> AddPasswordToRecord(PasswordAddInput model)
         {
             try
             {
@@ -42,7 +44,7 @@ namespace PManager.Controllers
 
                 if (createdPassword == null) return StatusCode(409);
 
-                return StatusCode(201, createdPassword);
+                return createdPassword;
             }
             catch (Exception ex)
             {
@@ -50,8 +52,8 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost(NoteInputModel.Api)]
-        public async Task<IActionResult> AddNoteToPassword(NoteInputModel model)
+        [HttpPost(NoteDataCreateInput.Api)]
+        public async Task<IActionResult> AddNoteToPassword(NoteDataCreateInput model)
         {
             try
             {
@@ -74,7 +76,7 @@ namespace PManager.Controllers
         }
 
         [HttpPost(RecordPasswordsInput.Api)]
-        public async Task<IActionResult> GetRecordPasswords(RecordPasswordsInput model)
+        public async Task<ActionResult<RecordPasswordsOutput>> GetRecordPasswords(RecordPasswordsInput model)
         {
             try
             {
@@ -82,7 +84,7 @@ namespace PManager.Controllers
 
                 if (passwords == null) return StatusCode(404);
 
-                return StatusCode(200, passwords);
+                return passwords;
             }
             catch (Exception ex)
             {
@@ -90,8 +92,8 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost(PasswordLocationInput.Api)]
-        public async Task<IActionResult> GetPasswordByPasswordId(PasswordLocationInput model)
+        [HttpPost(PasswordDataInput.Api)]
+        public async Task<ActionResult<DecryptedPasswordOutput>> GetPasswordByPasswordId(PasswordDataInput model)
         {
             try
             {
@@ -99,7 +101,7 @@ namespace PManager.Controllers
 
                 if (password == null) return StatusCode(404);
 
-                return StatusCode(200, password);
+                return password;
             }
             catch (Exception ex)
             {
@@ -107,8 +109,8 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost(EditNameInput.Api)]
-        public async Task<IActionResult> EditRecordName(EditNameInput model)
+        [HttpPost(EditRecordNameInput.Api)]
+        public async Task<IActionResult> EditRecordName(EditRecordNameInput model)
         {
             try
             {
@@ -129,7 +131,7 @@ namespace PManager.Controllers
         }
 
         [HttpPost(CategoryInput.Api)]
-        public async Task<IActionResult> CreateCategory(CategoryInput model)
+        public async Task<ActionResult<Category>> CreateCategory(CategoryInput model)
         {
             try
             {
@@ -137,7 +139,7 @@ namespace PManager.Controllers
 
                 if (createdCategory == null) return StatusCode(409);
 
-                return StatusCode(201, createdCategory);
+                return createdCategory;
             }
             catch (Exception ex)
             {
@@ -237,8 +239,8 @@ namespace PManager.Controllers
             }
         }
 
-        [HttpPost(NoteDeleteInput.Api)]
-        public async Task<IActionResult> DeletePassword(NoteDeleteInput model)
+        [HttpPost(NoteDataDeleteInput.Api)]
+        public async Task<IActionResult> DeletePassword(NoteDataDeleteInput model)
         {
             try
             {

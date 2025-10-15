@@ -1,4 +1,6 @@
-﻿using SharedModels.InputModels;
+﻿using SharedModels.APIs.Auth.Input;
+using SharedModels.APIs.Auth.Output;
+using SharedModels.InputModels;
 
 namespace PManagerFrontend.Interfaces.Services
 {

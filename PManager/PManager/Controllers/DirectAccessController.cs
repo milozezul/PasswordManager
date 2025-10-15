@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PManager.Interfaces.Services;
+using SharedModels.APIs.DirectAccess.Input;
 using SharedModels.InputModels;
 
 namespace PManager.Controllers
@@ -39,7 +40,7 @@ namespace PManager.Controllers
 
         [Authorize(Roles = "Link")]
         [HttpPost("enter")]
-        public async Task<IActionResult> GetPasswordDirectly(PasswordInputModel input)
+        public async Task<IActionResult> GetPasswordDirectly(PasswordInput input)
         {
             try
             {

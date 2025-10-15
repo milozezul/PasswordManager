@@ -2,9 +2,10 @@
 using PManager.Data;
 using PManager.Interfaces.Services;
 using PManager.Models.Database;
+using SharedModels.APIs.Data.Inputs;
+using SharedModels.APIs.Data.Outputs;
+using SharedModels.APIs.Explorer.Outputs;
 using SharedModels.Database;
-using SharedModels.DataService;
-using SharedModels.InputModels;
 using System.Text;
 
 namespace PManager
@@ -76,7 +77,7 @@ namespace PManager
                 .SingleOrDefaultAsync(r => r.Id == id);
         }
 
-        public async Task<DecryptedPassword?> GetPasswordByPasswordId(PasswordLocationInput model)
+        public async Task<DecryptedPasswordOutput?> GetPasswordByPasswordId(PasswordDataInput model)
         {
             var record = await GetRecordById(model.RecordId);
 
@@ -93,7 +94,7 @@ namespace PManager
 
             string passwordValueStatus = result.IsActive ? passwordValue : (!string.IsNullOrEmpty(passwordValue) ? "Inactive" : "");
 
-            return new DecryptedPassword()
+            return new DecryptedPasswordOutput()
             {
                 Id = result.Id,
                 Value = passwordValueStatus,
@@ -137,7 +138,7 @@ namespace PManager
             return true;
         }
         
-        public async Task<RecordPasswordsModel?> GetPasswordsByRecordId(RecordPasswordsInput model)
+        public async Task<RecordPasswordsOutput?> GetPasswordsByRecordId(RecordPasswordsInput model)
         {
             var record = await GetRecordById(model.RecordId);
 
@@ -153,7 +154,7 @@ namespace PManager
                 .Select(c => {
                     var passwordValue = Encoding.UTF8.GetString(_encryptService.DecryptWithPassword(c.Value, model.Password));
                     string passwordValueStatus = c.IsActive ? passwordValue : (!string.IsNullOrEmpty(passwordValue) ? "Inactive" : "");
-                    return new DecryptedPassword()
+                    return new DecryptedPasswordOutput()
                     {
                         Id = c.Id,
                         Value = passwordValueStatus,
@@ -169,7 +170,7 @@ namespace PManager
                     };
                 }).ToList();
 
-            var result = new RecordPasswordsModel()
+            var result = new RecordPasswordsOutput()
             {
                 Record = record,
                 Passwords = decryptedPasswords
@@ -200,7 +201,7 @@ namespace PManager
             return category.Entity.Category;
         }
 
-        public async Task<bool> EditRecordName(EditInput model)
+        public async Task<bool> EditRecordName(EditData model)
         {
             int userId = GetUserId();
 
@@ -220,7 +221,7 @@ namespace PManager
             return true;
         }
 
-        public async Task<bool> EditCategoryName(EditInput model)
+        public async Task<bool> EditCategoryName(EditData model)
         {
             int userId = GetUserId();
 
@@ -244,7 +245,7 @@ namespace PManager
             return true;
         }
 
-        public async Task<bool> EditCategoryDescription(EditInput model)
+        public async Task<bool> EditCategoryDescription(EditData model)
         {
             int userId = GetUserId();
 
@@ -340,7 +341,7 @@ namespace PManager
             return createdPassword.Entity;
         }
         
-        public async Task<bool> AddNoteToPassword(NoteInputModel model)
+        public async Task<bool> AddNoteToPassword(NoteDataCreateInput model)
         {
             var record = await GetRecordById(model.RecordId);
 
@@ -364,7 +365,7 @@ namespace PManager
             return true;
         }
 
-        public async Task DeactivatePassword(PasswordStatusInput model)
+        public async Task DeactivatePassword(PasswordStatus model)
         {
             var record = await GetRecordById(model.RecordId);
 
@@ -387,7 +388,7 @@ namespace PManager
             }
         }
 
-        public async Task ActivatePassword(PasswordStatusInput model)
+        public async Task ActivatePassword(PasswordStatus model)
         {
             var record = await GetRecordById(model.RecordId);
 
@@ -441,7 +442,7 @@ namespace PManager
             return categories;
         }
 
-        public async Task<bool> DeletePasswordNote(NoteDeleteInput model)
+        public async Task<bool> DeletePasswordNote(NoteDataDeleteInput model)
         {
             var record = await GetRecordById(model.RecordId);
 

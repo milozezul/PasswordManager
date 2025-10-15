@@ -1,5 +1,6 @@
 ﻿using PManager.Models.Database;
-using SharedModels.InputModels;
+using SharedModels.APIs.Auth.Input;
+using SharedModels.APIs.Auth.Output;
 
 namespace PManager.Interfaces.Services
 {

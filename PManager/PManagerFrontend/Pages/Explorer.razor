@@ -3,7 +3,7 @@
 @using PManagerFrontend.Components.MainWindow
 @using PManagerFrontend.Interfaces.Services
 @using PManagerFrontend.Models.Components
-@using SharedModels.DataService
+@using SharedModels.APIs.Data.Outputs
 @using SharedModels.Database
 
 @inject IDataService _data
@@ -43,7 +43,7 @@
 
                     if (record.IsExpand)
                     {
-                        foreach (var password in record.Passwords ?? Enumerable.Empty<DecryptedPassword>())
+                        foreach (var password in record.Passwords ?? Enumerable.Empty<DecryptedPasswordOutput>())
                         {
                             <PasswordFolder
                                 @key="@("pwd" + password.Id)"
@@ -99,7 +99,7 @@
     List<GroupFolderModel>? ExplorerData { get; set; }
     GroupFolderModel? CurrentGroup { get; set; }
     RecordFolderModel? CurrentRecord { get; set; }
-    DecryptedPassword? CurrentPassword { get; set; }
+    DecryptedPasswordOutput? CurrentPassword { get; set; }
 
     int MainMenuSelection { get; set; }
 

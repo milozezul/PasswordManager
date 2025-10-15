@@ -2,6 +2,7 @@
 @using PManagerFrontend.Interfaces.Services
 @using PManagerFrontend.Models
 @using PManagerFrontend.Models.Components
+@using SharedModels.APIs.Data.Inputs
 @using SharedModels.InputModels
 
 @inject IDataService _data
@@ -83,7 +84,7 @@
 
     async Task EditName()
     {
-        var result = await _data.EditRecordName(new EditNameInput()
+        var result = await _data.EditRecordName(new EditRecordNameInput()
         {
             Id = Folder.Record.Id,
             Value = Name

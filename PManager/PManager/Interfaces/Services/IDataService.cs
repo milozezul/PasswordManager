@@ -1,6 +1,7 @@
-﻿using SharedModels.Database;
-using SharedModels.DataService;
-using SharedModels.InputModels;
+﻿using SharedModels.APIs.Data.Inputs;
+using SharedModels.APIs.Data.Outputs;
+using SharedModels.APIs.Explorer.Outputs;
+using SharedModels.Database;
 
 namespace PManager.Interfaces.Services
 {
@@ -9,22 +10,22 @@ namespace PManager.Interfaces.Services
         Task<Password?> AddPassword(PasswordAddInput model);
         Task<Category?> CreateCategory(CategoryInput model);
         Task<Record?> CreateRecord(CreateRecordInput model);
-        Task DeactivatePassword(PasswordStatusInput model);
-        Task ActivatePassword(PasswordStatusInput model);
+        Task DeactivatePassword(PasswordStatus model);
+        Task ActivatePassword(PasswordStatus model);
         void Dispose();
-        Task<RecordPasswordsModel?> GetPasswordsByRecordId(RecordPasswordsInput model);
+        Task<RecordPasswordsOutput?> GetPasswordsByRecordId(RecordPasswordsInput model);
         public int GetUserId();
         Task<Record?> GetRecordById(int id);
         int GetRecordId();
         int GetPasswordId();
         string GetFallback();
         Task<List<CategoryRecords>> GetAllRecords();
-        Task<bool> EditCategoryName(EditInput model);
-        Task<bool> EditCategoryDescription(EditInput model);
-        Task<bool> EditRecordName(EditInput model);
-        Task<bool> AddNoteToPassword(NoteInputModel model);
-        Task<DecryptedPassword?> GetPasswordByPasswordId(PasswordLocationInput model);
+        Task<bool> EditCategoryName(EditData model);
+        Task<bool> EditCategoryDescription(EditData model);
+        Task<bool> EditRecordName(EditData model);
+        Task<bool> AddNoteToPassword(NoteDataCreateInput model);
+        Task<DecryptedPasswordOutput?> GetPasswordByPasswordId(PasswordDataInput model);
         Task<bool> ReencryptPassword(PasswordReencryptInput model);
-        Task<bool> DeletePasswordNote(NoteDeleteInput model);
+        Task<bool> DeletePasswordNote(NoteDataDeleteInput model);
     }
 }
